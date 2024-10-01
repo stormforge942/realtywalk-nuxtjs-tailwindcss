@@ -14,7 +14,7 @@ import Header from '~/components/layout/Header.vue';
                 <NuxtImg width="110" alt="Footprint" src="/images/footprints-vert.png"/>
             </div>
             <div class="w-full">
-                <div class="bg-primary text-white px-5 py-2 text-2xl font-semibold">
+                <div class="bg-primary text-white px-5 py-2 text-3xl">
                     <slot name="header" />
                 </div>
                 <slot />

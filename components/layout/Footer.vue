@@ -17,6 +17,6 @@
 
 <style lang="css" scoped>
 a {
-    @apply inline-block px-2 mx-2 w-max hover:text-secondary font-semibold normal-case
+    @apply inline-block px-2 mx-2 w-max hover:text-secondary normal-case
 }
 </style>

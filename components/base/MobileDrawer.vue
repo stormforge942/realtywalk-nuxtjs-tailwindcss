@@ -54,7 +54,7 @@ onUnmounted(() => {
 
 <style lang="css" scoped>
 a {
-    @apply text-xl p-3 w-max font-semibold hover:text-secondary
+    @apply text-xl p-3 w-max hover:text-secondary
 }
 li {
     @apply block m-3

@@ -17,7 +17,7 @@ import MobileDrawer from '../base/MobileDrawer.vue';
             alt="Realty Walk" 
             src="/images/logo-rw-horizontal.png" 
             height="45px"/>
-        <div class="font-semibold hidden lg:block w-full max-w-[460px] px-4">
+        <div class="hidden lg:block w-full max-w-[460px] px-4">
             {{ $t('home.header.caption') }}
         </div>
         <MobileDrawer />
@@ -26,7 +26,7 @@ import MobileDrawer from '../base/MobileDrawer.vue';
             <div class="absolute top-0 right-4 flex">
                 <button class="px-3 hover:bg-dark group flex items-center gap-x-1">
                     <svg class="w-4 h-4 pb-1 svg-inline--fa fa-grid-2 fa-lg group-hover:text-secondary" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="grid-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M224 80c0-26.5-21.5-48-48-48L80 32C53.5 32 32 53.5 32 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zm0 256c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zM288 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48zM480 336c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96z"></path></svg>
-                    <span class="group-hover:text-secondary uppercase font-semibold">{{ $t('menu.home') }}</span>
+                    <span class="group-hover:text-secondary uppercase">{{ $t('menu.home') }}</span>
                 </button>
                 <ul class="flex bg-dark p-1">
                     <li><NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink></li>
@@ -52,7 +52,7 @@ a {
     @apply px-2 w-full hover:text-secondary
 }
 li {
-    @apply flex items-center text-center font-semibold;
+    @apply flex items-center text-center;
 }
 li:not(:first-of-type)::before {
     content: "|";
