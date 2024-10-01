@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Builders
-    </div>
+  <div>Builders</div>
 </template>

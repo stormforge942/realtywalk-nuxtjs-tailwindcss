@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Sign In
-    </div>
+  <div>Sign In</div>
 </template>

@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Neighborhoods
-    </div>
+  <div>Neighborhoods</div>
 </template>

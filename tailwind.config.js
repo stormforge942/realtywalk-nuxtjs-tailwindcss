@@ -4,19 +4,19 @@ export default {
       backgroundColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529'
+        dark: '#212529',
       },
       textColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529'
+        dark: '#212529',
       },
       borderColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529'
-      }
-    }
+        dark: '#212529',
+      },
+    },
   },
   plugins: [],
   content: [
@@ -30,6 +30,6 @@ export default {
     `~/app.{js,ts,vue}`,
     `~/Error.{js,ts,vue}`,
     `~/error.{js,ts,vue}`,
-    `~/app.config.{js,ts}`
+    `~/app.config.{js,ts}`,
   ],
 }

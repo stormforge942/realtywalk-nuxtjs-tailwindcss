@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Report Bug
-    </div>
+  <div>Report Bug</div>
 </template>
