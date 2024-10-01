@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import WatchDemo from '@/components/base/WatchDemo.vue';
 import MenuButton from '../base/MenuButton.vue';
+import MobileDrawer from '../base/MobileDrawer.vue';
 </script>
 
 <template>
-    <div class="flex justify-between p-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]">
+    <div class="flex justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]">
         <NuxtImg 
             class="hidden lg:block"
             alt="Realty Walk" 
@@ -19,9 +20,7 @@ import MenuButton from '../base/MenuButton.vue';
         <div class="font-semibold hidden lg:block w-full max-w-[460px] px-4">
             {{ $t('home.header.caption') }}
         </div>
-        <div class="block lg:hidden">
-            <MenuButton/>
-        </div>
+        <MobileDrawer />
         
         <div class="hidden lg:flex flex-col h-full justify-between">
             <div>
@@ -31,7 +30,8 @@ import MenuButton from '../base/MenuButton.vue';
                 <li><NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink></li>
                 <li><NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink></li>
                 <li><NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink></li>
-                <li><NuxtLink to="/builders">{{ $t('menu.report_bug') }}</NuxtLink></li>
+                <li><NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink></li>
+                <li><NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink></li>
                 <WatchDemo />
             </ul>
         </div>

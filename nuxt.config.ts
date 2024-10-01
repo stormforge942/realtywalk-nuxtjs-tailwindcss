@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/image',
     '@vesp/nuxt-fontawesome',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxt/ui'
   ],
   i18n: {
     locales: [

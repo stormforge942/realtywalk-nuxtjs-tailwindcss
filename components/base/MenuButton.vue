@@ -1,8 +1,10 @@
 <script setup lang="ts">
-const isActive = ref(false);
-
+defineProps({
+  isActive: Boolean
+})
+const emit = defineEmits(['toggleMenu']);
 const toggleMenu = () => {
-    isActive.value = !isActive.value;
+  emit('toggleMenu');
 }
 </script>
 

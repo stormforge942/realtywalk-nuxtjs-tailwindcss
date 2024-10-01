@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxt/eslint": "^0.5.7",
     "@nuxt/image": "^1.8.0",
+    "@nuxt/ui": "^2.18.6",
     "@nuxtjs/i18n": "^8.5.5",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@vesp/nuxt-fontawesome": "^1.1.0",
