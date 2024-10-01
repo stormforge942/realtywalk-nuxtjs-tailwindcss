@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import WatchDemo from '@/components/base/WatchDemo.vue';
+import MenuButton from '../base/MenuButton.vue';
 </script>
 
 <template>
-    <div class="flex justify-between p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]">
+    <div class="flex justify-between p-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]">
         <NuxtImg 
             class="hidden lg:block"
             alt="Realty Walk" 
@@ -18,6 +19,10 @@ import WatchDemo from '@/components/base/WatchDemo.vue';
         <div class="font-semibold hidden lg:block w-full max-w-[460px] px-4">
             {{ $t('home.header.caption') }}
         </div>
+        <div class="block lg:hidden">
+            <MenuButton/>
+        </div>
+        
         <div class="hidden lg:flex flex-col h-full justify-between">
             <div>
                 <button></button>
