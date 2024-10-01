@@ -7,7 +7,7 @@ import Header from '~/components/layout/Header.vue';
 <template>
         <Header />
         <div class="flex gap-x-6 max-w-screen-lg mx-auto mt-6">
-            <div class="flex flex-col gap-y-[100px]">
+            <div class="hidden lg:flex flex-col gap-y-[100px]">
                 <div class="p-5 bg-primary">
                     <NuxtImg width="70" alt="Realty Walk" src="/images/logo-rw.png"/>
                 </div>

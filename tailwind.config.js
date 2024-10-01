@@ -8,7 +8,13 @@ export default {
       },
       textColor: {
         primary: '#012e55',
-        secondary: '#ffc107'
+        secondary: '#ffc107',
+        dark: '#212529'
+      },
+      borderColor: {
+        primary: '#012e55',
+        secondary: '#ffc107',
+        dark: '#212529'
       }
     }
   },
