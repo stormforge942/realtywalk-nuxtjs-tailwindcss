@@ -11,7 +11,7 @@ import Modal from './Modal.vue';
 <template>
   <button
   @click="isOpen = true" 
-  class="flex items-center border-none w-[190px] h-[40px] hover:scale-[1.01]">
+  class="flex items-center border-none min-w-[190px] h-[40px] hover:scale-[1.01]">
     <span class="flex justify-center items-center w-[calc(100%-40px)] h-full bg-white text-[#021d35] text-md font-semibold">
       {{ $t('menu.watch_the_demo') }}
     </span>

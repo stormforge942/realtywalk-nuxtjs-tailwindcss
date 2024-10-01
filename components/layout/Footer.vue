@@ -1,6 +1,6 @@
 <template>
-    <div class="hidden md:flex px-16 justify-center items-center text-white h-[50px] bg-primary">
-        <div class="text-sm w-[280px]">
+    <div class="hidden md:flex px-16 justify-center items-center text-white h-[70px] lg:h-[50px] bg-primary">
+        <div class="text-sm w-[200px] lg:w-[280px] text-center">
             &copy; Realty Walk &#124; {{ $t('footer.copyright') }}
         </div>
         <div>
@@ -17,6 +17,6 @@
 
 <style lang="css" scoped>
 a {
-    @apply px-2 mx-2 min-w-max hover:text-secondary font-semibold normal-case
+    @apply inline-block px-2 mx-2 w-max hover:text-secondary font-semibold normal-case
 }
 </style>

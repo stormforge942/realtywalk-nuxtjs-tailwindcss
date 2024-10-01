@@ -37,16 +37,18 @@ onUnmounted(() => {
     :class="[
         isActive ? 'right-0' : '-right-[300px]',
         'fixed z-40 top-0  w-[300px] h-screen bg-primary',
-        'flex flex-col pt-[100px] items-center justify-start shadow-[-11px_1px_13px_-6px_#0000003F]']">
-        <li><NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink></li>
-        <li><NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink></li>
-        <li><NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink></li>
-        <li><NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink></li>
-        <li><NuxtLink to="/register">{{ $t('menu.register') }}</NuxtLink></li>
-        <li><NuxtLink to="/signin">{{ $t('menu.sign_in') }}</NuxtLink></li>
-        <li><NuxtLink to="/favorites">{{ $t('menu.favorite') }}</NuxtLink></li>
-        <li><NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink></li>
-        <WatchDemo />
+        'pt-[100px] shadow-[-11px_1px_13px_-6px_#0000003F]']">
+        <div class="flex flex-col items-center justify-start max-h-[calc(100vh - 100px)] overflow-y-auto">
+            <li><NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink></li>
+            <li><NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink></li>
+            <li><NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink></li>
+            <li><NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink></li>
+            <li><NuxtLink to="/register">{{ $t('menu.register') }}</NuxtLink></li>
+            <li><NuxtLink to="/signin">{{ $t('menu.sign_in') }}</NuxtLink></li>
+            <li><NuxtLink to="/favorites">{{ $t('menu.favorite') }}</NuxtLink></li>
+            <li><NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink></li>
+            <WatchDemo />
+        </div>
     </ul>
 </template>
 

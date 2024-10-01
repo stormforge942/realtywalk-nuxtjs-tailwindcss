@@ -3,7 +3,8 @@ export default {
     extend: {
       backgroundColor: {
         primary: '#012e55',
-        secondary: '#ffc107'
+        secondary: '#ffc107',
+        dark: '#212529'
       },
       textColor: {
         primary: '#012e55',

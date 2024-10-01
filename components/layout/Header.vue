@@ -22,9 +22,17 @@ import MobileDrawer from '../base/MobileDrawer.vue';
         </div>
         <MobileDrawer />
         
-        <div class="hidden lg:flex flex-col h-full justify-between">
-            <div>
-                <button></button>
+        <div class="hidden lg:flex flex-col h-full justify-end">
+            <div class="fixed top-0 right-4 flex">
+                <button class="px-3 hover:bg-dark group flex items-center gap-x-1">
+                    <svg class="w-4 h-4 pb-1 svg-inline--fa fa-grid-2 fa-lg group-hover:text-secondary" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="grid-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M224 80c0-26.5-21.5-48-48-48L80 32C53.5 32 32 53.5 32 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zm0 256c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zM288 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48zM480 336c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96z"></path></svg>
+                    <span class="group-hover:text-secondary uppercase font-semibold">{{ $t('menu.home') }}</span>
+                </button>
+                <ul class="flex bg-dark p-1">
+                    <li><NuxtLink to="/register">{{ $t('menu.register') }}</NuxtLink></li>
+                    <li><NuxtLink to="/signin">{{ $t('menu.sign_in') }}</NuxtLink></li>
+                </ul>
+                
             </div>
             <ul class="flex items-center">
                 <li><NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink></li>
@@ -41,7 +49,7 @@ import MobileDrawer from '../base/MobileDrawer.vue';
 
 <style lang="css" scoped>
 a {
-    @apply px-2 w-min hover:text-secondary
+    @apply px-2 w-full hover:text-secondary
 }
 li {
     @apply flex items-center text-center font-semibold;
