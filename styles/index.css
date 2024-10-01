@@ -1,0 +1,50 @@
+:root {
+    --primary: #012e55;
+    --secondary: #ffc107;
+
+    --text-xs: 10px;
+    --text-sm: 12.8px;
+    --text-md: 14.4px;
+    --text-md1: 15.2px;
+    --text-md2: 15.6px;
+    --text-md3: 16px;
+    --text-lg: 18.8px;
+    --text-xl: 20px;
+    --text-xl1: 25px;
+    --text-xl2: 28px;
+    --text-2xl: 32px;
+}
+
+@font-face {
+    font-family: 'MyriadPro';
+    src: url('~/assets/fonts/MyriadPro-Regular.otf') format('opentype');
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'MyriadPro';
+    src: url('~/assets/fonts/MyriadPro-Bold.otf') format('opentype');
+    font-style: normal;
+    font-weight: 600;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    font-family: 'MyriadPro', sans-serif;
+    transition: 0.25s all ease-in-out;
+}
+
+a {
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+button {
+    border: none;
+}

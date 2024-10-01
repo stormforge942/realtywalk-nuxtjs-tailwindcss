@@ -1,0 +1,657 @@
+{
+  "auth": {
+    "forgot_password": {
+      "title": "Forgot Password",
+      "caption": "Please enter your email address to get password reset link",
+      "form": {
+        "labels": {
+          "email": "Email"
+        }
+      },
+      "btn_submit": "Send Reset Link",
+      "btn_submit_processing": "Please wait...",
+      "text_login": "Remember your password?",
+      "link_login": "Login here",
+      "notifications": {
+        "sent": {
+          "title": "Success!",
+          "message": "Password reset link has been sent to your mail successfully!"
+        },
+        "error": {
+          "title": "There was an error"
+        }
+      }
+    },
+    "login": {
+      "title": "Sign in",
+      "form": {
+        "labels": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "btn_submit": "Sign in",
+      "btn_submit_magic_link": "Send Magic Link",
+      "btn_submit_processing": "Please wait...",
+      "text_remember": "Can't Remember Password?",
+      "link_remember": "Reset Password",
+      "text_register": "Don't have an account?",
+      "link_register": "Sign Up",
+      "text_login_with_password": "We'll email you a magic link to sign in. Or you can",
+      "link_login_with_password": "sign in with a password instead",
+      "link_login_without_password": "Sign in without password"
+    },
+    "register": {
+      "title": "Register",
+      "form": {
+        "labels": {
+          "name": "Name",
+          "email": "Email",
+          "password": "Password",
+          "password_confirmation": "Confirm Password",
+          "aggrement_help": "You need to check the agreement.",
+          "aggrement": "By checking this box and registering for an account, you agree to our",
+          "link_tos": "Terms of Service",
+          "link_privacy_policy": "Privacy Policy"
+        }
+      },
+      "required_fields": "are required fields",
+      "dont_set_password": "I don't want to set password for my account",
+      "set_password": "Set password for my account (optional)",
+      "btn_submit": "Register",
+      "btn_submit_processing": "Please wait...",
+      "text_registered": "Already Registered?",
+      "link_registered": "Login Here",
+      "notifications": {
+        "success": {
+          "title": "Account Registered!",
+          "message": "Your account has been successfully created. To complete the activation process, please check your email and click on the activation link we've sent you. If you don't see the email, check your spam or junk folder."
+        },
+        "error": {
+          "title": "There was an error"
+        }
+      }
+    },
+    "activation": {
+      "title": "Account Activation",
+      "loading_text": "Activating your account. Please wait!"
+    },
+    "reset_password": {
+      "title": "Reset Password",
+      "caption": "Please enter your new password",
+      "form": {
+        "labels": {
+          "email": "Email",
+          "password": "Password",
+          "password_confirmation": "Confirm Password"
+        }
+      },
+      "btn_submit": "Reset Password",
+      "btn_submit_processing": "Please wait...",
+      "text_remember": "Remember your password?",
+      "link_remember": "Login here",
+      "text_forgot_password": "{error} Kindly request for a new one.",
+      "link_forgot_password": "Here",
+      "text_signin": "Password Reset was successful. Kindly Login.",
+      "link_signin": "Here"
+    }
+  },
+  "builder": {
+    "show": {
+      "gallery": {
+        "title": "Gallery",
+        "link_view_more": "View more images..."
+      },
+      "featured_box": {
+        "labels": {
+          "email": "Email",
+          "address": "Address",
+          "website": "Website"
+        }
+      }
+    },
+    "list": {
+      "searchBy": {
+        "help": "Properties By Neighborhood",
+        "placeholder": "Search Neighborhood"
+      },
+      "not_found": "No results found\nTry entering a more specific search keyword.",
+      "level": "Level",
+      "n_properties": "no properties | {n} property | {n} properties"
+    }
+  },
+  "component": {
+    "datatable": {
+      "actions": {
+        "btn_show": "Show",
+        "btn_edit": "Edit",
+        "btn_delete": "Delete"
+      },
+      "alert": {
+        "confirm_delete": {
+          "title": "Are you sure want to delete this data?",
+          "message": "Deleted record can not be recycled!",
+          "message_neighborhood": "This neighborhood has sub-neighborhoods assigned to it, by deleting this neighborhood, those sub-neighborhoods will be reassigned by the system and will have to be manually corrected. Are you sure you want to delete this neighborhood?",
+          "btn_confirm": "Delete",
+          "btn_cancel": "Cancel"
+        },
+        "error": {
+          "title": "Error Message",
+          "message": "Request failed: ${message}"
+        }
+      }
+    },
+    "geopicker": {
+      "help": "Select a location on the map to set the Latitude and Longitude:",
+      "form": {
+        "labels": {
+          "lat": "Latitude:",
+          "lng": "Longitude:"
+        }
+      }
+    },
+    "treeselect": {
+      "text_loading": "Loading the data..."
+    }
+  },
+  "favorite": {
+    "list": {
+      "title": "Favorites",
+      "no_data": "No item in favorites"
+    },
+    "item": {
+      "btn_add": "Add to Favorites",
+      "btn_remove": "Remove from Favorites",
+      "alert_login": "Please login to continue!"
+    }
+  },
+  "footer": {
+    "copyright": "All Rights Reserved."
+  },
+  "general": {
+    "welcome": "Welcome, {user}",
+    "navigation": {
+      "back_to_home": "Back to Home",
+      "back_to_map": "Back to Map",
+      "register": "Become A Member",
+      "my_favorites": "My Favorites"
+    },
+    "notifications": {
+      "success": {
+        "title": "Success"
+      },
+      "form_error": {
+        "title": "Form Error",
+        "message": "There is an error with the form. Please check it again!"
+      },
+      "server_error": {
+        "title": "Woops!",
+        "message": "There is an internal server error. Please contact site administrator about this issue!"
+      }
+    },
+    "captcha_help": "Help us fight spam! Please complete the captcha below to continue.",
+    "text_tbd": "To be determined"
+  },
+  "home": {
+    "header": {
+      "caption": "Welcome to Realty Walk. Click areas of interest on the map and choose criteria on the left to begin searching",
+      "btn_register": "Become A Member",
+      "btn_profile": "Go To Profile",
+      "btn_saved_searches": "Saved Searches",
+      "btn_settings": "Settings"
+    },
+    "filter": {
+      "neighborhood_search": "Neighborhood Search",
+      "minimum_price": "Minimum Price",
+      "maximum_price": "Maximum Price",
+      "btn_submit": "Search",
+      "columns": {
+        "filters": "Filters",
+        "search_results": "Search Results",
+        "price": "Price",
+        "listed_price": "Listed Price",
+        "address": "Address",
+        "neighborhood": "Neighborhood",
+        "sub_neighborhood": "Sub-Neighborhood",
+        "builder": "Builder",
+        "visibility_toggle_builder": "Show/Hide Builders",
+        "builders": "Builders",
+        "neighborhoods": "Neighborhoods",
+        "sort_by": "Sort By"
+      },
+      "criteria": {
+        "listing_status": {
+          "label": "Listing Status",
+          "options": {
+            "any": "Any Status",
+            "active": "Active",
+            "pending": "Pending",
+            "pending_continue": "Pending Continue to Show",
+            "option_pending": "Option Pending"
+          }
+        },
+        "property_type": {
+          "label": "Property Type",
+          "options": {
+            "any": "Any",
+            "single_family": "Single Family",
+            "townhouse_condo": "Townhouse/Condo",
+            "multifamily": "Multifamily",
+            "country_homes": "Country Homes/Acreage",
+            "mid_hi_rise_condo": "Mid/Hi-Rise Condo",
+            "neue_wave": "Neue Wave",
+            "rental": "Rental",
+            "lots": "Lots"
+          }
+        },
+        "bedrooms": {
+          "label": "Bedrooms",
+          "options": {
+            "any_min": "No Minimum",
+            "any_max": "No Maximum",
+            "bed": "1+ Bed | {n}+ Beds"
+          }
+        },
+        "bathrooms": {
+          "label": "Bathrooms",
+          "options": {
+            "any_full": "Any Full Bathrooms",
+            "any_half": "Any Half Bathrooms",
+            "full_bathroom": "1+ Full Bathroom | {n}+ Full Bathrooms",
+            "half_bathroom": "1+ Half Bathroom | {n}+ Half Bathrooms"
+          }
+        },
+        "square_feet": {
+          "label": "Square Feet",
+          "options": {
+            "any_min": "No Minimum",
+            "any_max": "No Maximum"
+          }
+        },
+        "garage_capacity": {
+          "label": "Garage Capacity",
+          "options": {
+            "any": "No Minimum"
+          }
+        },
+        "stories": {
+          "label": "Stories",
+          "options": {
+            "any_min": "No Minimum",
+            "any_max": "No Maximum"
+          }
+        },
+        "include_pool": {
+          "label": "Has pool?"
+        },
+        "include_elevator": {
+          "label": "Has elevator/elevator shaft?"
+        }
+      }
+    },
+    "start_screen": {
+      "title": "Choose a neighborhood and start to explore.",
+      "btn_go_to_map": "GO TO MAP"
+    },
+    "map": {
+      "btn_search_criteria": "Search Criteria",
+      "btn_neighborhoods": "Neighborhoods",
+      "btn_back_to_neighborhoods": "Back To Neighborhoods",
+      "btn_results": "Results",
+      "btn_save_search": "Save This Search",
+      "btn_save_search_short": "Save Search",
+      "btn_clear_selected": "CLEAR ALL",
+      "selections": "Selections",
+      "close": "Close",
+      "level": "Level {n}",
+      "instructions": "To explore more, select neighborhoods on the map. To view other locations on the map, zoom in, zoomout, or just grab the map and move it around.",
+      "instructions_selected": "To explore more, select neighborhoods inside of {neighborhood}. To view other locations on the map, zoom in, zoomout, or just grab the map and move it around.",
+      "initial_toggle": "The main Neighborhoods layer is disabled while viewing other data layers, please turn off all other layers to re-enable and view the Neighborhoods",
+      "loading_flood_planes": "Loading flood data..."
+    },
+    "result": {
+      "text_initial": "Please use the filters to find properties suitable for you",
+      "btn_search": "Search",
+      "btn_map_view": "Map View",
+      "btn_list_view": "List View",
+      "total_found": "{total} Properties Found",
+      "no_data": "No records found",
+      "item": {
+        "address": "Addr:",
+        "builder": "Builder:",
+        "subdivision": "Subdivision:"
+      },
+      "infinite": {
+        "loading": "Loading...",
+        "no_more": "No further results",
+        "no_results": "No results"
+      }
+    },
+    "searches": {
+      "name_search": "Name Your Search",
+      "search_name": "Search Name",
+      "btn_save": "Save"
+    },
+    "toggles": {
+      "flood_planes": "FLOOD PLANES",
+      "school_zones": "SCHOOL ZONES",
+      "elementary": "ELEMENTARY",
+      "highschool": "HIGH SCHOOL",
+      "middleschool": "MIDDLE SCHOOL",
+      "bike_trails": "BIKE TRAILS",
+      "show_unselected_areas": "SHOW UNSELECTED AREAS"
+    },
+    "flood_zones": {
+      "A": "100-YEAR FLOODPLAIN",
+      "AE": "100-YEAR FLOODPLAIN (WITH BFE)",
+      "AH": "100-YEAR SHALLOW FLOODING",
+      "AO": "100-YEAR SHEET-FLOW FLOODING",
+      "AR": "100-YEAR FLASH FLOODING",
+      "V": "100-YEAR FLOODPLAIN (WIND-DRIVEN WAVES)",
+      "VE": "100-YEAR FLOODPLAIN (STORM WAVES)",
+      "C": "500-YEAR FLOODPLAIN (LOW-RISK)",
+      "B": "500-YEAR FLOODPLAIN (MODERATE-RISK)",
+      "X": "500-YEAR FLOODPLAIN",
+      "D": "UNDETERMINED"
+    },
+    "alerts": {
+      "polygon_level_3": "The information in Level 3 that you are about to enter, is a lot of data. Many users consider this to be overwhelming. If you are sure that you want this information, click proceed. To prevent this pop-up from re-occurring, register and take full advantage of RealtyWalk's functionality."
+    }
+  },
+  "menu": {
+    "home": "Home",
+    "about": "About",
+    "address_lookup": "Address Lookup",
+    "enter_address": "Enter an address",
+    "neighborhoods": "Neighborhoods",
+    "neighborhood_profiles": "Neighborhood Profiles",
+    "register": "Sign Up",
+    "sign_in": "Log In",
+    "my_favorites": "Favorites",
+    "my_profile": "My Profile",
+    "log_out": "Log Out",
+    "report_bug": "Report Problem",
+    "watch_the_demo": "WATCH THE DEMO"
+  },
+  "neighborhood": {
+    "show": {
+      "gallery": {
+        "title": "Gallery",
+        "link_view_more": "View more images..."
+      },
+      "featured_box": {
+        "labels": {
+          "email": "Email",
+          "address": "Address",
+          "website": "Website"
+        }
+      }
+    },
+    "list": {
+      "empty_link": "No links or attractions have been added for this neighborhood yet",
+      "searchBy": {
+        "help": "Properties By Neighborhood",
+        "placeholder": "Search Neighborhood"
+      },
+      "not_found": "No results found. Try entering a more specific search keyword.",
+      "level": "Level",
+      "n_properties": "No Properties | {n} Property | {n} Properties"
+    },
+    "singleProperty": {
+      "sectionTitles": {
+        "title_1": "LET'S BUILD YOUR FUTURE",
+        "title_2": "DOWNLOADS",
+        "title_3": "ACTIVE LISTING/POSTINGS",
+        "title_4": "PAST LISTING/POSTINGS",
+        "title_5": "COMMUNITIES BUILT IN"
+      },
+      "viewList": "GRID VIEW / LIST VIEW"
+    },
+    "profile": {
+      "documents": "Documents",
+      "name": "Name",
+      "slug": "Slug",
+      "alias_of": "Alias of:",
+      "description": "Description",
+      "email": "Email",
+      "phone": "Phone",
+      "website": "Website",
+      "builder_areas": "Builder Areas:",
+      "address_1": "Address 1",
+      "address_2": "Address 2",
+      "address_3": "Address 3",
+      "logo": "Logo",
+      "gallery": "Gallery"
+    },
+    "filterBy": {
+      "title": "Filter by Builder"
+    }
+  },
+  "pages": {
+    "not_found": {
+      "title": "Error",
+      "subtitle": "404",
+      "caption": "The page you are looking for doesn't exist."
+    },
+    "about_us": {
+      "title": "About us",
+      "body": {
+        "line_1": "Realty Walk is the only website that displays all the boundaries of each neighborhood in the Greater Houston area, and we do this on 3 levels!",
+        "line_2": "Level 1 displays our Super Neighborhoods. Level 2 displays the General Areas. Level 3 showcases each individual Subdivision.",
+        "line_3": "For those neighborhoods whose borders are vague or not clearly defined, we asked residents, Realtors and other reliable sources where they considered their boundaries to lie. Yes, this includes the hard to define borders of areas like The Heights, Montrose, Midtown, etc. We have defined over 13,000 polygons which represents each neighborhood.",
+        "line_4": "And, our maps are interactive!",
+        "line_5": "Our patented Mapping-Technology allows users to search for homes by simply choosing the neighborhoods of their choice, with just a point and a click!",
+        "line_6": "And, it’s fun just to preview the site to discover the neighborhood borders."
+      }
+    },
+    "address_lookup": {
+      "title": "Address Lookup",
+      "result_text": "Search result for: {q}",
+      "not_found": "Address is not found."
+    }
+  },
+  "profile": {
+    "user": {
+      "title": "My Profile",
+      "form": {
+        "labels": {
+          "name": "Name",
+          "picture": "Picture",
+          "current_password": "Current Password",
+          "new_password": "New Password",
+          "password_confirmation": "Confirm Password"
+        }
+      },
+      "change_password_title": "Change Password",
+      "notifications": {
+        "success": {
+          "title": "Success!",
+          "message": "Your profile has been successfully updated."
+        },
+        "password_updated": {
+          "title": "Success!",
+          "message": "Your password has been successfully updated."
+        }
+      },
+      "btn_picture_replace": "Replace",
+      "btn_picture_upload": "Upload",
+      "btn_submit": "Update",
+      "btn_submit_processing": "Updating..."
+    },
+    "builder": {
+      "title": "Builder Profile",
+      "sections": {
+        "gallery": "Gallery",
+        "logo": "Logo",
+        "general": "General Information"
+      },
+      "form": {
+        "labels": {
+          "title": "Title",
+          "email": "Email Address",
+          "phone": "Phone",
+          "website": "Website",
+          "builder_areas": "Builder Areas",
+          "city": "City",
+          "address1": "Address 1",
+          "address2": "Address 2",
+          "address3": "Address 3",
+          "descr": "Description"
+        },
+        "placeholders": {
+          "gallery": "Drag & drop your files here or Browse",
+          "logo": "Drag & drop your picture here or Browse",
+          "neighborhood": "Choose builder areas",
+          "neighborhood_no_child_data": "No data under this polygon"
+        }
+      },
+      "btn_submit": "Update",
+      "btn_submit_processing": "Updating..."
+    }
+  },
+  "property": {
+    "show": {
+      "gallery": "Gallery",
+      "view_gallery": "View Gallery",
+      "features": {
+        "title": "Property Details",
+        "status": "Status:",
+        "broker": "Broker:",
+        "price": "Price:",
+        "bedrooms": "Bed(s)",
+        "bathrooms": "{n} Full & {h} Half Bath(s)",
+        "sqft": "Bldg Sqft.",
+        "garage_capacity": "Garage Capacity:",
+        "year_built": "Built in:",
+        "neighborhood": "Neighborhood:",
+        "subdivision": "Subdivision:",
+        "zipcode": "ZIP Code:",
+        "mls_number": "MLS Number:",
+        "fees_and_taxes": "Fees and Taxes:",
+        "builder": "Builder:",
+        "office": "Broker:",
+        "stories": "Stories:"
+      },
+      "listing_information": {
+        "title": "Listing Information",
+        "agent": "Agent:",
+        "no_agent": "(no agent provided)",
+        "agent_website": "Agent Website:",
+        "data_source": "Data Source:"
+      }
+    },
+    "add": {
+      "title": "Add New Property",
+      "sections": {
+        "gallery": "Gallery",
+        "general": "General Information",
+        "amenities": "Amenities",
+        "geo": "Geo Information",
+        "other": "Other"
+      },
+      "form": {
+        "labels": {
+          "gallery": "Drag & drop your files here or Browse",
+          "title": "Title",
+          "price_format": "Price Format",
+          "status": "Status",
+          "broker": "Broker",
+          "category": "Category",
+          "year_built": "Year Built",
+          "bedrooms": "Bedrooms",
+          "bathrooms_full": "Bathrooms (Full)",
+          "bathrooms_half": "Bathrooms (Half)",
+          "styles": "Styles",
+          "square_feet": "Building Square Feet",
+          "lot_size": "Lot Size",
+          "neighborhood": "Neighborhood",
+          "address_street": "Street Name",
+          "address_number": "Street Number",
+          "unit_number": "Unit Number",
+          "zipcode": "ZIP Code",
+          "lat": "Latitude",
+          "lng": "Longitude",
+          "video_embed": "Video HTML Embed",
+          "descr": "Description"
+        },
+        "placeholders": {
+          "price_format": "Select the price format",
+          "status": "Select the status",
+          "category": "Select the category",
+          "styles": "Select the styles",
+          "neighborhood": "Select property neighborhood",
+          "neighborhood_no_data": "No data under this polygon"
+        },
+        "text_amenities_fetching": "Fetching amenities...",
+        "text_amenities_no_data": "No amenities found.",
+        "btn_submit": "Save",
+        "btn_submit_processing": "Saving..."
+      },
+      "map": {
+        "help": "Select a location on the map to set the Latitude and Longitude:"
+      }
+    },
+    "cta": {
+      "btn_view_listing": "View Listing"
+    },
+    "list_details": {
+      "price": "Price:",
+      "address": "Addr:",
+      "status": "Status:",
+      "sub": "Sub:",
+      "builder": "Bldr:",
+      "to_be_determined_abbr": "TBD"
+    }
+  },
+  "schedule": {
+    "listing": {
+      "title": "Schedule Viewing",
+      "form": {
+        "labels": {
+          "date": "Pick Date",
+          "time": "Pick Time",
+          "name": "Name",
+          "email": "Email",
+          "phone": "Phone Number",
+          "message": "Message to Agent"
+        },
+        "placeholders": {
+          "date": "Pick a date",
+          "time": "Pick a time",
+          "name": "Enter your name",
+          "email": "Enter your email",
+          "message": "Enter additional message/information to Showing Agent"
+        }
+      },
+      "notifications": {
+        "success": {
+          "title": "Success!",
+          "message": "Your viewing request has been sent, an agent should be in touch soon."
+        }
+      },
+      "btn_view": "Schedule a Viewing",
+      "btn_submit": "Schedule",
+      "btn_submit_processing": "Please wait...",
+      "btn_close": "Close"
+    }
+  },
+  "validation": {
+    "required": "The {attribute} is required.",
+    "all_required": "All {attribute} fields are required.",
+    "email": "The {attribute} must be a valid email address.",
+    "same": "The {attribute} and {other} must match.",
+    "min": {
+      "numeric": "The {attribute} must be at least {min}.",
+      "file": "The {attribute} must be at least {min} {unit}.",
+      "string": "The {attribute} must be at least {min} characters.",
+      "array": "The {attribute} must have at least {min} items."
+    },
+    "max": {
+      "numeric": "The {attribute} may not be greater than {max}.",
+      "file": "The {attribute} may not be greater than {max} {unit}.",
+      "string": "The {attribute} may not be greater than {max} characters.",
+      "array": "The {attribute} may not have more than {max} items."
+    },
+    "checked": "The {attribute} must be checked."
+  }
+}

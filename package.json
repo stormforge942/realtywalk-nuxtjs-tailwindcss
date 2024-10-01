@@ -12,11 +12,18 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.5.7",
+    "@nuxt/image": "^1.8.0",
+    "@nuxtjs/i18n": "^8.5.5",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@vesp/nuxt-fontawesome": "^1.1.0",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.11.1",
     "husky": "^9.1.6",
