@@ -43,9 +43,9 @@ onUnmounted(() => {
             <li><NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink></li>
             <li><NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink></li>
             <li><NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink></li>
-            <li><NuxtLink to="/register">{{ $t('menu.register') }}</NuxtLink></li>
-            <li><NuxtLink to="/signin">{{ $t('menu.sign_in') }}</NuxtLink></li>
-            <li><NuxtLink to="/favorites">{{ $t('menu.favorite') }}</NuxtLink></li>
+            <li><NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink></li>
+            <li><NuxtLink to="/users/signin">{{ $t('menu.sign_in') }}</NuxtLink></li>
+            <li><NuxtLink to="/users/favorites">{{ $t('menu.favorite') }}</NuxtLink></li>
             <li><NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink></li>
             <WatchDemo />
         </div>
