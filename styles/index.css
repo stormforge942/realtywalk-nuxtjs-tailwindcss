@@ -60,3 +60,11 @@ a {
 button {
   border: none;
 }
+
+input[type='text'] {
+  @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary;
+}
+
+button[type='submit'] {
+  @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] rounded-sm;
+}

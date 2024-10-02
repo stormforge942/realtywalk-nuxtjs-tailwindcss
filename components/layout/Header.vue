@@ -59,8 +59,11 @@ const img = useImage()
         </ul>
       </div>
       <ul class="flex items-center">
-        <li>
-          <NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink>
+        <li class="relative">
+          <NuxtLink class="cursor-pointer" id="lookup-button">
+            <span @click="eventBus.emit(ADDRESS_LOOKUP)">{{ $t('menu.address_lookup') }}</span>
+          </NuxtLink>
+          <HomeAddressLookup />
         </li>
         <li>
           <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>

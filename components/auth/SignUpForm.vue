@@ -60,7 +60,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           $t('auth.register.form.labels.link_privacy_policy')
         }}</NuxtLink>
     </label>
-    <button>{{ $t('auth.register.btn_submit') }}</button>
+    <button type="submit">{{ $t('auth.register.btn_submit') }}</button>
     <div>
         {{ $t('auth.register.text_registered') }}
         <NuxtLink to="/users/signin">{{
@@ -73,11 +73,5 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <style lang="css" scoped>
 a {
   @apply text-blue-600 hover:text-primary cursor-pointer hover:underline normal-case;
-}
-input:not([type='checkbox'])  {
-  @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary;
-}
-button {
-  @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] rounded-sm;
 }
 </style>

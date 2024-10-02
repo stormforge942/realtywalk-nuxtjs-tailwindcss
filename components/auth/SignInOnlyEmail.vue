@@ -45,8 +45,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         v-model="state.email"
       />
     </UFormGroup>
-    <button
-    >
+    <button type="submit">
       {{ $t('auth.login.btn_submit_magic_link') }}
     </button>
     <div>
@@ -63,11 +62,5 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <style lang="css" scoped>
 a {
   @apply text-blue-600 hover:text-primary cursor-pointer hover:underline normal-case;
-}
-input {
-  @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary;
-}
-button {
-  @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] rounded-sm;
 }
 </style>
