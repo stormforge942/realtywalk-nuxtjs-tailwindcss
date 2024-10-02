@@ -2,11 +2,15 @@
 definePageMeta({
   layout: false,
 })
+
+useHead({
+  title: 'Forgot Password - Realty Walk'
+})
 </script>
 
 <template>
   <NuxtLayout name="main">
-    <template #header>Favorites</template>
-    <div></div>
+    <template #header>{{ $t('auth.forgot_password.title') }}</template>
+    <AuthForgotPasswordForm />
   </NuxtLayout>
 </template>
