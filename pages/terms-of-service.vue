@@ -11,6 +11,5 @@ useHead({
 <template>
   <NuxtLayout name="main">
     <template #header>{{ $t('auth.register.form.labels.link_tos') }}</template>
-
   </NuxtLayout>
 </template>

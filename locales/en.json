@@ -98,6 +98,7 @@
     }
   },
   "builder": {
+    "title": "Properties By Builder",
     "show": {
       "gallery": {
         "title": "Gallery",

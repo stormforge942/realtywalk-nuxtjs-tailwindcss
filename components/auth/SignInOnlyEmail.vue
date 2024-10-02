@@ -40,19 +40,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     class="w-full max-w-[500px] px-6 mx-auto py-4 flex flex-col gap-y-6"
   >
     <UFormGroup :label="$t('auth.login.form.labels.email')" name="email">
-      <input
-        type="text"
-        v-model="state.email"
-      />
+      <input type="text" v-model="state.email" />
     </UFormGroup>
     <button type="submit">
       {{ $t('auth.login.btn_submit_magic_link') }}
     </button>
     <div>
       {{ $t('auth.login.text_login_with_password') }}
-      <NuxtLink
-        to="/users/signin-with-password"
-      >
+      <NuxtLink to="/users/signin-with-password">
         {{ $t('auth.login.link_login_with_password') }}
       </NuxtLink>
     </div>

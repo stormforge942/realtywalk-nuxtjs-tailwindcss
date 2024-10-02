@@ -9,9 +9,8 @@ const state = reactive({
   name: '',
   email: '',
   url: '',
-  bug: ''
+  bug: '',
 })
-
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
@@ -46,7 +45,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 a {
   @apply text-blue-600 hover:text-primary cursor-pointer hover:underline normal-case;
 }
-input:not([type='checkbox']), textarea {
+input:not([type='checkbox']),
+textarea {
   @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary;
 }
 button {

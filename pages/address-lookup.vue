@@ -4,13 +4,12 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Forgot Password - Realty Walk',
+  title: 'Address Lookup',
 })
 </script>
 
 <template>
   <NuxtLayout name="main">
-    <template #header>{{ $t('auth.forgot_password.title') }}</template>
-    <AuthForgotPasswordForm />
+    <template #header>{{ $t('auth.login.title') }}</template>
   </NuxtLayout>
 </template>

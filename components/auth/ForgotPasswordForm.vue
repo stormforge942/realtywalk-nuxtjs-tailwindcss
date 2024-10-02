@@ -40,20 +40,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     class="w-full max-w-[500px] px-6 mx-auto py-4 flex flex-col gap-y-6"
   >
     <div>{{ $t('auth.forgot_password.caption') }}</div>
-    <UFormGroup :label="$t('auth.forgot_password.form.labels.email')" name="email">
-      <input
-        type="text"
-        v-model="state.email"
-      />
+    <UFormGroup
+      :label="$t('auth.forgot_password.form.labels.email')"
+      name="email"
+    >
+      <input type="text" v-model="state.email" />
     </UFormGroup>
     <button type="submit">
       {{ $t('auth.forgot_password.btn_submit') }}
     </button>
     <div>
       {{ $t('auth.forgot_password.text_login') }}
-      <NuxtLink
-        to="/users/signin-with-password"
-      >
+      <NuxtLink to="/users/signin-with-password">
         {{ $t('auth.forgot_password.link_login') }}
       </NuxtLink>
     </div>

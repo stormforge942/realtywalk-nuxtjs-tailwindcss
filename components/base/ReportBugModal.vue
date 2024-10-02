@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const isOpen = ref(false)
 
 const toggle = (val: boolean) => {
@@ -7,13 +6,13 @@ const toggle = (val: boolean) => {
 }
 
 eventBus.on(REPORT_MODAL, () => {
-    isOpen.value = true;
+  isOpen.value = true
 })
 </script>
 
 <template>
-    <BaseModal :isOpen="isOpen" @toggle="toggle">
-        <template #title>{{ $t('report_bug.title') }}</template>
-        <BaseReportBugForm/>
-    </BaseModal>
+  <BaseModal :isOpen="isOpen" @toggle="toggle">
+    <template #title>{{ $t('report_bug.title') }}</template>
+    <BaseReportBugForm />
+  </BaseModal>
 </template>

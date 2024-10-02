@@ -11,6 +11,6 @@ useHead({
 <template>
   <NuxtLayout name="main">
     <template #header>{{ $t('auth.register.title') }}</template>
-    <AuthSignUpForm/>
+    <AuthSignUpForm />
   </NuxtLayout>
 </template>

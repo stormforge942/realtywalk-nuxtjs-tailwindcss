@@ -1,35 +1,44 @@
 <script setup lang="ts">
 const img = useImage()
-
+const route = useRoute()
+const showMap = ref(true)
+const isHome = route.path === '/'
 </script>
 
 <template>
   <div
     class="flex justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]"
   >
-    <NuxtImg
-      class="hidden lg:block"
-      alt="Realty Walk"
-      src="/images/logo-rw.png"
-      width="60px"
-      height="90px"
-      :placeholder="img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })"
-    />
-    <NuxtImg
-      class="block lg:hidden"
-      alt="Realty Walk"
-      src="/images/logo-rw-horizontal.png"
-      height="45px"
-      :placeholder="img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })"
-    />
-    <div class="hidden lg:block w-full max-w-[460px] px-4">
+    <NuxtLink id="logo" to="/" class="min-w-max">
+      <NuxtImg
+        class="hidden lg:block"
+        alt="Realty Walk"
+        src="/images/logo-rw.png"
+        width="60px"
+        height="90px"
+        :placeholder="img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })"
+      />
+      <NuxtImg
+        class="block lg:hidden"
+        alt="Realty Walk"
+        src="/images/logo-rw-horizontal.png"
+        height="45px"
+        :placeholder="
+          img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })
+        "
+      />
+    </NuxtLink>
+    <div v-if="isHome" class="hidden lg:block w-full max-w-[460px] px-4">
       {{ $t('home.header.caption') }}
     </div>
     <BaseMobileDrawer />
 
     <div class="hidden lg:flex flex-col h-full justify-end">
       <div class="absolute top-0 right-4 flex">
-        <button class="px-3 hover:bg-dark group flex items-center gap-x-1">
+        <button
+          @click="showMap = false"
+          class="px-3 hover:bg-dark group flex items-center gap-x-1"
+        >
           <svg
             class="w-4 h-4 pb-1 svg-inline--fa fa-grid-2 fa-lg group-hover:text-secondary"
             aria-hidden="true"
@@ -61,7 +70,9 @@ const img = useImage()
       <ul class="flex items-center">
         <li class="relative">
           <NuxtLink class="cursor-pointer" id="lookup-button">
-            <span @click="eventBus.emit(ADDRESS_LOOKUP)">{{ $t('menu.address_lookup') }}</span>
+            <span @click="eventBus.emit(ADDRESS_LOOKUP)">{{
+              $t('menu.address_lookup')
+            }}</span>
           </NuxtLink>
           <HomeAddressLookup />
         </li>
@@ -77,7 +88,9 @@ const img = useImage()
           <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
         </li>
         <li @click="eventBus.emit(REPORT_MODAL)">
-          <NuxtLink class="cursor-pointer">{{ $t('menu.report_bug') }}</NuxtLink>
+          <NuxtLink class="cursor-pointer">{{
+            $t('menu.report_bug')
+          }}</NuxtLink>
         </li>
         <BaseWatchDemo />
       </ul>
@@ -86,7 +99,7 @@ const img = useImage()
 </template>
 
 <style lang="css" scoped>
-a {
+a:not([id='logo']) {
   @apply px-2 w-full hover:text-secondary;
 }
 li {

@@ -6,11 +6,10 @@ const toggle = (val: boolean) => {
 }
 
 eventBus.on(DEMO_MODAL, () => {
-    isOpen.value = true;
+  isOpen.value = true
 })
 </script>
 
 <template>
-    <BaseModal :isOpen="isOpen" @toggle="toggle">
-    </BaseModal>
+  <BaseModal :isOpen="isOpen" @toggle="toggle"> </BaseModal>
 </template>

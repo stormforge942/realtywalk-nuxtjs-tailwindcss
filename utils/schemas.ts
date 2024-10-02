@@ -14,7 +14,7 @@ export const AuthOnlyEmailSchema = object({
 export const SignUpOnlyEmailSchema = object({
   name: string().required('Required'),
   email: string().email('Invalid email').required('Required'),
-});
+})
 
 export const SignUpWithPasswordSchema = object({
   name: string().required('Required'),
@@ -31,5 +31,5 @@ export const ReportBugFormSchema = object({
   name: string().required('Required'),
   email: string().email('Invalid email').required('Required'),
   url: string().required('Required'),
-  bug: string().required('Required')
+  bug: string().required('Required'),
 })

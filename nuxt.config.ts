@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@vesp/nuxt-fontawesome',
     '@nuxt/ui',
+    '@pinia/nuxt',
   ],
   i18n: {
     locales: [
@@ -29,7 +30,11 @@ export default defineNuxtConfig({
     public: {
       RECAPCHA_KEY: process.env.RECAPTCHA_SITE_KEY || '',
       EMAIL: process.env.EMAIL || '',
-      CELLL: process.env.CELL || ''
-    }
+      CELLL: process.env.CELL || '',
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || '',
+    },
+  },
+  pinia: {
+    storesDirs: ['./stores/**'],
   },
 })
