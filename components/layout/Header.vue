@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const img = useImage()
 
 </script>
@@ -74,8 +73,8 @@ const img = useImage()
         <li>
           <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
         </li>
-        <li>
-          <NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink>
+        <li @click="eventBus.emit(REPORT_MODAL)">
+          <NuxtLink class="cursor-pointer">{{ $t('menu.report_bug') }}</NuxtLink>
         </li>
         <BaseWatchDemo />
       </ul>

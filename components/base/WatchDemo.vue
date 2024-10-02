@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
-
-const isOpen = ref(false)
-
-const toggle = (val: boolean) => {
-  isOpen.value = val
-}
 </script>
 
 <template>
   <button
-    @click="isOpen = true"
+    @click="eventBus.emit(DEMO_MODAL)"
     class="flex items-center border-none min-w-[190px] h-[40px] hover:scale-[1.01]"
   >
     <span
@@ -24,6 +18,4 @@ const toggle = (val: boolean) => {
       <FontAwesome :icon="faCaretRight" class="transform scale-150" />
     </span>
   </button>
-  <BaseModal :bodyClass="'w-4/5 h-4/5'" :isOpen="isOpen" @toggle="toggle">
-  </BaseModal>
 </template>
