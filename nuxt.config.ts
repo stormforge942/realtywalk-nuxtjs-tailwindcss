@@ -26,6 +26,10 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts',
   },
   runtimeConfig: {
-    RECAPCHA_KEY: process.env.RECAPTCHA_SITE_KEY,
+    public: {
+      RECAPCHA_KEY: process.env.RECAPTCHA_SITE_KEY || '',
+      EMAIL: process.env.EMAIL || '',
+      CELLL: process.env.CELL || ''
+    }
   },
 })

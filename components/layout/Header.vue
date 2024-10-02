@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const img = useImage()
+
+</script>
 
 <template>
   <div
@@ -10,12 +14,14 @@
       src="/images/logo-rw.png"
       width="60px"
       height="90px"
+      :placeholder="img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })"
     />
     <NuxtImg
       class="block lg:hidden"
       alt="Realty Walk"
       src="/images/logo-rw-horizontal.png"
       height="45px"
+      :placeholder="img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })"
     />
     <div class="hidden lg:block w-full max-w-[460px] px-4">
       {{ $t('home.header.caption') }}
