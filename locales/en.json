@@ -52,7 +52,8 @@
           "aggrement_help": "You need to check the agreement.",
           "aggrement": "By checking this box and registering for an account, you agree to our",
           "link_tos": "Terms of Service",
-          "link_privacy_policy": "Privacy Policy"
+          "link_privacy_policy": "Privacy Policy",
+          "and": "and"
         }
       },
       "required_fields": "are required fields",

@@ -23,10 +23,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     @submit="onSubmit"
     class="w-full max-w-[400px] mx-auto py-4 flex flex-col gap-y-6"
   >
-    <UFormGroup label="Email" name="email">
+    <UFormGroup :label="$t('auth.login.form.labels.email')" name="email">
       <input type="text" v-model="state.email" />
     </UFormGroup>
-    <UFormGroup label="Password" name="password">
+    <UFormGroup :label="$t('auth.login.form.labels.password')" name="password">
       <input type="password" v-model="state.password" />
     </UFormGroup>
     <button>{{ $t('auth.login.btn_submit') }}</button>
