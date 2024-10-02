@@ -2,7 +2,7 @@ import { VueReCaptcha } from 'vue-recaptcha-v3'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueReCaptcha, {
-    siteKey: process.env.RECAPTCHA_SITE_KEY || '',
+    siteKey: useRuntimeConfig().RECAPCHA_KEY,
     loaderOptions: {
       autoHideBadge: false,
       explicitRenderParameters: {

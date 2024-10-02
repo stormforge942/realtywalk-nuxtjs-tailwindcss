@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/image',
     '@vesp/nuxt-fontawesome',
-    '@nuxtjs/tailwindcss',
     '@nuxt/ui',
   ],
   i18n: {
@@ -26,13 +25,7 @@ export default defineNuxtConfig({
     strategy: 'prefix_except_default',
     vueI18n: './i18n.config.ts',
   },
-  tailwindcss: {
-    cssPath: ['~/styles/tailwind.css', { injectPosition: 'first' }],
-    configPath: 'tailwind.config',
-    exposeConfig: {
-      level: 2,
-    },
-    config: {},
-    viewer: true,
+  runtimeConfig: {
+    RECAPCHA_KEY: process.env.RECAPTCHA_SITE_KEY,
   },
 })

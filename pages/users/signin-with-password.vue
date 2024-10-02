@@ -4,13 +4,13 @@ definePageMeta({
 })
 
 useHead({
-  title: 'User Sign in - Realty Walk',
+  title: 'User Sign in with Password - Realty Walk',
 })
 </script>
 
 <template>
   <NuxtLayout name="main">
     <template #header>{{ $t('auth.login.title') }}</template>
-    <AuthSignInOnlyEmail />
+    <AuthSignInWithPassword />
   </NuxtLayout>
 </template>
