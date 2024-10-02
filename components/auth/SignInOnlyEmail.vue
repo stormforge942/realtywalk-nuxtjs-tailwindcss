@@ -37,7 +37,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     :schema="AuthOnlyEmailSchema"
     :state="state"
     @submit="onSubmit"
-    class="w-full max-w-[400px] mx-auto py-4 flex flex-col gap-y-6"
+    class="w-full max-w-[500px] px-6 mx-auto py-4 flex flex-col gap-y-6"
   >
     <UFormGroup :label="$t('auth.login.form.labels.email')" name="email">
       <input

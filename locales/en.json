@@ -359,6 +359,14 @@
       "polygon_level_3": "The information in Level 3 that you are about to enter, is a lot of data. Many users consider this to be overwhelming. If you are sure that you want this information, click proceed. To prevent this pop-up from re-occurring, register and take full advantage of RealtyWalk's functionality."
     }
   },
+  "report_bug": {
+    "title": "Report Problem",
+    "name": "Name",
+    "email": "Email",
+    "url": "URL",
+    "bug": "Bug Information",
+    "submit": "Submit"
+  },
   "menu": {
     "home": "Home",
     "about": "About",

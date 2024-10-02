@@ -26,7 +26,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     :schema="hasPassword ? SignUpWithPasswordSchema : SignUpOnlyEmailSchema"
     :state="state"
     @submit="onSubmit"
-    class="w-full max-w-[400px] mx-auto py-4 flex flex-col gap-y-4"
+    class="w-full max-w-[500px] px-6 mx-auto py-4 flex flex-col gap-y-4"
   >
     <UFormGroup :label="$t('auth.register.form.labels.name')" name="name">
       <input type="text" v-model="state.name" />

@@ -26,3 +26,10 @@ export const SignUpWithPasswordSchema = object({
     .oneOf([ref('password')], 'Passwords must match')
     .required('Required'),
 })
+
+export const ReportBugFormSchema = object({
+  name: string().required('Required'),
+  email: string().email('Invalid email').required('Required'),
+  url: string().required('Required'),
+  bug: string().required('Required')
+})
