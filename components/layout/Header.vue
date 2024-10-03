@@ -1,13 +1,22 @@
 <script setup lang="ts">
 const img = useImage()
 const route = useRoute()
-const showMap = ref(true)
-const isHome = route.path === '/'
+const router = useRouter()
+const isHome = computed(() => route.path === '/');
+
+const homeStore = useHomeStore();
+
+const onClickHomeButton = () => {
+  if(!isHome) {
+    router.push('/')
+  }
+  homeStore.setMapViewMode(false);
+}
 </script>
 
 <template>
   <div
-    class="flex justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px]"
+    class="flex justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px] relative"
   >
     <NuxtLink id="logo" to="/" class="min-w-max">
       <NuxtImg
@@ -36,7 +45,8 @@ const isHome = route.path === '/'
     <div class="hidden lg:flex flex-col h-full justify-end">
       <div class="absolute top-0 right-4 flex">
         <button
-          @click="showMap = false"
+          @click="onClickHomeButton"
+          v-if="!isHome || homeStore.isMapView"
           class="px-3 hover:bg-dark group flex items-center gap-x-1"
         >
           <svg
