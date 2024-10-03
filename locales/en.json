@@ -341,6 +341,7 @@
       "flood_planes": "FLOOD PLANES",
       "school_zones": "SCHOOL ZONES",
       "elementary": "ELEMENTARY",
+      "elementaryschool": "ELEMENTARY SCHOOL",
       "highschool": "HIGH SCHOOL",
       "middleschool": "MIDDLE SCHOOL",
       "bike_trails": "BIKE TRAILS",
