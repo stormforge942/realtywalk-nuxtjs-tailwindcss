@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div :class="['h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)]']">
     <div id="map"></div>
   </div>
+  <HomeSelections />
 </template>
 
 <script lang="ts" setup>

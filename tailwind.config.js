@@ -4,17 +4,23 @@ export default {
       backgroundColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529',
+        primary1: '#0a4271',
+        dark: '#001E38',
+        darkHover: '#002141'
       },
       textColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529',
+        primary1: '#0a4271',
+        dark: '#001E38',
+        darkHover: '#002141'
       },
       borderColor: {
         primary: '#012e55',
         secondary: '#ffc107',
-        dark: '#212529',
+        primary1: '#0a4271',
+        dark: '#001E38',
+        darkHover: '#002141'
       },
     },
   },

@@ -1,22 +1,15 @@
 <script setup lang="ts">
 const img = useImage()
 const route = useRoute()
-const router = useRouter()
 const isHome = computed(() => route.path === '/');
 
 const homeStore = useHomeStore();
 
-const onClickHomeButton = () => {
-  if(!isHome) {
-    router.push('/')
-  }
-  homeStore.setMapViewMode(false);
-}
 </script>
 
 <template>
   <div
-    class="flex justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px] relative"
+    class="flex z-40 justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px] relative"
   >
     <NuxtLink id="logo" to="/" class="min-w-max">
       <NuxtImg
@@ -44,12 +37,12 @@ const onClickHomeButton = () => {
 
     <div class="hidden lg:flex flex-col h-full justify-end">
       <div class="absolute top-0 right-4 flex">
-        <button
-          @click="onClickHomeButton"
-          v-if="!isHome || homeStore.isMapView"
-          class="px-3 hover:bg-dark group flex items-center gap-x-1"
-        >
-          <svg
+        <span
+        @click="homeStore.setMapViewMode(false)"
+        v-if="!isHome || homeStore.isMapView"
+        class="hover:bg-dark group cursor-pointer flex items-center">
+          <NuxtLink class="group-hover:text-secondary flex items-center gap-x-1 px-3 uppercase" to="/">
+            <svg
             class="w-4 h-4 pb-1 svg-inline--fa fa-grid-2 fa-lg group-hover:text-secondary"
             aria-hidden="true"
             focusable="false"
@@ -64,10 +57,8 @@ const onClickHomeButton = () => {
               d="M224 80c0-26.5-21.5-48-48-48L80 32C53.5 32 32 53.5 32 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zm0 256c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96zM288 80l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48zM480 336c0-26.5-21.5-48-48-48l-96 0c-26.5 0-48 21.5-48 48l0 96c0 26.5 21.5 48 48 48l96 0c26.5 0 48-21.5 48-48l0-96z"
             ></path>
           </svg>
-          <span class="group-hover:text-secondary uppercase">{{
-            $t('menu.home')
-          }}</span>
-        </button>
+          {{ $t('menu.home') }}</NuxtLink>
+        </span>
         <ul class="flex bg-dark p-1">
           <li>
             <NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink>

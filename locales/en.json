@@ -296,6 +296,9 @@
       "btn_go_to_map": "GO TO MAP"
     },
     "map": {
+      "level1": "level 1",
+      "level2": "level 2",
+      "level3": "level 3",
       "btn_search_criteria": "Search Criteria",
       "btn_neighborhoods": "Neighborhoods",
       "btn_back_to_neighborhoods": "Back To Neighborhoods",
