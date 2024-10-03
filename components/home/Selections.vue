@@ -39,7 +39,9 @@ const homeStore = useHomeStore();
                     {{ $t('home.toggles.flood_planes') }}
                 </span>
             </label>
-            <div class="bg-primary1 rounded-2xl">
+            <div
+            :class="isOpen ? 'w-[90px]' : 'w-[160px]'" 
+            class="bg-primary1 rounded-2xl">
                 <label
                 :class="isOpen ? 'w-[90px]' : 'w-[160px]'"
                 @click="homeStore.toggleShowSchoolZones" 
@@ -58,13 +60,13 @@ const homeStore = useHomeStore();
                     </span>
                 </label>
                 <div
-                class="px-4 pt-3 pb-4 flex flex-col gap-3" 
-                v-if="homeStore.showSchoolZones">
+                :class="[homeStore.showSchoolZones ? 'h-max pt-3 pb-4' : 'h-0 overflow-y-hidden']"
+                class="flex flex-col gap-3 px-4">
                     <BaseCheckbox 
                     v-model="homeStore.showElementarySchool">
                         <span
                         :class="homeStore.showElementarySchool ? 'text-white' : 'text-[#FFFFFF80]'" 
-                        class="text-[10px] font-semibold">
+                        class="text-[10px] font-semibold mt-[3px]">
                             {{ $t('home.toggles.elementaryschool') }}
                         </span>
                     </BaseCheckbox>
@@ -72,7 +74,7 @@ const homeStore = useHomeStore();
                     v-model="homeStore.showMiddleSchool">
                         <span
                         :class="homeStore.showMiddleSchool ? 'text-white' : 'text-[#FFFFFF80]'" 
-                        class="text-[10px] font-semibold">
+                        class="text-[10px] font-semibold mt-[3px]">
                             {{$t('home.toggles.middleschool')}}
                         </span>
                     </BaseCheckbox>
@@ -80,7 +82,7 @@ const homeStore = useHomeStore();
                     v-model="homeStore.showHighSchool">
                         <span
                         :class="homeStore.showHighSchool ? 'text-white' : 'text-[#FFFFFF80]'" 
-                        class="text-[10px] font-semibold">
+                        class="text-[10px] font-semibold mt-[3px]">
                             {{$t('home.toggles.highschool')}}
                         </span>
                     </BaseCheckbox>
