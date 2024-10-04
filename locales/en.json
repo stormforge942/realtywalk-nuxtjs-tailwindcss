@@ -229,7 +229,10 @@
             "active": "Active",
             "pending": "Pending",
             "pending_continue": "Pending Continue to Show",
-            "option_pending": "Option Pending"
+            "option_pending": "Option Pending",
+            "completed": "Completed",
+            "tobe_completed": "To Be Completed",
+            "under_construction": "Under Construction"
           }
         },
         "property_type": {

@@ -5,6 +5,9 @@
     <div id="map"></div>
     <HomeFloodFilter/>
     <HomeMobileFilter/>
+    <div class="flex gap-x-4 absolute top-4 left-4">
+      <HomeSearchCriteria />
+    </div>
   </div>
   <HomeSelections />
 </template>
