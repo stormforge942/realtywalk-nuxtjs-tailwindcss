@@ -17,7 +17,9 @@ export const useHomeStore = defineStore('home', {
         show100YearShallow: true,
         show100YearSheetFlow: true,
         show100YearStormWaves: true,
-        show500Year: true
+        show500Year: true,
+
+        showResult: false,
     }),
 
     actions: {

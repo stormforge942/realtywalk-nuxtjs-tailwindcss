@@ -7,6 +7,8 @@ definePageMeta({
 <template>
   <NuxtLayout name="main">
     <template #header>My Profile</template>
-    <div></div>
+    <ProfileAccountInfo />
+    <UDivider label="Change Password" :size="'sm'"/>
+    <ProfilePasswordChange />
   </NuxtLayout>
 </template>

@@ -1,4 +1,7 @@
-import { object, string, type InferType, ref } from 'yup'
+import { object, string, type InferType, ref, mixed } from 'yup'
+
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+const FILE_SIZE = 5 * 1024 * 1024;
 
 export const SignInWithPasswordSchema = object({
   email: string().email('Invalid email').required('Required'),
@@ -33,3 +36,25 @@ export const ReportBugFormSchema = object({
   url: string().required('Required'),
   bug: string().required('Required'),
 })
+
+export const ProfileSchema = object({
+  name: string().required(),
+  avatar: mixed().required('Required')
+    .test('fileSize', 'Image is too large (max 5MB)',
+      (value: any) => value && value.size <= FILE_SIZE
+    )
+    .test('fileFormat', 'Unsupported file format',
+      (value: any) => value && SUPPORTED_FORMATS.includes(value.type)
+    )
+})
+
+export const PasswordChangeSchema = object().shape({
+  currentPassword: string()
+    .required('Current password is required'),
+  newPassword: string()
+    .required('New password is required')
+    .min(8, 'New password must be at least 8 characters long'),
+  confirmPassword: string()
+    .required('Please confirm your new password')
+    .oneOf([ref('newPassword')], 'Passwords do not match'),
+});

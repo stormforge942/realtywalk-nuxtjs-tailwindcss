@@ -22,6 +22,9 @@ export default {
         dark: '#001E38',
         darkHover: '#002141'
       },
+      backgroundImage: {
+        gradient: 'linear-gradient(to bottom, theme(colors.primary1), theme(colors.darkHover))'
+      }
     },
   },
   plugins: [],
