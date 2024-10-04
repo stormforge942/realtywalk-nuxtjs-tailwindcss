@@ -67,6 +67,7 @@ const homeStore = useHomeStore();
                 :class="[homeStore.showSchoolZones ? 'h-max pt-3 pb-4' : 'h-0 overflow-y-hidden']"
                 class="flex flex-col gap-3 px-4">
                     <BaseCheckbox 
+                    color="secondary"
                     v-model="homeStore.showElementarySchool">
                         <span
                         :class="[homeStore.showElementarySchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
@@ -76,6 +77,7 @@ const homeStore = useHomeStore();
                         </span>
                     </BaseCheckbox>
                     <BaseCheckbox 
+                    color="secondary"
                     v-model="homeStore.showMiddleSchool">
                         <span
                         :class="[homeStore.showMiddleSchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
@@ -85,6 +87,7 @@ const homeStore = useHomeStore();
                         </span>
                     </BaseCheckbox>
                     <BaseCheckbox
+                    color="secondary"
                     v-model="homeStore.showHighSchool">
                         <span
                         :class="[homeStore.showHighSchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 

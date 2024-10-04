@@ -70,6 +70,10 @@ button[type='submit'] {
   @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] rounded-sm;
 }
 
+button[type='button'] {
+  @apply text-base w-full bg-white hover:bg-gray-200 text-primary text-center py-[6px] rounded-sm;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

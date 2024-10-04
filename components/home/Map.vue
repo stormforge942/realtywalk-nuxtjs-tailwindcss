@@ -5,10 +5,10 @@
     <div id="map"></div>
     <HomeFloodFilter/>
     <HomeMobileFilter/>
-    <div class="flex gap-x-4 absolute top-4 left-4">
+  </div>
+  <div class="flex gap-x-4 left-4 absolute z-40 top-[112px] sm:top-[132px]">
       <HomeSearchCriteria />
     </div>
-  </div>
   <HomeSelections />
 </template>
 
