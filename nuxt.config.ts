@@ -32,6 +32,7 @@ export default defineNuxtConfig({
       EMAIL: process.env.EMAIL || '',
       CELLL: process.env.CELL || '',
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY || '',
+      API_ENDPOINT: process.env.API_ENDPOINT || ''
     },
   },
   pinia: {

@@ -68,9 +68,10 @@ const homeStore = useHomeStore();
                 class="flex flex-col gap-3 px-4">
                     <BaseCheckbox 
                     color="secondary"
-                    v-model="homeStore.showElementarySchool">
+                    :model-value="homeStore.activeSchoolZone === 'elementary'"
+                    @update:model-value="homeStore.activeSchoolZone = 'elementary'">
                         <span
-                        :class="[homeStore.showElementarySchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
+                        :class="[homeStore.activeSchoolZone === 'elementary' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
                             <span v-else>{{ $t('home.toggles.elementary') }}</span>
@@ -78,9 +79,10 @@ const homeStore = useHomeStore();
                     </BaseCheckbox>
                     <BaseCheckbox 
                     color="secondary"
-                    v-model="homeStore.showMiddleSchool">
+                    :model-value="homeStore.activeSchoolZone === 'middleschool'"
+                    @update:model-value="homeStore.activeSchoolZone = 'middleschool'">
                         <span
-                        :class="[homeStore.showMiddleSchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
+                        :class="[homeStore.activeSchoolZone === 'middleschool' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
                             <span v-else>{{$t('home.toggles.middleschool')}}</span>
@@ -88,9 +90,10 @@ const homeStore = useHomeStore();
                     </BaseCheckbox>
                     <BaseCheckbox
                     color="secondary"
-                    v-model="homeStore.showHighSchool">
+                    :model-value="homeStore.activeSchoolZone === 'highschool'"
+                    @update:model-value="homeStore.activeSchoolZone = 'highschool'">
                         <span
-                        :class="[homeStore.showHighSchool ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
+                        :class="[homeStore.activeSchoolZone === 'highschool' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
                             <span v-else>{{$t('home.toggles.highschool')}}</span>
@@ -122,18 +125,18 @@ const homeStore = useHomeStore();
         <div class="w-full h-full pt-[100px] lg:pt-[120px] z-40">
             <div class="flex">
                 <button 
-                @click="homeStore.setLevel(1)"
-                :class="['level-button', homeStore.level === 1 && 'selected']">
+                @click="setPolygonsActiveLevel(0, false, false)"
+                :class="['level-button', homeStore.level === 0 && 'selected']">
                     {{ $t('home.map.level1') }}
                 </button>
                 <button 
-                @click="homeStore.setLevel(2)"
-                :class="['level-button', homeStore.level === 2 && 'selected']">
+                @click="setPolygonsActiveLevel(1, false, false)"
+                :class="['level-button', homeStore.level === 1 && 'selected']">
                     {{ $t('home.map.level2') }}
                 </button>
                 <button 
-                @click="homeStore.setLevel(3)"
-                :class="['level-button', homeStore.level === 3 && 'selected']">
+                @click="setPolygonsActiveLevel(2, false, false)"
+                :class="['level-button', homeStore.level === 2 && 'selected']">
                     {{ $t('home.map.level3') }}
                 </button>
             </div>

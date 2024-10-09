@@ -2,6 +2,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 const isOpen = ref(false)
+
 eventBus.on(ADDRESS_LOOKUP, () => {
   isOpen.value = !isOpen.value
 })

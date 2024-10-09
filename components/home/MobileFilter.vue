@@ -1,17 +1,25 @@
 <script setup lang="ts">
 const homeStore = useHomeStore()
+
+const onClickShowResult = (val: boolean) => {
+    console.log(getBreakpoint())
+    if(getBreakpoint() != 'sm') {
+        homeStore.showSearch = val
+    }
+    homeStore.showResult = val
+}
 </script>
 
 
 <template>
-    <div class="flex flex-col gap-[1px] bg-dark md:hidden w-full absolute top-0">
+    <div class="flex flex-col gap-[1px] bg-dark md:hidden w-full absolute top-[50px]">
         <div class="grid grid-cols-2 w-full gap-[1px]">
             <button 
-            @click="homeStore.showResult = false"
+            @click="onClickShowResult(false)"
             :class="!homeStore.showResult && 'selected'"
             class="gradient-button ">{{homeStore.showResult ? $t('home.map.btn_back_to_neighborhoods') : $t('home.map.btn_neighborhoods') }}</button>
             <button 
-            @click="homeStore.showResult = true"
+            @click="onClickShowResult(true)"
             :class="homeStore.showResult && 'selected'"
             class="gradient-button ">{{ $t('home.map.btn_results') }}</button>
         </div>
@@ -37,23 +45,23 @@ const homeStore = useHomeStore()
         </div>
         <div v-if="homeStore.showSchoolZones" class="flex w-full gap-[1px]">
             <button 
-            @click="homeStore.showElementarySchool = !homeStore.showElementarySchool"
+            @click="homeStore.activeSchoolZone = 'elementary'"
             class="school-button"
-            :class="homeStore.showElementarySchool ? 'bg-purple-400 selected' : 'bg-primary1'"
+            :class="homeStore.activeSchoolZone === 'elementary' ? 'bg-purple-400 selected' : 'bg-primary1'"
             >
                 {{$t('home.toggles.elementary')}}
             </button>
             <button 
-            @click="homeStore.showMiddleSchool = !homeStore.showMiddleSchool"
+            @click="homeStore.activeSchoolZone = 'middleschool'"
             class="school-button"
-            :class="homeStore.showMiddleSchool ? 'bg-orange-400 selected' : 'bg-primary1'"
+            :class="homeStore.activeSchoolZone === 'middleschool' ? 'bg-orange-400 selected' : 'bg-primary1'"
             >
                 {{ $t('home.toggles.middleschool')}}
             </button>
             <button
-            @click="homeStore.showHighSchool = !homeStore.showHighSchool" 
+            @click="homeStore.activeSchoolZone = 'highschool'" 
             class="school-button"
-            :class="homeStore.showHighSchool ? 'bg-green-400 selected' : 'bg-primary1'"
+            :class="homeStore.activeSchoolZone === 'highschool' ? 'bg-green-400 selected' : 'bg-primary1'"
             >
                 {{ $t('home.toggles.highschool') }}
             </button>
@@ -63,10 +71,10 @@ const homeStore = useHomeStore()
 
 <style lang="css" scoped>
 .gradient-button {
-    @apply h-[50px] bg-primary1 text-white text-xl hover:bg-primary
+    @apply h-[50px] bg-primary1 text-white text-xl hover:bg-primary uppercase
 }
 .gradient-button.selected {
-    @apply bg-secondary
+    @apply bg-secondary text-primary md:font-semibold
 }
 .filter-button {
     @apply w-full h-10 flex items-center justify-center text-[#FFFFFF80] text-sm font-semibold bg-primary1

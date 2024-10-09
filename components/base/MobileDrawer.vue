@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 const isActive = ref(false)
 
+const button = ref<HTMLDivElement>()
+const drawer = ref<HTMLDivElement>()
+
 const toggleMenu = () => {
   isActive.value = !isActive.value
 }
 
 const handleOutSideClick = (e: MouseEvent) => {
-  const drawer = document.querySelector('#mobile-drawer')
-  const button = document.querySelector('#mobile-button')
-
   if (
-    drawer &&
-    !drawer.contains(e.target as Node) &&
-    button &&
-    !button.contains(e.target as Node)
+    drawer.value &&
+    !drawer.value.contains(e.target as Node) &&
+    button.value &&
+    !button.value.contains(e.target as Node)
   ) {
     isActive.value = false
   }
@@ -30,13 +30,13 @@ onUnmounted(() => {
 
 <template>
   <div
-    id="mobile-button"
+    ref="button"
     :class="['flex items-center h-[100px] lg:hidden z-50 top-0 right-8', isActive ? 'fixed' : 'absolute']"
   >
     <BaseMenuButton :is-active="isActive" @toggle-menu="toggleMenu" />
   </div>
   <ul
-    id="mobile-drawer"
+    ref="drawer"
     :class="[
       isActive ? 'right-0' : '-right-[300px]',
       'fixed z-40 top-0  w-[300px] h-screen bg-primary',
