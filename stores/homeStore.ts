@@ -1,4 +1,4 @@
-import { DEFAULT_MAP } from "~/composables/googleMap";
+import { DEFAULT_MAP, type FlattenedNode } from "~/composables/googleMap";
 
 interface HomeStore {
     API_ENDPOINT: string,
@@ -52,12 +52,23 @@ interface HomeStore {
     floodPlaneIds: Set<string>,
     schoolZoneIds: Set<string>,
     popupDisplayed: boolean,
-    polygonTrunks: any[][],
+    polygonTrunks: FlattenedNode[],
     selectedPolygons: string[],
     selectedParents: string[],
     ancestorPolygons: string[],
-    floodZoneLegends: Object,
-    schoolZoneLegends: Object,
+    floodZoneLegends: {
+        A: string,
+        AE: string,
+        AH: string,
+        AO: string,
+        VE: string,
+        X: string
+    },
+    schoolZoneLegends: {
+        elementary: string,
+        middleschool: string,
+        highschool: string
+    },
     lastZoomUpdate: number,
     existingPolygonIds: string[],
     l3Confirmed: boolean,
@@ -131,12 +142,23 @@ export const useHomeStore = defineStore('home', {
         floodPlaneIds: new Set(),
         schoolZoneIds: new Set(),
         popupDisplayed: false,
-        polygonTrunks: [[], [], []],
+        polygonTrunks: [],
         selectedPolygons: [],
         selectedParents: [],
         ancestorPolygons: [],
-        floodZoneLegends: {},
-        schoolZoneLegends: {},
+        floodZoneLegends: {
+            A: '#8d5a99',
+            AE: '#ff9e17',
+            AH: '#85b66f',
+            AO: '#e77148',
+            VE: '#b7484b',
+            X: '#987db7'
+        },
+        schoolZoneLegends: {
+            elementary: '#8d5a99',
+            highschool: '#ff9e17',
+            middleschool: '#85b66f'
+        },
         lastZoomUpdate: DEFAULT_MAP.zoom,
         existingPolygonIds: [],
         l3Confirmed: false,
@@ -204,19 +226,13 @@ export const useHomeStore = defineStore('home', {
             }
         },
 
-
-        async fetchFloodData(url = "", bounds = [], zoom = 10, exclude = [], init = false) {
-
-        },
-
-
         async fetchFloodZoneLegends() {
             const data = await $fetch(`${this.API_ENDPOINT}/api/flood-zones/legends`)
-            this.floodZoneLegends = data as Object
+            this.floodZoneLegends = data as any
         },
         async fetchSchoolZoneLegends() {
             const data = await $fetch(`${this.API_ENDPOINT}/api/school-zones/legends`)
-            this.schoolZoneLegends = data as Object
+            this.schoolZoneLegends = data as any
         }
     }
 })

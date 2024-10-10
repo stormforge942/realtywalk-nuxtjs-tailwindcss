@@ -26,6 +26,7 @@
     "vue": "latest",
     "vue-recaptcha-v3": "^2.0.1",
     "vue-router": "latest",
+    "vue3-recaptcha-v2": "^2.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

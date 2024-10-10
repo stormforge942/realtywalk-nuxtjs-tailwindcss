@@ -1,3 +1,23 @@
+import { flatMapDeep } from 'lodash-es';
+
+type PolygonNode = {
+  id: number,
+  parent_id: number | null,
+  path: string,
+  state: {
+    selected: boolean,
+    indeterminate: boolean,
+    expanded: boolean,
+    checked: boolean
+  },
+  text: string,
+  zoom: number,
+  _lft: number,
+  _rgt: number,
+  children?: PolygonNode[]
+}
+export type FlattenedNode = Omit<PolygonNode, 'children'>
+
 export const MAP_OPACITY_HOVER = 0.6
 export const MAP_OPACITY_CHILDIN = 0.25
 export const MAP_OPACITY_SELECTED = 0.9;
@@ -120,22 +140,25 @@ export const getPolygonList = async (isV2: boolean) => {
   //   .map((node) => node.id);
 
   // this.$refs.tree?.remove({}, true);
-  homeStore.polygonTrunks = [[], [], []];
+  homeStore.polygonTrunks = flattenData(data);
 
-  buildTrunk(data).forEach((list, index) => {
-    list.forEach((data: any) => {
-      let node = prepareNodeData(data);
-      homeStore.polygonTrunks[index].push(node);
+  console.log(flattenData(data))
 
-      if (index === homeStore.level) {
-        // let trunk = this.$refs.tree.prepend(node);
+  // buildTrunk(data).forEach((list, index) => {
+  //   list.forEach((data: any) => {
+  //     const node = prepareNodeData(data);
+  //     console.log(node)
+  //     homeStore.polygonTrunks[index].push(node);
 
-        // if (!notExpanded.includes(trunk.id)) {
-        //   trunk.expand();
-        // }
-      }
-    });
-  });
+  //     if (index === homeStore.level) {
+  //       // let trunk = this.$refs.tree.prepend(node);
+
+  //       // if (!notExpanded.includes(trunk.id)) {
+  //       //   trunk.expand();
+  //       // }
+  //     }
+  //   });
+  // });
 }
 
 const buildTrunk = (nodes: any[]) => {
@@ -252,11 +275,8 @@ export const setPolygonDataStyling = async () => {
   }
 
   setPolygonsActiveLevel(level, true);
-  let count = 0;
 
   map.data.setStyle(function (feature) {
-    count += 1;
-    console.log(count)
     const visibilityToggle = feature.getProperty("visibilityToggle") as string;
     const type = feature.getProperty("type") as string;
     let active = false;
@@ -267,7 +287,7 @@ export const setPolygonDataStyling = async () => {
       if (visibilityToggle != 'floodZones') active = false;
       else active = homeStore.floodZones.includes(type)
     } else {
-      active = false;
+      active = true;
     }
     const zoom = feature.getProperty("zoom") as number;
     const displayAsBg = feature.getProperty("display_as_background") as number;
@@ -377,49 +397,54 @@ const removeFromPolygonList = (polyId: string) => {
 }
 
 const removePolygonChildrenRecursively = (polyId: string) => {
-  const homeStore = useHomeStore();
+  // const homeStore = useHomeStore();
 
-  let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  let items = flattenData(data);
-  let item = items.filter((x: any) => x.id == polyId);
+  // let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
+  // let items = flattenData(data);
+  // let item = items.filter((x: any) => x.id == polyId);
 
-  if (item.length && item[0].children !== undefined) {
-    let children = flattenData(item[0].children).map((x: any) => x.id);
-    children.forEach((id: string) => {
-      const index = homeStore.selectedPolygons.indexOf(id);
-      if (index !== -1) {
-        homeStore.selectedPolygons.splice(index, 1);
-      }
-    });
-    homeStore.selectedPolygons = [...new Set(homeStore.selectedPolygons)];
-  }
+  // if (item.length && item[0].children !== undefined) {
+  //   let children = flattenData(item[0].children).map((x: any) => x.id);
+  //   children.forEach((id: string) => {
+  //     const index = homeStore.selectedPolygons.indexOf(id);
+  //     if (index !== -1) {
+  //       homeStore.selectedPolygons.splice(index, 1);
+  //     }
+  //   });
+  //   homeStore.selectedPolygons = [...new Set(homeStore.selectedPolygons)];
+  // }
 }
 
 const addPolygonChildrenRecursively = (polyId: string) => {
-  const homeStore = useHomeStore();
-  let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  let items = flattenData(data);
-  let item = items.filter((x: any) => x.id == polyId);
+  // const homeStore = useHomeStore();
+  // let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
+  // let items = flattenData(data);
+  // let item = items.filter((x: any) => x.id == polyId);
 
-  if (item.length && item[0].children !== undefined) {
-    let children = item[0].children.map((x: any) => x.id);
-    const selectedPolygons = [...homeStore.selectedPolygons, ...children];
-    homeStore.selectedPolygons = [...new Set(selectedPolygons)];
-  }
+  // if (item.length && item[0].children !== undefined) {
+  //   let children = item[0].children.map((x: any) => x.id);
+  //   const selectedPolygons = [...homeStore.selectedPolygons, ...children];
+  //   homeStore.selectedPolygons = [...new Set(selectedPolygons)];
+  // }
 }
 
-const flattenData = (data: any, prop = "children") => {
-  let children: any[] = [];
-  const flattenData = data.map((m: any) => {
-    if (m[prop] && m[prop].length) {
-      children = [...children, ...m[prop]];
-    }
-    return m;
-  });
 
-  return flattenData.concat(
-    children.length ? flattenData(children) : children
-  );
+const flattenData = (data: PolygonNode[]): FlattenedNode[] => {
+  return data.reduce((acc: PolygonNode[], item: PolygonNode) => {
+    acc.push({
+      ...item, state: {
+        checked: true,
+        expanded: true,
+        indeterminate: false,
+        selected: false
+      }
+    });
+
+    if (item.children && item.children.length) {
+      acc.push(...flattenData(item.children));
+    }
+    return acc;
+  }, []);
 }
 
 export const redrawMap = () => {
@@ -475,28 +500,58 @@ export const updatePolygonViewport = async (initiate: boolean = false) => {
     if (listPointAborter && !listPointAborter.signal.aborted) listPointAborter.abort();
     listPointAborter = new AbortController();
 
-    const data = await $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/polygons/list-points`, {
+    const data = await $fetch<string>(`${homeStore.API_ENDPOINT}/api/polygons/list-points`, {
       method: 'POST',
       body: {
         bounds: [minLat, minLng, maxLat, maxLng],
         excludeList: homeStore.existingPolygonIds,
-        zoom: level
+        zoom: level + 1
       },
       signal: listPointAborter.signal
-    }) || [];
+    });
 
-    if (data.length) {
-      data.forEach(item => {
-        if (!homeStore.existingPolygonIds.some((id) => id == item.id)) {
-          homeStore.existingPolygonIds.push(item.id as string)
-        }
-      })
-    }
+    const realData = JSON.parse(data) as any[]
+
+    realData.forEach(makePolygon)
 
     redrawMap()
   } catch {
 
   }
+}
+
+const makePolygon = (el: any) => {
+  const homeStore = useHomeStore();
+  const map = useGoogleMap().value;
+
+  if (homeStore.existingPolygonIds.some((id) => id == el.id)) {
+    return;
+  }
+
+  homeStore.existingPolygonIds.push(el.id);
+  el.geometry = JSON.parse(el.geometry);
+
+  map.data.addGeoJson({
+    type: "FeatureCollection",
+    features: [
+      {
+        id: el.id,
+        type: "Feature",
+        geometry: el.geometry,
+        properties: {
+          title: el.title,
+          id: el.id,
+          parent_id: el.parent_id,
+          zIndex: 40075000 - el.area,
+          fillColor: el.color ?? "275b30",
+          fillOpacity: MAP_OPACITY_CHILDIN,
+          zoom: el.zoom,
+          display_as_background: el.display_as_background,
+          page_url: el.page_url
+        },
+      },
+    ],
+  });
 }
 
 const mapSchools = (item: any) => ({

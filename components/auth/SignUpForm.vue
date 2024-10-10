@@ -62,17 +62,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         }}
       </span>
     </NuxtLink>
-    <label class="cursor-pointer">
-      <input type="checkbox" v-model="isAgree" />
-      {{ $t('auth.register.form.labels.aggrement') }}
-      <NuxtLink to="/terms-of-service">{{
-        $t('auth.register.form.labels.link_tos')
-      }}</NuxtLink>
-      {{ $t('auth.register.form.labels.and') }}
-      <NuxtLink to="/privacy-policy">{{
-        $t('auth.register.form.labels.link_privacy_policy')
-      }}</NuxtLink>
-    </label>
+      <BaseCheckbox v-model="isAgree" color="primary">
+        <span>
+          {{ $t('auth.register.form.labels.aggrement') }}
+          <NuxtLink to="/terms-of-service">{{
+          $t('auth.register.form.labels.link_tos')
+          }}</NuxtLink>
+          {{ $t('auth.register.form.labels.and') }}
+          <NuxtLink to="/privacy-policy">{{
+          $t('auth.register.form.labels.link_privacy_policy')
+          }}</NuxtLink>
+        </span>
+      </BaseCheckbox>
     <button type="submit">{{ $t('auth.register.btn_submit') }}</button>
     <div>
       {{ $t('auth.register.text_registered') }}

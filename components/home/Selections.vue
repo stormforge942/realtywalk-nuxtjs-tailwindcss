@@ -1,8 +1,35 @@
 <script lang="ts" setup>
-import { faAngleLeft, faAngleRight, faBicycle, faGraduationCap, faWater } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleRight, faBicycle, faGraduationCap, faWater } from '@fortawesome/free-solid-svg-icons';
+import type { FlattenedNode } from '~/composables/googleMap';
 
 const isOpen = ref(false)
 const homeStore = useHomeStore();
+
+const onClickItem = (item: FlattenedNode) => {
+    for(let i = 0; i < homeStore.polygonTrunks.length; i ++) {
+        if(homeStore.polygonTrunks[i].id === item.id) {
+            homeStore.polygonTrunks[i].state.selected = true;
+            homeStore.polygonTrunks[i].state.expanded = !homeStore.polygonTrunks[i].state.expanded;
+        } else {
+            homeStore.polygonTrunks[i].state.selected = false;
+        }
+    }
+    const startIndex = homeStore.polygonTrunks.findIndex(member => item.id === member.id);
+    const lastZoom = homeStore.polygonTrunks.findLastIndex(member => member.zoom === item.zoom)
+    if(startIndex != -1) {
+        const newArray = homeStore.polygonTrunks.slice(startIndex + 1);
+        let lastIndex = startIndex === lastZoom ? 
+        homeStore.polygonTrunks.length - startIndex + 1 : 
+        newArray.findIndex(member => member.zoom <= item.zoom);
+        if(item.zoom <= 2) lastIndex += 2;
+        console.log(startIndex, lastIndex)
+        if(lastIndex != -1) {
+            for(let i = startIndex + 1; i < startIndex + lastIndex - 1; i ++) {
+                homeStore.polygonTrunks[i].state.checked = item.state.expanded
+            }
+        }
+    }
+}
 
 </script>
 
@@ -28,6 +55,7 @@ const homeStore = useHomeStore();
         class="hidden md:flex flex-col xl:flex-row absolute mt-[110px] lg:mt-[130px] gap-2 z-40">
             <label
             @click="homeStore.toggleShowFloodZones" 
+            :title="$t('home.toggles.flood_planes')"
             :class="isOpen ? 'w-[90px]' : 'w-[160px]'"
             class="toggle">
                 <BaseSwitch 
@@ -44,6 +72,7 @@ const homeStore = useHomeStore();
                 </span>
             </label>
             <div
+            :title="$t('home.toggles.school_zones')"
             :class="isOpen ? 'w-[90px]' : 'w-[160px]'" 
             class="bg-primary1 rounded-2xl">
                 <label
@@ -67,10 +96,11 @@ const homeStore = useHomeStore();
                 :class="[homeStore.showSchoolZones ? 'h-max pt-3 pb-4' : 'h-0 overflow-y-hidden']"
                 class="flex flex-col gap-3 px-4">
                     <BaseCheckbox 
-                    color="secondary"
+                    :color="homeStore.schoolZoneLegends.elementary"
                     :model-value="homeStore.activeSchoolZone === 'elementary'"
                     @update:model-value="homeStore.activeSchoolZone = 'elementary'">
                         <span
+                        :title="$t('home.toggles.elementary')"
                         :class="[homeStore.activeSchoolZone === 'elementary' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
@@ -78,10 +108,11 @@ const homeStore = useHomeStore();
                         </span>
                     </BaseCheckbox>
                     <BaseCheckbox 
-                    color="secondary"
+                    :color="homeStore.schoolZoneLegends.middleschool"
                     :model-value="homeStore.activeSchoolZone === 'middleschool'"
                     @update:model-value="homeStore.activeSchoolZone = 'middleschool'">
                         <span
+                        :title="$t('home.toggles.middleschool')"
                         :class="[homeStore.activeSchoolZone === 'middleschool' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
@@ -89,10 +120,11 @@ const homeStore = useHomeStore();
                         </span>
                     </BaseCheckbox>
                     <BaseCheckbox
-                    color="secondary"
+                    :color="homeStore.schoolZoneLegends.highschool"
                     :model-value="homeStore.activeSchoolZone === 'highschool'"
                     @update:model-value="homeStore.activeSchoolZone = 'highschool'">
                         <span
+                        :title="$t('home.toggles.highschool')"
                         :class="[homeStore.activeSchoolZone === 'highschool' ? 'text-white' : 'text-[#FFFFFF80]', isOpen && 'ml-4']" 
                         class="text-[10px] font-semibold mt-[3px]">
                             <FontAwesome class="text-base" v-if="isOpen" :icon="faGraduationCap"/>
@@ -102,6 +134,7 @@ const homeStore = useHomeStore();
                 </div>
             </div>
             <label
+            :title="$t('home.toggles.bike_trails')"
             :class="isOpen ? 'w-[90px]' : 'w-[160px]'"
             @click="homeStore.toggleShowBikeTrails" 
             class="toggle">
@@ -141,6 +174,7 @@ const homeStore = useHomeStore();
                 </button>
             </div>
             <label
+            :title="$t('home.toggles.show_unselected_areas')"
             @click="homeStore.toggleShowUnselected" 
             class="flex h-[50px] items-center justify-center bg-primary1 gap-4 cursor-pointer">
                 <BaseSwitch 
@@ -149,6 +183,29 @@ const homeStore = useHomeStore();
                     {{ $t('home.toggles.show_unselected_areas') }}
                 </span>
             </label>
+            <div class="overflow-y-scroll max-h-[calc(100vh-265px)] no-scrollbar">
+                <div 
+                v-for="item in homeStore.polygonTrunks"
+                :style="{
+                    paddingLeft: `${item.zoom * 20}px`,
+                }"
+                @click="onClickItem(item)"
+                :class="[
+                    item.zoom <= homeStore.level + 1 ? item.state.checked ? 'flex' : ' hidden' : 'hidden',
+                    item.state.selected ? 'bg-primary1' : ''
+                ]"
+                class="min-h-10 items-center gap-x-2 py-1 text-secondary pr-4 cursor-pointer hover:bg-primary1">
+                    <span v-if="item.zoom < homeStore.level + 1">
+                        <FontAwesome 
+                        :icon="faAngleDown" 
+                        :class="[item.state.expanded && 'rotate-180']"/>
+                    </span>
+                    <span v-else class="min-w-[14px]"></span>
+                    <BaseCheckbox v-model:model-value="item.state.checked" color="secondary" class="mb-1"/>
+                    <span>{{ item.text }}</span>
+                </div>
+
+            </div>
         </div>
     </div>
   </div>

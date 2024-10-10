@@ -39,6 +39,6 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: { name: 'page', mode: 'default' }
   }
 })

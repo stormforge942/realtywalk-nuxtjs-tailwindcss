@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
+const authStore = useAuthStore()
+const homeStore = useHomeStore()
+
 useHead({
   script: [
     {
@@ -10,6 +13,8 @@ useHead({
     
   ],
 })
+authStore.API_ENDPOINT = config.public.API_ENDPOINT
+homeStore.API_ENDPOINT = config.public.API_ENDPOINT
 </script>
 
 <template>

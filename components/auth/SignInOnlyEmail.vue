@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
 import { AuthOnlyEmailSchema } from '@/utils/schemas'
-import { useReCaptcha } from 'vue-recaptcha-v3'
+import { RecaptchaV2, useRecaptcha } from "vue3-recaptcha-v2";
 import type { InferType } from 'yup'
+
+const authStore = useAuthStore();
+const homeStore = useHomeStore();
+console.log(homeStore.fetchFloodZoneLegends)
 
 type Schema = InferType<typeof AuthOnlyEmailSchema>
 
@@ -10,25 +14,20 @@ const state = reactive({
   email: '',
 })
 
-const recaptcha = ref<() => Promise<string>>()
-onMounted(() => {
-  const recaptchaInstance = useReCaptcha()
+const { handleGetResponse } = useRecaptcha();
 
-  recaptcha.value = async () => {
-    await recaptchaInstance?.recaptchaLoaded()
-    const token = await recaptchaInstance?.executeRecaptcha('bridge')
-    return token || ''
-  }
+const handleWidgetId = (widgetId: number) => {
+  console.log("Widget ID: ", widgetId);
+  handleGetResponse(widgetId);
+};
+
+onMounted(() => {
+
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
-  console.log(process.env.RECAPTCHA_SITE_KEY)
-  if (recaptcha.value) {
-    const token = await recaptcha.value()
-    console.log(token)
-  }
-  console.log(event.data)
+
 }
 </script>
 
@@ -42,6 +41,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UFormGroup :label="$t('auth.login.form.labels.email')" name="email">
       <input type="text" v-model="state.email" />
     </UFormGroup>
+    <RecaptchaV2 @widget-id="handleWidgetId" />
     <button type="submit">
       {{ $t('auth.login.btn_submit_magic_link') }}
     </button>
