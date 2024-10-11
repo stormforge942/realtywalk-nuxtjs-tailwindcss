@@ -80,8 +80,7 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
     labelClass: "polygon-label",
     icon: "/images/transparent.png",
     visible: false,
-    labelContent: '',
-    label: null,
+    labelContent: 'FOO',
     crossOnDrag: false
   });
 
@@ -483,8 +482,7 @@ export const polyMouseOverEvent = (poly: google.maps.Data.Feature, event: google
 
   if (homeStore.polygonLabel) {
     const title = poly.getProperty("title") as string;
-    homeStore.polygonLabel.labelElement.innerHTML =
-      `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+    homeStore.polygonLabel.labelElement.innerHTML = `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
   }
 }
 
@@ -498,9 +496,10 @@ export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google
 
   if (homeStore.polygonLabel) {
     const title = poly.getProperty("title") as string;
+    homeStore.polygonLabel.labelElement.innerHTML = `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
     homeStore.polygonLabel.setPosition(event.latLng);
     homeStore.polygonLabel.setVisible(true);
-    homeStore.polygonLabel.labelElement.innerHTML = `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+    homeStore.polygonLabel.labelContent = ''
   }
 }
 

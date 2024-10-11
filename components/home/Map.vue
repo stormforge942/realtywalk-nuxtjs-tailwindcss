@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts" setup>
+import { MarkerWithLabel } from "@googlemaps/markerwithlabel";
 import Swal from "sweetalert2"
 
 const router = useRouter();
