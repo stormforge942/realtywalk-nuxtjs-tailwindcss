@@ -6,6 +6,7 @@
     <HomeSearchCriteria />
     <HomeFloodFilter/>
     <HomeMobileFilter/>
+    <HomeLoading v-if="homeStore.isLoading"/>
   </div>
   <HomeSelections />
   <HomeSearchPanel />
@@ -13,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MarkerWithLabel } from "@googlemaps/markerwithlabel";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2"
 
 const router = useRouter();

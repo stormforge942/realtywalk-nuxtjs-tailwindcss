@@ -74,6 +74,7 @@ interface HomeStore {
     existingPolygonIds: string[],
     l3Confirmed: boolean,
     zoomOnPolyClick: boolean,
+    isLoading: boolean,
 
     property: {
         displaying: "map",
@@ -164,6 +165,7 @@ export const useHomeStore = defineStore('home', {
         existingPolygonIds: [],
         l3Confirmed: false,
         zoomOnPolyClick: true,
+        isLoading: false,
 
         property: {
             displaying: "map",

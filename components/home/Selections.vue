@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { faAngleRight, faBicycle, faGraduationCap, faWater } from '@fortawesome/free-solid-svg-icons';
-
 const isOpen = ref(false)
 const homeStore = useHomeStore();
 </script>
@@ -124,7 +123,9 @@ const homeStore = useHomeStore();
                 </span>
             </label>
         </div>
-        <button class="clear-button">
+        <button
+        @click="clearAllSelected()" 
+        class="clear-button">
             {{ $t('home.map.btn_clear_selected') }}
         </button>
         <div class="w-full h-full pt-[100px] lg:pt-[120px] z-40">
@@ -156,7 +157,7 @@ const homeStore = useHomeStore();
                 </span>
             </label>
             <div class="overflow-y-scroll max-h-[calc(100vh-265px)] no-scrollbar">
-                
+                <HomeTreeNode :key="item" v-for="item in homeStore.polygonTrunks[homeStore.level]" :model="item"/>
             </div>
         </div>
     </div>

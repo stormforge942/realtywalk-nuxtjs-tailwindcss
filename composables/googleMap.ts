@@ -52,8 +52,6 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
     return
   }
 
-  console.log(MarkerWithLabel)
-
   // Initialize Google Map
   useGoogleMap().value = new google.maps.Map(map_html as HTMLElement, {
     center: new google.maps.LatLng(homeStore.map.center.lat, homeStore.map.center.lng),
@@ -72,17 +70,17 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
   const map = useGoogleMap().value;
 
-  homeStore.polygonLabel = new MarkerWithLabel({
-    map,
-    position: new google.maps.LatLng(0, 0),
-    draggable: false,
-    labelAnchor: new google.maps.Point(200, 40),
-    labelClass: "polygon-label",
-    icon: "/images/transparent.png",
-    visible: false,
-    labelContent: 'FOO',
-    crossOnDrag: false
-  });
+  // homeStore.polygonLabel = new MarkerWithLabel({
+  //   map,
+  //   position: new google.maps.LatLng(0, 0),
+  //   draggable: false,
+  //   labelAnchor: new google.maps.Point(0, 0),
+  //   labelClass: "polygon-label",
+  //   icon: "/images/transparent.png",
+  //   visible: false,
+  //   labelContent: 'FOO',
+  //   crossOnDrag: false
+  // });
 
   google.maps.event.addListener(map, 'idle', () => {
     const center = map.getCenter();
@@ -137,6 +135,8 @@ export const getPolygonList = async (isV2: boolean) => {
 
   polyListAborter = new AbortController();
 
+  homeStore.isLoading = true;
+
   $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/polygon/${isV2 ? 'get-list-v2' : 'get-list'}`,
     {
       method: 'POST',
@@ -146,6 +146,7 @@ export const getPolygonList = async (isV2: boolean) => {
       signal: polyListAborter.signal
     },
   ).then(data => {
+    const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: false });
     // const notExpanded = this.$refs.tree
     //   .findAll({ state: { expanded: false } })
     //   .map((node) => node.id);
@@ -160,6 +161,9 @@ export const getPolygonList = async (isV2: boolean) => {
 
         if (index === homeStore.level) {
           console.log(node)
+          if (!notExpanded.includes(node)) {
+            node.state.expanded = false
+          }
           // let trunk = this.$refs.tree.prepend(node);
 
           // if (!notExpanded.includes(trunk.id)) {
@@ -168,8 +172,8 @@ export const getPolygonList = async (isV2: boolean) => {
         }
       });
     });
-
-    console.log(homeStore.polygonTrunks)
+  }).finally(() => {
+    homeStore.isLoading = false;
   })
 }
 
@@ -271,7 +275,6 @@ const polyClickEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.
   }
 }
 
-
 export const redrawMap = () => {
   setTimeout(() => {
     setPolygonDataStyling();
@@ -327,6 +330,8 @@ export const updatePolygonViewport = async (initiate: boolean = false) => {
     if (listPointAborter && !listPointAborter.signal.aborted) listPointAborter.abort();
     listPointAborter = new AbortController();
 
+    homeStore.isLoading = true;
+
     const data = await $fetch<string>(`${homeStore.API_ENDPOINT}/api/polygons/list-points`, {
       method: 'POST',
       body: {
@@ -344,6 +349,8 @@ export const updatePolygonViewport = async (initiate: boolean = false) => {
     redrawMap()
   } catch {
 
+  } finally {
+    homeStore.isLoading = false;
   }
 }
 
@@ -427,23 +434,28 @@ export const updateSchoolZones = async () => {
 
   schoolZoneAborter = new AbortController();
 
-  const data = await $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/school-zones/list`,
-    {
-      method: 'POST',
-      body: {
-        type: homeStore.activeSchoolZone
-      },
-      signal: schoolZoneAborter.signal
-    }
-  )
+  try {
+    homeStore.isLoading = true;
+    const data = await $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/school-zones/list`,
+      {
+        method: 'POST',
+        body: {
+          type: homeStore.activeSchoolZone
+        },
+        signal: schoolZoneAborter.signal
+      }
+    )
 
-  const features = data.map(item => mapSchools(item)).filter(filterSchools)
-  console.log(features)
-  map.data.addGeoJson({
-    type: 'FeatureCollection',
-    features: features
-  })
-  redrawMap()
+    const features = data.map(item => mapSchools(item)).filter(filterSchools)
+    console.log(features)
+    map.data.addGeoJson({
+      type: 'FeatureCollection',
+      features: features
+    })
+    redrawMap()
+  } finally {
+    homeStore.isLoading = false;
+  }
 }
 
 export const updateFloodZones = (zone: number = -1) => {
@@ -534,6 +546,7 @@ const fetchFloodData = async ({
   floodFetchAborter = new AbortController();
 
   try {
+    homeStore.isLoading = true;
     const data = (await $fetch<any>(`${homeStore.API_ENDPOINT}/api/flood-zones/list${url}`, {
       method: "POST",
       body: {
@@ -578,10 +591,9 @@ const fetchFloodData = async ({
   } catch {
 
   } finally {
-
+    homeStore.isLoading = false;
   }
 }
-
 
 export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean, ignorePopup: boolean = true) => {
   const authStore = useAuthStore();
@@ -604,6 +616,9 @@ export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean
     //   let trunk = this.$refs.tree.prepend(trunkData);
     //   trunk.expand();
     // });
+    homeStore.polygonTrunks[level].forEach((trunkData: PolygonNode) => {
+      trunkData.state.expanded = false;
+    })
 
     if (!skipZoom) {
       let zoom = 10;
@@ -616,7 +631,6 @@ export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean
     }
   }
 }
-
 
 export const onCheckPoly = (node: PolygonNode) => {
   const homeStore = useHomeStore();
@@ -693,6 +707,9 @@ const checkPolygon = (polyId: string) => {
 
 export const uncheckPolygon = (polyId: string) => {
   const homeStore = useHomeStore();
+
+  const item = findItemById(homeStore.polygonTrunks[homeStore.level], polyId)
+  if (item) onUncheckPoly(item)
 
   // TODO: tree view
   // const selection = this.$refs.tree.find({ data: { id: polyId } });
@@ -822,4 +839,60 @@ export const getTrunkByLevel = (nodes: PolygonNode[], maxLevel: number) => {
     data.push(currentNode);
   }
   return data;
+}
+
+export const clearAllSelected = () => {
+  eventBus.emit(CLEAR_ALL_FILTERS)
+}
+
+export const onNeighborhoodClicked = (e: MouseEvent, node: PolygonNode) => {
+  console.log(node);
+  const homeStore = useHomeStore();
+
+  if ((e.target as HTMLElement).nodeName === 'SPAN' || (e.target as HTMLElement).tagName === 'SPAN') {
+    window.open(location.host + node.path)
+  }
+
+  if (!(node.id in homeStore.selectedPolygons)) {
+    checkPolygon(node.id);
+  }
+
+  return false;
+}
+
+function findItemById(arr: PolygonNode[], id: string): PolygonNode | null {
+  for (const item of arr) {
+    if (item.id === id) {
+      return item;
+    }
+    if (item.children) {
+      const found = findItemById(item.children, id);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return null;
+}
+
+function findAll(items: PolygonNode[], condition: Partial<PolygonNode["state"]>): PolygonNode[] {
+  let result: PolygonNode[] = [];
+
+  for (const item of items) {
+    // Check if the item meets the condition for its state object
+    const isMatch = Object.entries(condition).every(
+      ([key, value]) => item.state[key as keyof PolygonNode["state"]] === value
+    );
+
+    if (isMatch) {
+      result.push(item);
+    }
+
+    // Recursively search in children, if they exist
+    if (item.children) {
+      result = result.concat(findAll(item.children, condition));
+    }
+  }
+
+  return result;
 }

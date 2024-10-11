@@ -39,7 +39,7 @@ onUnmounted(() => {
     ref="drawer"
     :class="[
       isActive ? 'right-0' : '-right-[300px]',
-      'fixed z-40 top-0  w-[300px] h-screen bg-primary',
+      'fixed z-[40] top-0  w-[300px] h-screen bg-primary',
       'pt-[100px] shadow-[-11px_1px_13px_-6px_#0000003F]',
     ]"
   >
