@@ -1,3 +1,4 @@
+import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
 import { flatMapDeep } from 'lodash-es';
 
 type PolygonNode = {
@@ -68,15 +69,18 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
   const map = useGoogleMap().value;
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-  homeStore.polygonLabel = new AdvancedMarkerElement({
+  homeStore.polygonLabel = new MarkerWithLabel({
     map,
     position: new google.maps.LatLng(0, 0),
-    gmpDraggable: false,
-    content: null,
-    collisionBehavior: google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY,
-    gmpClickable: true,
-    title: ""
-  })
+    draggable: false,
+    crossOnDrag: false,
+    labelAnchor: new google.maps.Point(200, 40),
+    labelClass: "polygon-label",
+    icon: "/images/transparent.png",
+    visible: false,
+    label: null,
+    labelContent: ''
+  });
 
   google.maps.event.addListener(map, 'idle', () => {
     const center = map.getCenter();
@@ -652,9 +656,9 @@ export const polyMouseOverEvent = (poly: google.maps.Data.Feature, event: google
   }
 
   poly.setProperty("fillOpacity", MAP_OPACITY_HOVER);
-  // homeStore.polygonLabel.setOptions({
-  //   labelContent: `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`,
-  // });
+  if (homeStore.polygonLabel) {
+    homeStore.polygonLabel.labelElement.innerHTML = `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+  }
 }
 
 export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.MouseEvent) => {
@@ -665,11 +669,11 @@ export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google
     return false;
   }
 
-  // homeStore.polygonLabel.setPosition(event.latLng);
-  // homeStore.polygonLabel.setVisible(true);
-  // homeStore.polygonLabel.setOptions({
-  //   labelContent: `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`,
-  // });
+  if (homeStore.polygonLabel) {
+    homeStore.polygonLabel.setPosition(event.latLng);
+    homeStore.polygonLabel.setVisible(true);
+    homeStore.polygonLabel.labelElement.innerHTML = `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+  }
 }
 
 export const polyMouseOutEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.MouseEvent) => {
@@ -679,7 +683,7 @@ export const polyMouseOutEvent = (poly: google.maps.Data.Feature, event: google.
   if (zoom == 2 && homeStore.level === 2) {
     return false;
   }
-  //homeStore.polygonLabel.setVisible(false);
+  homeStore.polygonLabel?.setVisible(false);
   poly.setProperty("fillOpacity", poly.getProperty('opacityChillin') || MAP_OPACITY_CHILDIN);
 }
 

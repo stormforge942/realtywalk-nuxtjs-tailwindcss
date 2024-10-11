@@ -1,4 +1,5 @@
 import { DEFAULT_MAP, type FlattenedNode } from "~/composables/googleMap";
+import { MarkerWithLabel } from '@googlemaps/markerwithlabel'
 
 interface HomeStore {
     API_ENDPOINT: string,
@@ -47,7 +48,7 @@ interface HomeStore {
         zoom: number
     },
     bikeLayer: any,
-    polygonLabel: any,
+    polygonLabel: MarkerWithLabel | null,
 
     floodPlaneIds: Set<string>,
     schoolZoneIds: Set<string>,
