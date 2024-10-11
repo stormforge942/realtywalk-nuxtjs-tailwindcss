@@ -50,9 +50,8 @@ watch(() => [homeStore.selectedPolygons], () => {
   localStorage.setItem('ancestorPolygons', JSON.stringify(homeStore.ancestorPolygons));
   localStorage.setItem('selectedParents', JSON.stringify(homeStore.selectedParents));
   setPolygonDataStyling();
-  //clearFilter
-  //updateFilter
   getPolygonList(false);
+  console.log(homeStore.polygonTrunks)
 })
 
 watch(() => 

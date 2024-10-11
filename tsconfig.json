@@ -2,6 +2,12 @@
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "types": ["google.maps"]
+    "types": [
+      "google.maps"
+    ],
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
   }
 }

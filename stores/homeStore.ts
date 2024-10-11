@@ -1,4 +1,5 @@
-import { DEFAULT_MAP, type FlattenedNode } from "~/composables/googleMap";
+import { DEFAULT_MAP } from "~/composables/googleMap";
+import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
 
 interface HomeStore {
     API_ENDPOINT: string,
@@ -47,12 +48,12 @@ interface HomeStore {
         zoom: number
     },
     bikeLayer: any,
-    polygonLabel: any,
+    polygonLabel: MarkerWithLabel | null,
 
     floodPlaneIds: Set<string>,
     schoolZoneIds: Set<string>,
     popupDisplayed: boolean,
-    polygonTrunks: FlattenedNode[],
+    polygonTrunks: [any[], any[], any[]],
     selectedPolygons: string[],
     selectedParents: string[],
     ancestorPolygons: string[],
@@ -142,7 +143,7 @@ export const useHomeStore = defineStore('home', {
         floodPlaneIds: new Set(),
         schoolZoneIds: new Set(),
         popupDisplayed: false,
-        polygonTrunks: [],
+        polygonTrunks: [[], [], []],
         selectedPolygons: [],
         selectedParents: [],
         ancestorPolygons: [],

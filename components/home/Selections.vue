@@ -1,36 +1,8 @@
 <script lang="ts" setup>
-import { faAngleDown, faAngleRight, faBicycle, faGraduationCap, faWater } from '@fortawesome/free-solid-svg-icons';
-import type { FlattenedNode } from '~/composables/googleMap';
+import { faAngleRight, faBicycle, faGraduationCap, faWater } from '@fortawesome/free-solid-svg-icons';
 
 const isOpen = ref(false)
 const homeStore = useHomeStore();
-
-const onClickItem = (item: FlattenedNode) => {
-    for(let i = 0; i < homeStore.polygonTrunks.length; i ++) {
-        if(homeStore.polygonTrunks[i].id === item.id) {
-            homeStore.polygonTrunks[i].state.selected = true;
-            homeStore.polygonTrunks[i].state.expanded = !homeStore.polygonTrunks[i].state.expanded;
-        } else {
-            homeStore.polygonTrunks[i].state.selected = false;
-        }
-    }
-    const startIndex = homeStore.polygonTrunks.findIndex(member => item.id === member.id);
-    const lastZoom = homeStore.polygonTrunks.findLastIndex(member => member.zoom === item.zoom)
-    if(startIndex != -1) {
-        const newArray = homeStore.polygonTrunks.slice(startIndex + 1);
-        let lastIndex = startIndex === lastZoom ? 
-        homeStore.polygonTrunks.length - startIndex + 1 : 
-        newArray.findIndex(member => member.zoom <= item.zoom);
-        if(item.zoom <= 2) lastIndex += 2;
-        console.log(startIndex, lastIndex)
-        if(lastIndex != -1) {
-            for(let i = startIndex + 1; i < startIndex + lastIndex - 1; i ++) {
-                homeStore.polygonTrunks[i].state.checked = item.state.expanded
-            }
-        }
-    }
-}
-
 </script>
 
 <template>
@@ -184,27 +156,7 @@ const onClickItem = (item: FlattenedNode) => {
                 </span>
             </label>
             <div class="overflow-y-scroll max-h-[calc(100vh-265px)] no-scrollbar">
-                <div 
-                v-for="item in homeStore.polygonTrunks"
-                :style="{
-                    paddingLeft: `${item.zoom * 20}px`,
-                }"
-                @click="onClickItem(item)"
-                :class="[
-                    item.zoom <= homeStore.level + 1 ? item.state.checked ? 'flex' : ' hidden' : 'hidden',
-                    item.state.selected ? 'bg-primary1' : ''
-                ]"
-                class="min-h-10 items-center gap-x-2 py-1 text-secondary pr-4 cursor-pointer hover:bg-primary1">
-                    <span v-if="item.zoom < homeStore.level + 1">
-                        <FontAwesome 
-                        :icon="faAngleDown" 
-                        :class="[item.state.expanded && 'rotate-180']"/>
-                    </span>
-                    <span v-else class="min-w-[14px]"></span>
-                    <BaseCheckbox v-model:model-value="item.state.checked" color="secondary" class="mb-1"/>
-                    <span>{{ item.text }}</span>
-                </div>
-
+                
             </div>
         </div>
     </div>

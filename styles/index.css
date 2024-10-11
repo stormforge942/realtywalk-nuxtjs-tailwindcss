@@ -72,3 +72,26 @@ button.white {
   opacity: 0.9;
   filter: blur(2px);
 }
+
+.polygon-label {
+  overflow: visible !important;
+  width: auto;
+  text-align: center;
+  z-index: 2000;
+  pointer-events: none;
+  user-select: none;
+  transform: translateY(-10px);
+}
+
+.polygon-label div {
+  position: relative;
+  margin: 0 auto;
+  color: black;
+  background-color: white;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  border: 2px solid #ffc501;
+  padding: 2px 5px;
+  border-radius: 2px;
+}

@@ -1,8 +1,8 @@
-import { flatMapDeep } from 'lodash-es';
+import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
 
-type PolygonNode = {
-  id: number,
-  parent_id: number | null,
+export type PolygonNode = {
+  id: string,
+  parent_id: string | null,
   path: string,
   state: {
     selected: boolean,
@@ -10,6 +10,7 @@ type PolygonNode = {
     expanded: boolean,
     checked: boolean
   },
+  data: any,
   text: string,
   zoom: number,
   _lft: number,
@@ -37,6 +38,7 @@ export const DEFAULT_MAP = {
 let floodFetchAborter = new AbortController();
 let listPointAborter = new AbortController();
 let schoolZoneAborter = new AbortController();
+let polyListAborter = new AbortController();
 
 export const useGoogleMap = () =>
   useState<google.maps.Map>('google_map', undefined)
@@ -49,6 +51,8 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
     console.error('google_map_html is not defined')
     return
   }
+
+  console.log(MarkerWithLabel)
 
   // Initialize Google Map
   useGoogleMap().value = new google.maps.Map(map_html as HTMLElement, {
@@ -67,16 +71,19 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
   const map = useGoogleMap().value;
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-  homeStore.polygonLabel = new AdvancedMarkerElement({
+
+  homeStore.polygonLabel = new MarkerWithLabel({
     map,
     position: new google.maps.LatLng(0, 0),
-    gmpDraggable: false,
-    content: null,
-    collisionBehavior: google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY,
-    gmpClickable: true,
-    title: ""
-  })
+    draggable: false,
+    labelAnchor: new google.maps.Point(200, 40),
+    labelClass: "polygon-label",
+    icon: "/images/transparent.png",
+    visible: false,
+    labelContent: '',
+    label: null,
+    crossOnDrag: false
+  });
 
   google.maps.event.addListener(map, 'idle', () => {
     const center = map.getCenter();
@@ -127,134 +134,50 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
 export const getPolygonList = async (isV2: boolean) => {
   const homeStore = useHomeStore()
 
-  const data = await $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/polygon/${isV2 ? 'get-list-v2' : 'get-list'}`,
+  if (polyListAborter && !polyListAborter.signal.aborted) polyListAborter.abort();
+
+  polyListAborter = new AbortController();
+
+  $fetch<any[]>(`${homeStore.API_ENDPOINT}/api/polygon/${isV2 ? 'get-list-v2' : 'get-list'}`,
     {
       method: 'POST',
       body: {
         ids: homeStore.selectedParents
-      }
-    }
-  ) || []
-  // const notExpanded = this.$refs.tree
-  //   .findAll({ state: { expanded: false } })
-  //   .map((node) => node.id);
+      },
+      signal: polyListAborter.signal
+    },
+  ).then(data => {
+    // const notExpanded = this.$refs.tree
+    //   .findAll({ state: { expanded: false } })
+    //   .map((node) => node.id);
 
-  // this.$refs.tree?.remove({}, true);
-  homeStore.polygonTrunks = flattenData(data);
+    // this.$refs.tree?.remove({}, true);
+    homeStore.polygonTrunks = [[], [], []];
 
-  console.log(flattenData(data))
+    buildTrunk(data).forEach((list, index) => {
+      list.forEach((data) => {
+        const node = prepareNodeData(data);
+        homeStore.polygonTrunks[index].push(node);
 
-  // buildTrunk(data).forEach((list, index) => {
-  //   list.forEach((data: any) => {
-  //     const node = prepareNodeData(data);
-  //     console.log(node)
-  //     homeStore.polygonTrunks[index].push(node);
+        if (index === homeStore.level) {
+          console.log(node)
+          // let trunk = this.$refs.tree.prepend(node);
 
-  //     if (index === homeStore.level) {
-  //       // let trunk = this.$refs.tree.prepend(node);
-
-  //       // if (!notExpanded.includes(trunk.id)) {
-  //       //   trunk.expand();
-  //       // }
-  //     }
-  //   });
-  // });
-}
-
-const buildTrunk = (nodes: any[]) => {
-  if (nodes && nodes.length) {
-    let trunk = [];
-    for (let i = 1; i <= 3; i++) {
-      trunk.push(getTrunkByLevel(nodes, i));
-    }
-    return trunk;
-  }
-  return [[], [], []];
-}
-
-const getTrunkByLevel = (nodes: any[], maxLevel: number) => {
-  let data = [];
-  for (let i = 0; i < nodes.length; i++) {
-    let currentNode = { ...nodes[i] };
-    delete currentNode.children;
-    if (
-      nodes[i].children.length &&
-      ((maxLevel < 3 && currentNode.zoom < maxLevel) || maxLevel === 3)
-    ) {
-      currentNode.children = getTrunkByLevel(nodes[i].children, maxLevel);
-    }
-    data.push(currentNode);
-  }
-  return data;
-}
-
-const prepareNodeData = (node: any) => {
-  const homeStore = useHomeStore();
-
-  node.data = { id: node.id, page_url: node.path };
-  node.state = { selected: true };
-
-  if (node.children) {
-    const children = flattenData(node.children);
-    const match = totalMatch(children.map((x: any) => x.id), homeStore.selectedPolygons);
-    const indeterminate =
-      match === 0 ? false : match !== children.length;
-    node.state = {
-      ...node.state,
-      indeterminate,
-      expanded: match > 0,
-    };
-  }
-
-  if (homeStore.selectedPolygons.some((id) => id == node.id)) {
-    node.state = {
-      ...node.state,
-      checked: true,
-      selected: true,
-    };
-  } else if (!homeStore.ancestorPolygons.some((id) => id == node.id)) {
-    homeStore.ancestorPolygons.push(node.id);
-  }
-
-  if (node.children) {
-    node.children.map((childrenNode: any) => {
-      return prepareNodeData(childrenNode);
+          // if (!notExpanded.includes(trunk.id)) {
+          //   trunk.expand();
+          // }
+        }
+      });
     });
-  }
 
-  return node;
-}
-
-const totalMatch = (needles: any[], haystack: any[]) => {
-  let i = 0;
-  haystack.forEach((x: any) => {
-    if (needles.includes(x)) {
-      i += 1;
-    }
-  });
-  return i;
-}
-
-// Function used to center Google Map to specific coordinates
-export const centerGoogleMap = (lat: number, lng: number): void => {
-  const googleMap = useGoogleMap().value
-
-  if (!googleMap) {
-    console.error('google_map is not defined')
-    return
-  }
-
-  googleMap.setCenter({ lat, lng })
+    console.log(homeStore.polygonTrunks)
+  })
 }
 
 export const isPolygonVisible = (zoom: number, displayAsBg: number) => {
   const homeStore = useHomeStore();
   if (homeStore.showFloodZones || homeStore.showSchoolZones || homeStore.showBikeTrails) return false;
-
-  return (
-    zoom === homeStore.level + 1 ||
-    (zoom == 2 && homeStore.level === 2 && displayAsBg === 1)
-  );
+  return (homeStore.level + 1 === zoom) || (homeStore.level === 2 && zoom === 2 && displayAsBg)
 }
 
 export const setPolygonDataStyling = async () => {
@@ -349,103 +272,6 @@ const polyClickEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.
   }
 }
 
-const checkPolygon = (polyId: string) => {
-  const homeStore = useHomeStore()
-  addToPolygonList(polyId);
-
-  if (homeStore.selectedPolygons.some((id) => id == polyId)) {
-    return;
-  }
-
-  homeStore.selectedPolygons.push(polyId);
-
-  $fetch(`${homeStore.API_ENDPOINT}/api/polygon/trunk/${polyId}`)
-    .then((data: any) => {
-      homeStore.selectedPolygons = [...homeStore.selectedPolygons, ...data.ids].filter((value, index, self) => self.indexOf(value) === index);
-      homeStore.ancestorPolygons = [...homeStore.ancestorPolygons, ...data.ancestors].filter((value, index, self) => self.indexOf(value) === index);
-      homeStore.selectedParents = [...homeStore.selectedParents, ...data.ancestors, +data.id].filter((value, index, self) => self.indexOf(value) === index);
-    })
-}
-
-const uncheckPolygon = (polyId: string) => {
-  const homeStore = useHomeStore();
-
-  // const selection = this.$refs.tree.find({ data: { id: polyId } });
-  // selection.uncheck();
-
-  removePolygonChildrenRecursively(polyId);
-  homeStore.selectedPolygons.splice(homeStore.selectedPolygons.indexOf(polyId), 1);
-  removeFromPolygonList(polyId);
-  if (homeStore.selectedParents.indexOf(polyId) !== -1) {
-    homeStore.selectedParents.splice(homeStore.selectedParents.indexOf(polyId), 1);
-  }
-}
-
-const addToPolygonList = (polyId: string) => {
-  const homeStore = useHomeStore();
-
-  const selectedPolygons = homeStore.property.map.selectedPolygons;
-  if (!selectedPolygons.includes(polyId)) {
-    homeStore.property.map.selectedPolygons.push(polyId);
-  }
-}
-
-const removeFromPolygonList = (polyId: string) => {
-  const homeStore = useHomeStore();
-  const selectedPolygons = homeStore.property.map.selectedPolygons.filter(id => id !== polyId);
-  homeStore.property.map.selectedPolygons = selectedPolygons
-}
-
-const removePolygonChildrenRecursively = (polyId: string) => {
-  // const homeStore = useHomeStore();
-
-  // let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  // let items = flattenData(data);
-  // let item = items.filter((x: any) => x.id == polyId);
-
-  // if (item.length && item[0].children !== undefined) {
-  //   let children = flattenData(item[0].children).map((x: any) => x.id);
-  //   children.forEach((id: string) => {
-  //     const index = homeStore.selectedPolygons.indexOf(id);
-  //     if (index !== -1) {
-  //       homeStore.selectedPolygons.splice(index, 1);
-  //     }
-  //   });
-  //   homeStore.selectedPolygons = [...new Set(homeStore.selectedPolygons)];
-  // }
-}
-
-const addPolygonChildrenRecursively = (polyId: string) => {
-  // const homeStore = useHomeStore();
-  // let data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  // let items = flattenData(data);
-  // let item = items.filter((x: any) => x.id == polyId);
-
-  // if (item.length && item[0].children !== undefined) {
-  //   let children = item[0].children.map((x: any) => x.id);
-  //   const selectedPolygons = [...homeStore.selectedPolygons, ...children];
-  //   homeStore.selectedPolygons = [...new Set(selectedPolygons)];
-  // }
-}
-
-
-const flattenData = (data: PolygonNode[]): FlattenedNode[] => {
-  return data.reduce((acc: PolygonNode[], item: PolygonNode) => {
-    acc.push({
-      ...item, state: {
-        checked: true,
-        expanded: true,
-        indeterminate: false,
-        selected: false
-      }
-    });
-
-    if (item.children && item.children.length) {
-      acc.push(...flattenData(item.children));
-    }
-    return acc;
-  }, []);
-}
 
 export const redrawMap = () => {
   setTimeout(() => {
@@ -495,6 +321,8 @@ export const updatePolygonViewport = async (initiate: boolean = false) => {
     // console.log('Showing alert from update viewport', z, this.polygonsActiveLevel);
   }
   //if (!homeStore.l3Confirmed) return;
+
+  if (homeStore.showBikeTrails || homeStore.showFloodZones || homeStore.showSchoolZones) return;
 
   try {
     if (listPointAborter && !listPointAborter.signal.aborted) listPointAborter.abort();
@@ -652,9 +480,12 @@ export const polyMouseOverEvent = (poly: google.maps.Data.Feature, event: google
   }
 
   poly.setProperty("fillOpacity", MAP_OPACITY_HOVER);
-  // homeStore.polygonLabel.setOptions({
-  //   labelContent: `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`,
-  // });
+
+  if (homeStore.polygonLabel) {
+    const title = poly.getProperty("title") as string;
+    homeStore.polygonLabel.labelElement.innerHTML =
+      `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+  }
 }
 
 export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.MouseEvent) => {
@@ -665,11 +496,12 @@ export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google
     return false;
   }
 
-  // homeStore.polygonLabel.setPosition(event.latLng);
-  // homeStore.polygonLabel.setVisible(true);
-  // homeStore.polygonLabel.setOptions({
-  //   labelContent: `<div>${poly.getProperty("title")}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`,
-  // });
+  if (homeStore.polygonLabel) {
+    const title = poly.getProperty("title") as string;
+    homeStore.polygonLabel.setPosition(event.latLng);
+    homeStore.polygonLabel.setVisible(true);
+    homeStore.polygonLabel.labelElement.innerHTML = `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
+  }
 }
 
 export const polyMouseOutEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.MouseEvent) => {
@@ -679,7 +511,7 @@ export const polyMouseOutEvent = (poly: google.maps.Data.Feature, event: google.
   if (zoom == 2 && homeStore.level === 2) {
     return false;
   }
-  //homeStore.polygonLabel.setVisible(false);
+  homeStore.polygonLabel?.setVisible(false);
   poly.setProperty("fillOpacity", poly.getProperty('opacityChillin') || MAP_OPACITY_CHILDIN);
 }
 
@@ -786,25 +618,209 @@ export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean
   }
 }
 
-// export const onUncheckPoly = (node) => {
-//   let that = this;
-//   setTimeout(function () {
-//     if (node.states.checked) return;
-//     if (node.children.length && node.states.indeterminate) return;
-//     if (that.selectedPolygons.indexOf(node.id) === -1) return;
-//     if (that.selectedParents.indexOf(node.id) !== -1) {
-//       that.selectedParents.splice(that.selectedParents.indexOf(node.id), 1);
-//     }
-//     that.removePolygonChildrenRecursively(node.id);
-//     that.selectedPolygons.splice(that.selectedPolygons.indexOf(node.id), 1);
-//   }, 300);
-// }
-// export const onCheckPoly = (node) => {
-//   let that = this;
-//   setTimeout(function () {
-//     if (!node.states.checked) return;
-//     if (that.selectedPolygons.indexOf(node.id) !== -1) return;
-//     that.addPolygonChildrenRecursively(node.id);
-//     that.selectedPolygons.push(node.id);
-//   }, 300);
-// },
+
+export const onCheckPoly = (node: PolygonNode) => {
+  const homeStore = useHomeStore();
+  setTimeout(function () {
+    if (!node.state.checked) return;
+    if (homeStore.selectedPolygons.indexOf(node.id) !== -1) return;
+    addPolygonChildrenRecursively(node.id);
+    homeStore.selectedPolygons.push(node.id);
+  }, 300);
+}
+
+export const onUncheckPoly = (node: PolygonNode) => {
+  const homeStore = useHomeStore();
+  setTimeout(function () {
+    if (node.state.checked) return;
+    if (node.children?.length && node.state.indeterminate) return;
+    if (homeStore.selectedPolygons.indexOf(node.id) === -1) return;
+    if (homeStore.selectedParents.indexOf(node.id) !== -1) {
+      homeStore.selectedParents.splice(homeStore.selectedParents.indexOf(node.id), 1);
+    }
+    removePolygonChildrenRecursively(node.id);
+    homeStore.selectedPolygons.splice(homeStore.selectedPolygons.indexOf(node.id), 1);
+  }, 300);
+}
+
+export const addPolygonChildrenRecursively = (polyId: string) => {
+  const homeStore = useHomeStore();
+  const data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
+  const items = flattenData(data);
+  const item = items.filter((x) => x.id == polyId);
+
+  if (item.length && item[0].children !== undefined) {
+    const children = item[0].children.map((x) => x.id);
+    const selectedPolygons = [...homeStore.selectedPolygons, ...children];
+    homeStore.selectedPolygons = [...new Set(selectedPolygons)];
+  }
+}
+
+export const removePolygonChildrenRecursively = (polyId: string) => {
+  const homeStore = useHomeStore();
+  const data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
+  const items = flattenData(data);
+  const item = items.filter((x) => x.id == polyId);
+
+  if (item.length && item[0].children !== undefined) {
+    const children = flattenData(item[0].children).map((x) => x.id);
+    children.forEach((id) => {
+      const index = homeStore.selectedPolygons.indexOf(id);
+      if (index !== -1) {
+        homeStore.selectedPolygons.splice(index, 1);
+      }
+    });
+    homeStore.selectedPolygons = [...new Set(homeStore.selectedPolygons)];
+  }
+}
+
+const checkPolygon = (polyId: string) => {
+  const homeStore = useHomeStore()
+  addToPolygonList(polyId);
+
+  if (homeStore.selectedPolygons.some((id) => id == polyId)) {
+    return;
+  }
+
+  homeStore.selectedPolygons.push(polyId);
+
+  $fetch(`${homeStore.API_ENDPOINT}/api/polygon/trunk/${polyId}`)
+    .then((data: any) => {
+      homeStore.selectedPolygons = [...homeStore.selectedPolygons, ...data.ids].filter((value, index, self) => self.indexOf(value) === index);
+      homeStore.ancestorPolygons = [...homeStore.ancestorPolygons, ...data.ancestors].filter((value, index, self) => self.indexOf(value) === index);
+      homeStore.selectedParents = [...homeStore.selectedParents, ...data.ancestors, +data.id].filter((value, index, self) => self.indexOf(value) === index);
+    })
+}
+
+export const uncheckPolygon = (polyId: string) => {
+  const homeStore = useHomeStore();
+
+  // TODO: tree view
+  // const selection = this.$refs.tree.find({ data: { id: polyId } });
+  // selection.uncheck();
+
+  removePolygonChildrenRecursively(polyId);
+  homeStore.selectedPolygons.splice(homeStore.selectedPolygons.indexOf(polyId), 1);
+  removeFromPolygonList(polyId);
+  if (homeStore.selectedParents.indexOf(polyId) !== -1) {
+    homeStore.selectedParents.splice(homeStore.selectedParents.indexOf(polyId), 1);
+  }
+}
+
+const addToPolygonList = (polyId: string) => {
+  const homeStore = useHomeStore();
+
+  const selectedPolygons = homeStore.property.map.selectedPolygons;
+  if (!selectedPolygons.includes(polyId)) {
+    homeStore.property.map.selectedPolygons.push(polyId);
+  }
+}
+
+const flattenData = (data: PolygonNode[]): PolygonNode[] => {
+  return data.map(item => {
+    const newItem = {
+      ...item, state: {
+        checked: true,
+        expanded: true,
+        indeterminate: false,
+        selected: false
+      }
+    };
+
+    if (newItem.children && newItem.children.length) {
+      newItem.children = flattenData(newItem.children);
+    }
+
+    return newItem;
+  });
+};
+
+export const removeFromPolygonList = (polyId: string) => {
+  const homeStore = useHomeStore();
+  homeStore.property.map.selectedPolygons = homeStore.property.map.selectedPolygons;
+}
+
+export const prepareNodeData = (node: PolygonNode) => {
+  const homeStore = useHomeStore();
+
+  node.data = { id: node.id, page_url: node.path };
+  node.state = {
+    checked: true,
+    selected: true,
+    expanded: false,
+    indeterminate: false
+  };
+
+  if (node.children) {
+    const children = flattenData(node.children);
+    const match = totalMatch(
+      children.map((x) => x.id),
+      homeStore.selectedPolygons
+    );
+    const indeterminate =
+      match === 0 ? false : match !== children.length;
+    node.state = {
+      ...node.state,
+      indeterminate: indeterminate,
+      expanded: match > 0,
+    };
+  }
+
+  if (homeStore.selectedPolygons.some((id) => id == node.id)) {
+    node.state = {
+      ...node.state,
+      checked: true,
+      selected: true,
+    };
+  } else if (!homeStore.ancestorPolygons.some((id) => id == node.id)) {
+    homeStore.ancestorPolygons.push(node.id);
+  }
+
+  if (node.children) {
+    node.children.map((childrenNode) => {
+      return prepareNodeData(childrenNode);
+    });
+  }
+
+  return node;
+}
+
+export const totalMatch = (needles: string[], haystack: string[]) => {
+  let i = 0;
+  haystack.forEach((x) => {
+    if (needles.includes(x)) {
+      i += 1;
+    }
+  });
+  return i;
+}
+
+export const buildTrunk = (nodes: PolygonNode[]) => {
+  if (nodes && nodes.length) {
+    let trunk = [];
+    for (let i = 1; i <= 3; i++) {
+      trunk.push(getTrunkByLevel(nodes, i));
+    }
+    return trunk;
+  }
+  return [[], [], []];
+}
+
+export const getTrunkByLevel = (nodes: PolygonNode[], maxLevel: number) => {
+  let data = [];
+  for (let i = 0; i < nodes.length; i++) {
+    let currentNode = { ...nodes[i] };
+    delete currentNode.children;
+    if (
+      nodes[i].children?.length &&
+      ((maxLevel < 3 && currentNode.zoom < maxLevel) || maxLevel === 3)
+    ) {
+      currentNode.children = getTrunkByLevel(
+        nodes[i].children || [],
+        maxLevel
+      );
+    }
+    data.push(currentNode);
+  }
+  return data;
+}
