@@ -206,15 +206,10 @@ export const setPolygonDataStyling = async () => {
     const visibilityToggle = feature.getProperty("visibilityToggle") as string;
     const type = feature.getProperty("type") as string;
     let active = false;
-    if (homeStore.showSchoolZones) {
-      if (visibilityToggle != 'schoolZones') active = false;
-      else active = homeStore.activeSchoolZone === type
-    } else if (homeStore.showFloodZones) {
-      if (visibilityToggle != 'floodZones') active = false;
-      else active = homeStore.floodZones.includes(type)
-    } else {
-      active = true;
-    }
+    if (homeStore.showSchoolZones && visibilityToggle === 'schoolZones') active = true
+    else if (homeStore.showFloodZones && visibilityToggle === 'floodZones') active = homeStore.floodZones.includes(type)
+    else active = false
+
     const zoom = feature.getProperty("zoom") as number;
     const displayAsBg = feature.getProperty("display_as_background") as number;
     const visible = visibilityToggle ? active : isPolygonVisible(zoom, displayAsBg);
@@ -511,7 +506,6 @@ export const polyMouseMoveEvent = (poly: google.maps.Data.Feature, event: google
     homeStore.polygonLabel.labelElement.innerHTML = `<div>${title}<br/><span class="text-muted"><em>right click to view more information.</em></span></div>`
     homeStore.polygonLabel.setPosition(event.latLng);
     homeStore.polygonLabel.setVisible(true);
-    homeStore.polygonLabel.labelContent = ''
   }
 }
 

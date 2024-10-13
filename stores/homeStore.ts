@@ -39,6 +39,7 @@ interface HomeStore {
     maxStory: number,
     hasPool: boolean,
     hasElevator: boolean,
+    showInstruction: boolean,
 
     map: {
         center: {
@@ -135,6 +136,7 @@ export const useHomeStore = defineStore('home', {
         maxStory: MAX_VALUE,
         hasPool: false,
         hasElevator: false,
+        showInstruction: false,
 
 
         map: DEFAULT_MAP,

@@ -11,10 +11,10 @@
   <HomeSelections />
   <HomeSearchPanel />
   <HomeResult />
+  <HomeWelcomeScreen v-if="homeStore.showInstruction"/>
 </template>
 
 <script lang="ts" setup>
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2"
 
 const router = useRouter();
@@ -45,6 +45,8 @@ onMounted(async() => {
 
   homeStore.fetchFloodZoneLegends();
   homeStore.fetchSchoolZoneLegends();
+
+  homeStore.showInstruction = Boolean(localStorage.getItem('SHOW_INSTRUCTION') || true)
 })
 
 watch(() => [homeStore.selectedPolygons], () => {

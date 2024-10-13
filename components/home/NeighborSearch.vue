@@ -34,10 +34,20 @@ watch(isOpen, () => {
 });
 
 const onClickItem = (item:any) => {
-    console.log(item)
+    const map = useGoogleMap().value
+
     placeHolder.value = item?.title || '';
     isOpen.value = false;
     searchWord.value = '';
+
+    if (item !== null) {
+        map.fitBounds(
+          new google.maps.LatLngBounds(
+            { lat: parseFloat(item.max_lat), lng: parseFloat(item.min_lng) },
+            { lat: parseFloat(item.min_lat), lng: parseFloat(item.max_lng) }
+          )
+        );
+      }
 }
 
 const fetchNeighbor = debounce(async (searchTerm: string) => {
@@ -88,7 +98,7 @@ onUnmounted(() => {
             <input type="text" v-model="searchWord" ref="inputElement" @click="isOpen = true" :placeholder="placeHolder"/>
             <span
             @click="isOpen = !isOpen" 
-            class="min-w-10 h-10 text-white flex items-center justify-center bg-primary">
+            class="min-w-10 h-10 text-white flex items-center justify-center bg-primary cursor-pointer">
                 <FontAwesome :class="[isOpen && 'rotate-180']" :icon="faAngleDown"/>
             </span>
         </div>
