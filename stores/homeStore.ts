@@ -1,4 +1,4 @@
-import { DEFAULT_MAP } from "~/composables/googleMap";
+import { DEFAULT_MAP } from "~/composables/homeMap";
 import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
 
 interface HomeStore {
@@ -25,21 +25,8 @@ interface HomeStore {
     showSearch: boolean,
     isListView: boolean,
 
-    minPrice: number,
-    maxPrice: number,
-    listingStatus: LISTING_STATUS_VALUE,
-    propertyType: PROPERTY_TYPE_VALUE[],
-    bedroomCount: number,
-    halfBathRoomCount: number,
-    fullBathRoomCount: number,
-    minSquareFeetCount: number,
-    maxSquareFeetCount: number,
-    garageCapacity: number,
-    minStory: number,
-    maxStory: number,
-    hasPool: boolean,
-    hasElevator: boolean,
     showInstruction: boolean,
+
 
     map: {
         center: {
@@ -122,20 +109,6 @@ export const useHomeStore = defineStore('home', {
         showSearch: false,
         isListView: false,
 
-        minPrice: MIN_VALUE,
-        maxPrice: MAX_VALUE,
-        listingStatus: 'any',
-        propertyType: ['any'],
-        bedroomCount: MIN_VALUE,
-        halfBathRoomCount: MIN_VALUE,
-        fullBathRoomCount: MIN_VALUE,
-        minSquareFeetCount: MIN_VALUE,
-        maxSquareFeetCount: MAX_VALUE,
-        garageCapacity: MIN_VALUE,
-        minStory: MIN_VALUE,
-        maxStory: MAX_VALUE,
-        hasPool: false,
-        hasElevator: false,
         showInstruction: false,
 
 
@@ -167,7 +140,7 @@ export const useHomeStore = defineStore('home', {
         existingPolygonIds: [],
         l3Confirmed: false,
         zoomOnPolyClick: true,
-        isLoading: false,
+        isLoading: true,
 
         property: {
             displaying: "map",

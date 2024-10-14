@@ -30,7 +30,7 @@ body {
   overflow: -moz-scrollbars-none;
 }
 
-*:not(#map):not(#map *) {
+*:not(.g-map):not(.g-map *) {
   font-family: 'MyriadPro', sans-serif;
   transition: 0.2s all ease-in-out;
 }

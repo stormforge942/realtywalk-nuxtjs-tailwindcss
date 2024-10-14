@@ -1,5 +1,3 @@
-import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
-
 export type PolygonNode = {
   id: string,
   parent_id: string | null,
@@ -42,18 +40,12 @@ let polyListAborter = new AbortController();
 
 export const useGoogleMap = () =>
   useState<google.maps.Map>('google_map', undefined)
-export const useGoogleMapHTML = () =>
-  useState<HTMLElement>('google_map_html', undefined)
 
 export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> => {
   const homeStore = useHomeStore();
-  if (!useGoogleMapHTML().value) {
-    console.error('google_map_html is not defined')
-    return
-  }
 
   // Initialize Google Map
-  useGoogleMap().value = new google.maps.Map(map_html as HTMLElement, {
+  const map = new google.maps.Map(map_html as HTMLElement, {
     center: new google.maps.LatLng(homeStore.map.center.lat, homeStore.map.center.lng),
     zoom: homeStore.map.zoom,
     maxZoom: 18,
@@ -68,7 +60,6 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
   });
 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
-  const map = useGoogleMap().value;
 
   // homeStore.polygonLabel = new MarkerWithLabel({
   //   map,
@@ -126,6 +117,8 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
       window.location.href = page_url;
     }
   });
+
+  useGoogleMap().value = map;
 }
 
 export const getPolygonList = async (isV2: boolean) => {

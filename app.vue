@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import "v3-infinite-loading/lib/style.css";
+
 const config = useRuntimeConfig()
 const authStore = useAuthStore()
 const homeStore = useHomeStore()
+const propertyStore = usePropertyStore()
 
 useHead({
   link: [
@@ -20,19 +23,13 @@ useHead({
     { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon/favicon-16x16.png' },
     { rel: 'manifest', href: '/favicon/manifest.json' },
   ],
-  script: [
-    {
-      src: `https://maps.googleapis.com/maps/api/js?key=${config.public.GOOGLE_MAPS_API_KEY}&v=weekly`,
-      defer: true,
-      async: true,
-    },
-  ],
   meta: [
     { name: 'msapplication-TileColor', content: '#ffffff' }
   ]
 })
 authStore.API_ENDPOINT = config.public.API_ENDPOINT
 homeStore.API_ENDPOINT = config.public.API_ENDPOINT
+propertyStore.API_ENDPOINT = config.public.API_ENDPOINT
 </script>
 
 <template>

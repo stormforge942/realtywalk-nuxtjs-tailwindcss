@@ -14,8 +14,8 @@ const onClose = () => {
             {{ $t('home.map.instructions') }}
             <span
             @click="onClose" 
-            class="rounded-full hover:bg-dark absolute top-3 right-3 inline-flex w-10 h-10 items-center justify-center">
-                <FontAwesome :icon="faClose" class="text-secondary cursor-pointer"/>
+            class="rounded-full hover:bg-dark absolute top-3 right-3 inline-flex w-10 h-10 items-center justify-center cursor-pointer">
+                <FontAwesome :icon="faClose" class="text-secondary"/>
             </span>
         </div>
     </div>

@@ -2,7 +2,7 @@
   <div
   class="relative overflow-y-hidden"
   :class="['h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)]']">
-    <div id="map" class="w-full h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)]"></div>
+    <div id="map" class="w-full h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)] g-map"></div>
     <HomeSearchCriteria />
     <HomeFloodFilter/>
     <HomeMobileFilter/>
@@ -10,21 +10,31 @@
   </div>
   <HomeSelections />
   <HomeSearchPanel />
-  <HomeResult />
+  <HomeProperty/>
   <HomeWelcomeScreen v-if="homeStore.showInstruction"/>
 </template>
 
 <script lang="ts" setup>
 import Swal from "sweetalert2"
+import { Loader } from '@googlemaps/js-api-loader';
+import { uniqueId } from "lodash-es";
 
 const router = useRouter();
 const homeStore = useHomeStore();
+const config = useRuntimeConfig().public
 const {t} = useI18n();
 
 onMounted(async() => {
+  const loader = new Loader({
+    apiKey: config.GOOGLE_MAPS_API_KEY,
+    version: 'weekly',
+    id: uniqueId(),
+    libraries: ['core', 'geometry', 'geocoding', 'maps', 'marker', 'streetView'],
+    retries: 3,
+  })
+  await loader.load();
   const map = document.querySelector('#map') as HTMLDivElement
   if (map) {
-    useGoogleMapHTML().value = map
     await initializeGoogleMap(map);
   }
 
@@ -46,7 +56,7 @@ onMounted(async() => {
   homeStore.fetchFloodZoneLegends();
   homeStore.fetchSchoolZoneLegends();
 
-  homeStore.showInstruction = Boolean(localStorage.getItem('SHOW_INSTRUCTION') || true)
+  homeStore.showInstruction = localStorage.getItem('SHOW_INSTRUCTION') === 'true'
 })
 
 watch(() => [homeStore.selectedPolygons], () => {
@@ -120,7 +130,6 @@ eventBus.on(CLEAR_ALL_FILTERS, () => {
 
 onUnmounted(() => {
   eventBus.off(CLEAR_ALL_FILTERS)
-  eventBus.off(SEARCH_CRITERIA)
   eventBus.off(SAVE_SEARCH)
   eventBus.off(RESULTS_COUNT)
   eventBus.off(SHOW_POPUP_L3ALERT)

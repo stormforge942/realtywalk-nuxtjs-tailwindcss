@@ -2,6 +2,7 @@
 import type { SelectOption } from '../base/Select.vue';
 
 const homeStore = useHomeStore();
+const propertyStore = usePropertyStore()
 const {t} = useI18n()
 
 const PRICE_OPTION: SelectOption<number>[] = [
@@ -92,7 +93,7 @@ const FULL_BATHROOM: SelectOption<number>[] = [
         { label: t('home.filter.criteria.bathrooms.options.full_bathroom', { n: id + 1 }), value: id + 1 }))
 ]
 const HALF_BATHROOM: SelectOption<number>[] = [
-    { label: t('home.filter.criteria.bathrooms.options.any_half'), value: 0 },
+    { label: t('home.filter.criteria.bathrooms.options.any_half'), value: MIN_VALUE },
     ...Array(5).fill(0).map((_, id) => (
         { label: t('home.filter.criteria.bathrooms.options.half_bathroom', { n: id + 1 }), value: id + 1 }))
 ]
@@ -143,6 +144,15 @@ const MAX_STORIES: SelectOption<number>[] = [
     { label: '3', value: 3 },
     { label: '4', value: 4 },
 ]
+
+const onClickSearch = () => {
+    eventBus.emit(SEARCH_CRITERIA)
+}
+
+const onClickClear = () => {
+    propertyStore.clearSearchCriteria();
+    eventBus.emit(SEARCH_CRITERIA)
+}
 </script>
 
 <template>
@@ -153,69 +163,69 @@ const MAX_STORIES: SelectOption<number>[] = [
             <HomeNeighborSearch />
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.minPrice"
+            v-model="propertyStore.minPrice"
             :options="MIN_PRICE_OPTION"/>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.maxPrice"
+            v-model="propertyStore.maxPrice"
             :options="MAX_PRICE_OPTION"/>
             <span class="text-primary">{{ t('home.filter.criteria.listing_status.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.listingStatus"
+            v-model="propertyStore.listingStatus"
             :options="LISTING_STATUS"/>
             <span class="text-primary">{{ t('home.filter.criteria.property_type.label') }}</span>
             <BaseSelect 
             :multiple="true"
-            v-model="homeStore.propertyType"
+            v-model="propertyStore.propertyType"
             :options="PROPERTY_TYPE"/>
             <span class="text-primary">{{ t('home.filter.criteria.bedrooms.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.bedroomCount"
+            v-model="propertyStore.bedroomCount"
             :options="BEDROOM"/>
             <span class="text-primary">{{ t('home.filter.criteria.bathrooms.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.fullBathRoomCount"
+            v-model="propertyStore.fullBathRoomCount"
             :options="FULL_BATHROOM"/>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.halfBathRoomCount"
+            v-model="propertyStore.halfBathRoomCount"
             :options="HALF_BATHROOM"/>
             <span class="text-primary">{{ t('home.filter.criteria.square_feet.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.minSquareFeetCount"
+            v-model="propertyStore.minSquareFeetCount"
             :options="MIN_SQUARE_FEET"/>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.maxSquareFeetCount"
+            v-model="propertyStore.maxSquareFeetCount"
             :options="MAX_SQUARE_FEET"/>
             <span class="text-primary">{{ t('home.filter.criteria.garage_capacity.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.garageCapacity"
+            v-model="propertyStore.garageCapacity"
             :options="GARAGE_CAPACITY"/>
             <span class="text-primary">{{ t('home.filter.criteria.stories.label') }}</span>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.minStory"
+            v-model="propertyStore.minStory"
             :options="MIN_STORIES"/>
             <BaseSelect 
             :multiple="false"
-            v-model="homeStore.maxStory"
+            v-model="propertyStore.maxStory"
             :options="MAX_STORIES"/>
-            <BaseCheckbox color="primary" v-model="homeStore.hasPool">
+            <BaseCheckbox color="primary" v-model="propertyStore.hasPool">
                 <span class="text-primary mt-1">{{ t('home.filter.criteria.include_pool.label') }}</span>
             </BaseCheckbox>
-            <BaseCheckbox color="primary" v-model="homeStore.hasElevator">
+            <BaseCheckbox color="primary" v-model="propertyStore.hasElevator">
                 <span class="text-primary mt-1">{{ t('home.filter.criteria.include_elevator.label') }}</span>
             </BaseCheckbox>
         </div>
         <div class="mx-4 flex flex-col gap-4 mt-4">
-            <button type="submit">{{ t('home.map.btn_results') }}</button>
-            <button class="white">{{ t('home.map.btn_clear_selected') }}</button>
+            <button type="submit" @click="onClickSearch()">{{ t('home.map.btn_results') }}</button>
+            <button class="white" @click="onClickClear()">{{ t('home.map.btn_clear_selected') }}</button>
         </div>
     </div>
 </template>

@@ -16,7 +16,7 @@ const onClickShowSearch = (val: boolean) => {
 
 
 const onClickShowResult = (val: boolean) => {
-    if(getBreakpoint() != 'sm') {
+    if(window.innerWidth > 764) {
         homeStore.showSearch = val
     }
     homeStore.showResult = val
