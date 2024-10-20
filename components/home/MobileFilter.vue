@@ -2,8 +2,7 @@
 const homeStore = useHomeStore()
 
 const onClickShowResult = (val: boolean) => {
-    console.log(getBreakpoint())
-    if(getBreakpoint() != 'sm') {
+    if(window.innerWidth > 1024) {
         homeStore.showSearch = val
     }
     homeStore.showResult = val
@@ -12,7 +11,7 @@ const onClickShowResult = (val: boolean) => {
 
 
 <template>
-    <div class="flex flex-col gap-[1px] bg-dark md:hidden w-full absolute top-[50px]">
+    <div class="flex flex-col gap-[1px] bg-dark lg:hidden w-full absolute top-[50px]">
         <div class="grid grid-cols-2 w-full gap-[1px]">
             <button 
             @click="onClickShowResult(false)"
@@ -74,7 +73,7 @@ const onClickShowResult = (val: boolean) => {
     @apply h-[50px] bg-primary1 text-white text-xl hover:bg-primary uppercase
 }
 .gradient-button.selected {
-    @apply bg-secondary text-primary md:font-semibold
+    @apply bg-secondary text-primary lg:font-semibold
 }
 .filter-button {
     @apply w-full h-10 flex items-center justify-center text-[#FFFFFF80] text-sm font-semibold bg-primary1

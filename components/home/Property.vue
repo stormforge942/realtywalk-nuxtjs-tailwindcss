@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { debounce } from "lodash-es";
 import InfiniteLoading from "v3-infinite-loading";
 
 const homeStore = useHomeStore();
 const propertyStore = usePropertyStore();
 
+const aborter = ref(new AbortController());
+
 const infiniteHandler = ($state: any) => {
     if (propertyStore.page > propertyStore.lastPropertyPage) {
     return;
     }
-    propertyStore.fetchProperty(true, $state);
+    propertyStore.fetchProperty(true, $state, aborter.value);
 }
 
 
@@ -16,18 +19,42 @@ const onClickSearch = () => {
 
 }
 
+const fetchProperty = (nextPage: boolean) => {
+    if(aborter.value && !aborter.value.signal.aborted) aborter.value.abort()
+    aborter.value = new AbortController()
+    propertyStore.fetchProperty(nextPage, infiniteHandler, aborter.value);
+}
+
+
 watch(() => [
     propertyStore.sortBy,
     propertyStore.sortOrder,
+    propertyStore.polygons,
+    propertyStore.bedroomCount,
+    propertyStore.fullBathRoomCount,
+    propertyStore.garageCapacity,
+    propertyStore.halfBathRoomCount,
+    propertyStore.hasElevator,
+    propertyStore.hasPool,
+    propertyStore.listingStatus,
+    propertyStore.minStory,
+    propertyStore.maxStory,
+    propertyStore.minPrice,
+    propertyStore.maxPrice,
+    propertyStore.minSquareFeetCount,
+    propertyStore.maxSquareFeetCount,
+    propertyStore.propertyType,
     homeStore.isListView,
     homeStore.showResult,
-], () => {
-    propertyStore.fetchProperty(false, infiniteHandler)
-})
+], debounce(() => {
+    fetchProperty(false)
+    propertyStore.fetchMapProperties(false)
+}))
 
 onMounted(() => {
     eventBus.on(SEARCH_CRITERIA, () => {
-        propertyStore.fetchProperty(false, infiniteHandler)
+        fetchProperty(false)
+        propertyStore.fetchMapProperties(false)
     })
 })
 
@@ -38,9 +65,9 @@ onUnmounted(() => {
 
 <template>
     <div
-    :class="homeStore.showResult ? 'h-[calc(100vh-200px)] md:h-[calc(100vh-170px)]' : 'h-0'" 
-    class="absolute top-[200px] md:top-[100px] lg:top-[120px] left-0 w-screen md:left-[320px] md:w-[calc(100vw-320px)] bg-white overflow-hidden">
-        <div class="w-full h-full pt-0 md:pt-[60px] px-0 md:px-5">
+    :class="homeStore.showResult ? 'h-[calc(100vh-200px)] lg:h-[calc(100vh-120px)]' : 'h-0'" 
+    class="absolute top-[200px] lg:top-[120px] left-0 w-screen lg:left-[320px] lg:w-[calc(100vw-320px)] bg-white overflow-hidden">
+        <div class="w-full h-full pt-0 lg:pt-[60px] px-0 lg:px-5">
             <template v-if="homeStore.isListView">
                 <div v-if="!propertyStore.properties && 
                     !propertyStore.mapProperties.data.length && 

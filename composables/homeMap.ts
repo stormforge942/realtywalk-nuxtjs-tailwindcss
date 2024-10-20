@@ -1,3 +1,5 @@
+import { MarkerWithLabel } from "@googlemaps/markerwithlabel"
+
 export type PolygonNode = {
   id: string,
   parent_id: string | null,
@@ -139,13 +141,15 @@ export const getPolygonList = async (isV2: boolean) => {
       signal: polyListAborter.signal
     },
   ).then(data => {
-    const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: false });
+    const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: true });
     // const notExpanded = this.$refs.tree
     //   .findAll({ state: { expanded: false } })
     //   .map((node) => node.id);
 
     // this.$refs.tree?.remove({}, true);
     homeStore.polygonTrunks = [[], [], []];
+
+    console.log("Not Expanded: ", notExpanded);
 
     buildTrunk(data).forEach((list, index) => {
       list.forEach((data) => {
@@ -199,7 +203,7 @@ export const setPolygonDataStyling = async () => {
     const visibilityToggle = feature.getProperty("visibilityToggle") as string;
     const type = feature.getProperty("type") as string;
     let active = false;
-    if (homeStore.showSchoolZones && visibilityToggle === 'schoolZones') active = true
+    if (homeStore.showSchoolZones && visibilityToggle === 'schoolZones') active = type === homeStore.activeSchoolZone
     else if (homeStore.showFloodZones && visibilityToggle === 'floodZones') active = homeStore.floodZones.includes(type)
     else active = false
 
@@ -604,7 +608,7 @@ export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean
     //   trunk.expand();
     // });
     homeStore.polygonTrunks[level].forEach((trunkData: PolygonNode) => {
-      trunkData.state.expanded = false;
+      trunkData.state.expanded = true;
     })
 
     if (!skipZoom) {
@@ -724,7 +728,7 @@ const flattenData = (data: PolygonNode[]): PolygonNode[] => {
     const newItem = {
       ...item, state: {
         checked: true,
-        expanded: true,
+        expanded: false,
         indeterminate: false,
         selected: false
       }
@@ -740,7 +744,7 @@ const flattenData = (data: PolygonNode[]): PolygonNode[] => {
 
 export const removeFromPolygonList = (polyId: string) => {
   const homeStore = useHomeStore();
-  homeStore.property.map.selectedPolygons = homeStore.property.map.selectedPolygons;
+  homeStore.property.map.selectedPolygons = homeStore.property.map.selectedPolygons.filter(item => item === polyId);
 }
 
 export const prepareNodeData = (node: PolygonNode) => {

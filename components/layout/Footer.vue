@@ -10,8 +10,8 @@
       <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>
       <NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink>
       <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
-      <NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink>
-      <NuxtLink to="/users/signin">{{ $t('menu.sign_in') }}</NuxtLink>
+      <NuxtLink to="/user/register">{{ $t('menu.register') }}</NuxtLink>
+      <NuxtLink to="/user/signin">{{ $t('menu.sign_in') }}</NuxtLink>
       <NuxtLink to="/report-bug">{{ $t('menu.report_bug') }}</NuxtLink>
     </div>
   </div>

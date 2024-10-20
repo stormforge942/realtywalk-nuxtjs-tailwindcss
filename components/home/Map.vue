@@ -10,34 +10,35 @@
   </div>
   <HomeSelections />
   <HomeSearchPanel />
+  <HomeSaveSearch />
   <HomeProperty/>
   <HomeWelcomeScreen v-if="homeStore.showInstruction"/>
 </template>
 
 <script lang="ts" setup>
 import Swal from "sweetalert2"
-import { Loader } from '@googlemaps/js-api-loader';
-import { uniqueId } from "lodash-es";
 
 const router = useRouter();
 const homeStore = useHomeStore();
 const config = useRuntimeConfig().public
 const {t} = useI18n();
 
+const onResizeMap = () => {
+  console.log("Resizing")
+  if(homeStore.showResult && !homeStore.showSearch && window.innerWidth >= 1024) {
+    homeStore.showSearch = true;
+  }
+  if(homeStore.showResult && homeStore.showSearch && window.innerWidth < 1024) {
+    homeStore.showSearch = false;
+  }
+}
+
 onMounted(async() => {
-  const loader = new Loader({
-    apiKey: config.GOOGLE_MAPS_API_KEY,
-    version: 'weekly',
-    id: uniqueId(),
-    libraries: ['core', 'geometry', 'geocoding', 'maps', 'marker', 'streetView'],
-    retries: 3,
-  })
-  await loader.load();
   const map = document.querySelector('#map') as HTMLDivElement
   if (map) {
     await initializeGoogleMap(map);
   }
-
+  
   const selectedParents = localStorage.getItem("selectedParents");
   if(selectedParents) {
     homeStore.selectedParents = JSON.parse(selectedParents);
@@ -57,6 +58,8 @@ onMounted(async() => {
   homeStore.fetchSchoolZoneLegends();
 
   homeStore.showInstruction = localStorage.getItem('SHOW_INSTRUCTION') === 'true'
+
+  window.addEventListener('resize', onResizeMap);
 })
 
 watch(() => [homeStore.selectedPolygons], () => {
@@ -107,10 +110,10 @@ eventBus.on(SHOW_POPUP_L3ALERT, async () => {
 
     return await new Promise((resolve, reject) => {
       if (swal.isConfirmed) {
-        router.push('/users/signin');
+        router.push('/user/signin');
         reject(false);
       } else if (swal.isDenied) {
-        router.push('/users/register');
+        router.push('/user/register');
         reject(false);
       } else {
         resolve(true);
@@ -134,6 +137,8 @@ onUnmounted(() => {
   eventBus.off(RESULTS_COUNT)
   eventBus.off(SHOW_POPUP_L3ALERT)
   eventBus.off(APPLY_SAVED_SEARCH)
+
+  window.removeEventListener('resize', onResizeMap)
 })
 
 

@@ -1,7 +1,7 @@
 import { DEFAULT_MAP } from "~/composables/homeMap";
 import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
 
-interface HomeStore {
+export interface HomeStore {
     API_ENDPOINT: string,
 
     isMapView: boolean,
@@ -26,6 +26,7 @@ interface HomeStore {
     isListView: boolean,
 
     showInstruction: boolean,
+    saveSearch: boolean,
 
 
     map: {
@@ -63,6 +64,7 @@ interface HomeStore {
     l3Confirmed: boolean,
     zoomOnPolyClick: boolean,
     isLoading: boolean,
+    activeNeighborhood: string,
 
     property: {
         displaying: "map",
@@ -110,6 +112,7 @@ export const useHomeStore = defineStore('home', {
         isListView: false,
 
         showInstruction: false,
+        saveSearch: false,
 
 
         map: DEFAULT_MAP,
@@ -141,6 +144,7 @@ export const useHomeStore = defineStore('home', {
         l3Confirmed: false,
         zoomOnPolyClick: true,
         isLoading: true,
+        activeNeighborhood: '',
 
         property: {
             displaying: "map",

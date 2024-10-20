@@ -5,6 +5,7 @@ const config = useRuntimeConfig()
 const authStore = useAuthStore()
 const homeStore = useHomeStore()
 const propertyStore = usePropertyStore()
+const exploreStore = useExploreStore()
 
 useHead({
   link: [
@@ -25,11 +26,32 @@ useHead({
   ],
   meta: [
     { name: 'msapplication-TileColor', content: '#ffffff' }
-  ]
+  ],
+  script: [
+    {
+      src: `https://maps.googleapis.com/maps/api/js?key=${config.public.GOOGLE_MAPS_API_KEY}&libraries=geometry,geocoding,maps,marker,streetView`,
+      async: true,
+      defer: true,
+    },
+  ],
 })
 authStore.API_ENDPOINT = config.public.API_ENDPOINT
 homeStore.API_ENDPOINT = config.public.API_ENDPOINT
 propertyStore.API_ENDPOINT = config.public.API_ENDPOINT
+exploreStore.API_ENDPOINT = config.public.API_ENDPOINT
+
+onMounted(() => {
+  authStore.user = JSON.parse(localStorage.getItem('user') || 'null') as User
+  authStore.token = localStorage.getItem('token') || ''
+  authStore.authenticated = authStore.user && !!authStore.token
+
+  if(authStore.authenticated) {
+    authStore.fetchSearchList()
+  } else {
+    authStore.logout()
+  }
+})
+
 </script>
 
 <template>

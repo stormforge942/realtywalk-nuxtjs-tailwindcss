@@ -10,25 +10,32 @@ const img = useImage()
 </script>
 
 <template>
-<div class="flex mb-4 md:mb-10">
-    <div class="relative min-w-[240px] max-w-[240px] md:min-w-[220px] md:max-w-[220px] aspect-square overflow-hidden">
-        <NuxtImg class="w-full h-[240px] md:h-[220px] aspect-square " 
+<div class="flex flex-col md:flex-row mb-4 lg:mb-10">
+    <NuxtLink
+    class="relative w-full md:min-w-[240px] md:max-w-[240px] lg:min-w-[220px] lg:max-w-[220px] aspect-square overflow-hidden">
+        <NuxtImg class="w-full h-full md:h-[240px] lg:h-[220px] aspect-square " 
         :placeholder="img(props.property.pi, { f: 'png', blur: 2, q: 50 })"
         :src="props.property.pi"/>
-    </div>
+    </NuxtLink>
     <div 
-    class="w-[calc(100%-220px)] hidden md:flex flex-col text-primary1 gap-y-2 ml-4">
+    class="w-[calc(100%-220px)] hidden lg:flex flex-col text-primary1 gap-y-2 ml-4">
         <div class="flex bg-[#D7E4EA] p-2 min-h-1/3">
             <span class="w-1/5">{{ $t('property.list_details.price') }} ${{ props.property.pf }}</span>
             <span class="w-2/5 inline-flex gap-x-2 justify-between">
                 <span class="w-full">{{ $t('property.list_details.address') }}
-                    <span class="underline hover:text-primary cursor-pointer">{{ props.property.fa }}</span>
+                    <NuxtLink 
+                    :to="props.property.pu"
+                    class="underline hover:text-primary cursor-pointer">
+                        {{ props.property.fa }}
+                    </NuxtLink>
                 </span>
                 <span class="w-full text-black font-semibold">
                     {{ $t('property.list_details.status') }}
-                    <span class="bg-green-600 rounded-md text-white p-1">
+                    <NuxtLink
+                    :to="props.property.pp" 
+                    class="bg-green-600 rounded-md text-white p-1">
                         {{ props.property.s }}
-                    </span>
+                    </NuxtLink>
                 </span>
             </span>
             <span class="w-2/5">{{ $t('property.list_details.sub') }} 
@@ -50,11 +57,15 @@ const img = useImage()
             </span>
         </div>
     </div>
-    <div class="flex md:hidden w-full bg-[#D7E4EA] text-primary1">
+    <div class="flex lg:hidden w-full bg-[#D7E4EA] text-primary1">
         <div class="border-white border-r w-full flex flex-col px-10 py-6 text-xl">
             <div class="text-4xl">${{ props.property.pf.toLocaleString() }}</div>
             <div class="w-full">{{ $t('property.list_details.address') }}
-                <span class="underline hover:text-primary cursor-pointer">{{ props.property.fa }}</span>
+                <NuxtLink 
+                :to="props.property.pu"
+                class="underline hover:text-primary cursor-pointer">
+                    {{ props.property.fa }}
+                </NuxtLink>
             </div>
             <div>
                 {{ $t('property.list_details.status') }}
@@ -64,7 +75,11 @@ const img = useImage()
             </div>
             <div>
                 {{ $t('property.show.features.subdivision') }} 
-                <span class="underline hover:text-primary cursor-pointer">{{ props.property.pn }}</span>
+                <NuxtLink 
+                :to="props.property.pp" 
+                class="underline hover:text-primary cursor-pointer">
+                    {{ props.property.pn }}
+                </NuxtLink>
             </div>
             <div>{{ props.property.bn }}</div>
         </div>

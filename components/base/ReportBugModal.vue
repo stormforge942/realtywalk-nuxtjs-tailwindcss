@@ -5,14 +5,16 @@ const toggle = (val: boolean) => {
   isOpen.value = val
 }
 
-eventBus.on(REPORT_MODAL, () => {
-  isOpen.value = true
+eventBus.on(REPORT_MODAL, (val) => {
+  isOpen.value = val as boolean
 })
 </script>
 
 <template>
   <BaseModal :isOpen="isOpen" @toggle="toggle">
     <template #title>{{ $t('report_bug.title') }}</template>
-    <BaseReportBugForm />
+    <template #body>
+      <BaseReportBugForm />
+    </template>
   </BaseModal>
 </template>

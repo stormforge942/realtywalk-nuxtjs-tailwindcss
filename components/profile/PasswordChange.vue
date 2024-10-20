@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { type InferType } from 'yup';
 import type { FormSubmitEvent } from '#ui/types'
+import Swal from 'sweetalert2';
+
+const {t} = useI18n()
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 type Schema = InferType<typeof PasswordChangeSchema>
 
@@ -12,7 +18,28 @@ const state = reactive({
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
-  console.log(event.data)
+  const success = await authStore.updatePassword(event.data)
+  if(success) {
+    await Swal.mixin({
+        icon: 'success',
+        title: t('profile.user.notifications.password_updated.title'),
+        text: t('profile.user.notifications.password_updated.message'),
+        confirmButtonColor: '#012e55',
+        confirmButtonText: 'OK'
+    }).fire()
+    authStore.logout()
+    localStorage.setItem('user', 'null')
+    localStorage.setItem('token', '')
+    router.push('/user/signin-with-password')
+  } else {
+    await Swal.mixin({
+        icon: 'error',
+        title: 'There was an error',
+        text: 'Your current password is incorrect',
+        confirmButtonColor: '#012e55',
+        confirmButtonText: 'OK'
+    }).fire()
+  }
 }
 </script>
 
@@ -31,6 +58,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <UFormGroup :label="$t('profile.user.form.labels.password_confirmation')" name="confirmPassword">
             <input type="password"  placeholder="********" v-model="state.confirmPassword"/>
         </UFormGroup>
-        <button type="submit">Update</button>
+        <button type="submit" :disabled="authStore.isLoading" class="disabled:bg-gray-800">
+            {{ authStore.isLoading ? $t('profile.user.btn_submit_processing') : $t('profile.user.btn_submit') }}
+        </button>
     </UForm>
 </template>

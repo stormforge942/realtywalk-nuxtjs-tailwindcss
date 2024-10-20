@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineProps({
   title: String,
-  bodyClass: String,
   isOpen: Boolean,
 })
 
@@ -10,6 +9,9 @@ const emit = defineEmits(['toggle'])
 
 <template>
   <UModal
+    :ui="{
+      width: 'w-full sm:max-w-max'
+    }"
     :model-value="isOpen"
     @update:model-value="emit('toggle')"
     prevent-close
@@ -25,7 +27,7 @@ const emit = defineEmits(['toggle'])
           <h3
             class="text-xl font-semibold leading-6 text-gray-900 dark:text-white"
           >
-            <slot name="title" />
+            <slot name="title"></slot>
           </h3>
           <UButton
             color="black"
@@ -36,8 +38,7 @@ const emit = defineEmits(['toggle'])
           />
         </div>
       </template>
-
-      <slot />
+      <slot name="body"></slot>
     </UCard>
   </UModal>
 </template>

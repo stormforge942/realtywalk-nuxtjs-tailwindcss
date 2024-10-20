@@ -42,11 +42,11 @@ a {
 
 input[type='text'],
 input[type='password'] {
-  @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary;
+  @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary disabled:bg-gray-200;
 }
 
 button[type='submit'] {
-  @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] rounded-sm;
+  @apply text-base w-full bg-primary hover:bg-dark text-white text-center py-[6px] flex items-center justify-center gap-x-2 rounded-sm disabled:bg-gray-800;
 }
 
 button.white {

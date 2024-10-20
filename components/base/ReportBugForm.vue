@@ -1,20 +1,55 @@
 <script setup lang="ts">
+import Swal from "sweetalert2"
 import type { InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import { ReportBugFormSchema } from '@/utils/schemas'
 
 type Schema = InferType<typeof ReportBugFormSchema>
 
+const config = useRuntimeConfig().public
+const authStore = useAuthStore()
+
 const state = reactive({
   name: '',
   email: '',
   url: '',
-  bug: '',
+  body: '',
+})
+
+const isLoading = ref(false);
+
+onMounted(() => {
+  state.url = window.location.href;
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data)
+  if(!authStore.isValid) {
+    return
+  }
+  isLoading.value = true;
+  try {
+    await $fetch(`${config.API_ENDPOINT}/api/report-bug`, {
+      method: 'POST',
+      body: event.data
+    })
+    Swal.mixin({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Your bug report has been submitted.',
+        confirmButtonColor: '#012e55'
+      }).fire()
+  } catch (e) {
+    Swal.mixin({
+        icon: 'error',
+        title: 'There was an error',
+        text: getErrorMessage(e),
+        confirmButtonColor: '#012e55'
+      }).fire()
+  } finally {
+    eventBus.emit(REPORT_MODAL, false)
+    isLoading.value = false;
+  }
+  
 }
 </script>
 
@@ -34,10 +69,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UFormGroup :label="$t('report_bug.url')" name="url">
       <input type="text" v-model="state.url" />
     </UFormGroup>
-    <UFormGroup :label="$t('report_bug.bug')" name="bug">
-      <textarea v-model="state.bug"></textarea>
+    <UFormGroup :label="$t('report_bug.bug')" name="body">
+      <textarea v-model="state.body"></textarea>
     </UFormGroup>
-    <button>{{ $t('report_bug.submit') }}</button>
+    <BaseRecaptcha />
+    <button type="submit">{{ $t('report_bug.submit') }}</button>
   </UForm>
 </template>
 

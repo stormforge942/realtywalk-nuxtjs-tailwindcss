@@ -4,6 +4,7 @@ const route = useRoute()
 const isHome = computed(() => route.path === '/');
 
 const homeStore = useHomeStore();
+const authStore = useAuthStore();
 
 </script>
 
@@ -36,7 +37,16 @@ const homeStore = useHomeStore();
     <BaseMobileDrawer />
 
     <div class="hidden lg:flex flex-col h-full justify-end">
-      <div class="absolute top-0 right-4 flex">
+      <div
+      v-if="authStore.authenticated" 
+      class="absolute top-0 right-4 flex">
+        <HomeSettings />
+        <HomeSavedSearchList />
+      </div>
+
+      <div
+      v-else
+      class="absolute top-0 right-4 flex">
         <span
         @click="homeStore.setMapViewMode(false)"
         v-if="!isHome || homeStore.isMapView"
@@ -61,13 +71,14 @@ const homeStore = useHomeStore();
         </span>
         <ul class="flex bg-dark p-1">
           <li>
-            <NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink>
+            <NuxtLink to="/user/register">{{ $t('menu.register') }}</NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/users/signin">{{ $t('menu.sign_in') }}</NuxtLink>
+            <NuxtLink to="/user/signin">{{ $t('menu.sign_in') }}</NuxtLink>
           </li>
         </ul>
       </div>
+
       <ul class="flex items-center">
         <li class="relative">
           <NuxtLink class="cursor-pointer" id="lookup-button">
@@ -88,7 +99,7 @@ const homeStore = useHomeStore();
         <li>
           <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
         </li>
-        <li @click="eventBus.emit(REPORT_MODAL)">
+        <li @click="eventBus.emit(REPORT_MODAL, true)">
           <NuxtLink class="cursor-pointer">{{
             $t('menu.report_bug')
           }}</NuxtLink>

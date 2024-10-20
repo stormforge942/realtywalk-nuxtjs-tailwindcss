@@ -6,10 +6,10 @@ const homeStore = useHomeStore();
 
 <template>
   <div
-  :class="[isOpen ? 'right-0' : '-right-full md:-right-[300px]']"
-  class='fixed top-0 w-screen md:w-[300px] bg-primary h-screen'>
+  :class="[isOpen ? 'right-0' : '-right-full lg:-right-[300px]']"
+  class='fixed top-0 w-screen lg:w-[300px] bg-primary h-screen'>
     <div class="w-full h-full relative">
-        <div class="w-max h-full flex items-center justify-start fixed md:absolute right-0 md:-left-10">
+        <div class="w-max h-full flex items-center justify-start fixed lg:absolute right-0 lg:-left-10">
             <button 
             style="writing-mode: vertical-rl;"
             @click="isOpen = !isOpen"
@@ -23,7 +23,7 @@ const homeStore = useHomeStore();
         </div>  
         <div 
         :class="isOpen ? '-left-[110px] xl:-left-[300px]' : '-left-[180px] xl:-left-[510px]'"
-        class="hidden md:flex flex-col xl:flex-row absolute mt-[110px] lg:mt-[130px] gap-2 z-40">
+        class="hidden lg:flex flex-col xl:flex-row absolute mt-[150px] lg:mt-[130px] gap-2 z-40">
             <label
             @click="homeStore.toggleShowFloodZones" 
             :title="$t('home.toggles.flood_planes')"
@@ -128,7 +128,7 @@ const homeStore = useHomeStore();
         class="clear-button">
             {{ $t('home.map.btn_clear_selected') }}
         </button>
-        <div class="w-full h-full pt-[100px] lg:pt-[120px] z-40">
+        <div class="w-full h-full pt-[150px] lg:pt-[120px] z-40">
             <div class="flex">
                 <button 
                 @click="setPolygonsActiveLevel(0, false, false)"
@@ -175,7 +175,7 @@ const homeStore = useHomeStore();
     @apply w-full absolute bottom-0 h-[50px] flex items-center justify-center bg-primary1 text-white hover:text-secondary hover:bg-dark
 }
 .toggle-button {
-    @apply text-white bg-primary1 md:bg-primary w-10 h-[140px] rotate-180 rounded-r-md flex items-center justify-center gap-x-2 hover:bg-dark
+    @apply text-white bg-primary1 lg:bg-primary w-10 h-[140px] rotate-180 rounded-r-md flex items-center justify-center gap-x-2 hover:bg-dark
 }
 .level-button {
     @apply w-full h-[45px] flex items-center text-[#FFFFFF80] bg-dark hover:bg-darkHover uppercase justify-center

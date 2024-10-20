@@ -19,6 +19,10 @@ const handleOutSideClick = (e: MouseEvent) => {
   }
 }
 
+const onClose = () => {
+  isActive.value = false;
+}
+
 onMounted(() => {
   document.addEventListener('click', handleOutSideClick)
 })
@@ -49,26 +53,26 @@ onUnmounted(() => {
       <li>
         <NuxtLink to="/">{{ $t('menu.address_lookup') }}</NuxtLink>
       </li>
-      <li>
+      <li @click="onClose()">
         <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>
       </li>
-      <li>
+      <li @click="onClose()">
         <NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink>
       </li>
-      <li>
+      <li @click="onClose()">
         <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
       </li>
-      <li>
-        <NuxtLink to="/users/register">{{ $t('menu.register') }}</NuxtLink>
+      <li @click="onClose()">
+        <NuxtLink to="/user/register">{{ $t('menu.register') }}</NuxtLink>
       </li>
-      <li>
-        <NuxtLink to="/users/signin">{{ $t('menu.sign_in') }}</NuxtLink>
+      <li @click="onClose()">
+        <NuxtLink to="/user/signin">{{ $t('menu.sign_in') }}</NuxtLink>
       </li>
-      <li>
-        <NuxtLink to="/users/favorites">{{ $t('menu.favorite') }}</NuxtLink>
+      <li @click="onClose()">
+        <NuxtLink to="/user/favorites">{{ $t('menu.favorite') }}</NuxtLink>
       </li>
-      <li>
-        <NuxtLink to="/">{{ $t('menu.report_bug') }}</NuxtLink>
+      <li @click="onClose()">
+        <NuxtLink to="/report-bug">{{ $t('menu.report_bug') }}</NuxtLink>
       </li>
       <BaseWatchDemo />
     </div>

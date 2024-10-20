@@ -12,6 +12,7 @@ const loading = ref(false)
 const reloading = ref(false)
 const markersLoading = ref(true)
 const geometryLoading = ref(false)
+const markers = ref<any>([])
 const propertyStore = usePropertyStore()
 
 watch(() => [loading, reloading], () => {
@@ -47,7 +48,15 @@ const addPropertyMarkers = () => {
         const infoWindow = new google.maps.InfoWindow({
             content: `<h5><a href="${property.pu}" target="_blank">${property.fa}</a></h5><p>${formatPrice(property)}</p>`,
         })
+
+        marker.addListener('click', () => {
+            infoWindow.open(map, marker)
+        })
+
+        markers.value.push(marker)
     })
+
+    markersLoading.value = false;
 }
 
 onMounted(async () => {

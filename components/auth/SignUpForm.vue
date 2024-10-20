@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import type { InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
-import {
-  SignUpOnlyEmailSchema,
-  SignUpWithPasswordSchema,
-} from '@/utils/schemas'
+import Swal from 'sweetalert2';
 
-type Schema =
-  | InferType<typeof SignUpOnlyEmailSchema>
-  | InferType<typeof SignUpWithPasswordSchema>
+const authStore = useAuthStore()
 
 const state = reactive({
   name: '',
@@ -16,14 +11,55 @@ const state = reactive({
   password: '',
   confirmPassword: '',
 })
+const recaptchaError = ref(false)
 
 const hasPassword = ref(false)
 const isAgree = ref(false)
 
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data)
+const onSuccess = () => {
+  Swal.mixin({
+        icon: 'success',
+        title: 'Account Registered!',
+        text: 'Your account has been successfully created. To complete the activation process, please check your email and click on the activation link we\'ve sent you. If you don\'t see the email, check your spam or junk folder.',
+        confirmButtonColor: '#012e55'
+      }).fire()
+} 
+
+const onFailed = () => {
+  Swal.mixin({
+        icon: 'error',
+        title: 'There was an error',
+        text: 'Something went wrong Please try again',
+        confirmButtonColor: '#012e55'
+      }).fire()
 }
+
+async function onSubmit(event: FormSubmitEvent<InferType<typeof SignUpWithPasswordSchema>>) {
+  // Do something with event.data
+  if(!isAgree) {
+    Swal.mixin({
+        icon: 'error',
+        title: 'There was an error',
+        text: 'Please agree to our Terms of Service and Privacy Policy',
+        confirmButtonColor: '#012e55'
+      }).fire()
+  }
+  recaptchaError.value = !authStore.isValid
+  if(authStore.isValid) {
+    const data = await authStore.createUser(event.data)
+    if(data) {
+      onSuccess()
+    } else {
+      onFailed()
+    }
+  }
+  eventBus.emit(RESET_RECAPTCHA)
+}
+
+watch(() => [hasPassword], () => {
+  state.password = ''
+  state.confirmPassword = ''
+})
 </script>
 
 <template>
@@ -74,10 +110,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           }}</NuxtLink>
         </span>
       </BaseCheckbox>
-    <button type="submit">{{ $t('auth.register.btn_submit') }}</button>
-    <div>
+    <span
+    v-if="recaptchaError"
+    class="text-red-500">{{ $t('general.captcha_help') }}</span>
+    <BaseRecaptcha />
+    <button
+    :disabled="authStore.isLoading" 
+    type="submit">
+      <BaseCircleProgress 
+      v-if="authStore.isLoading"
+      class="text-white mb-1" size="md"/>
+      {{ $t('auth.register.btn_submit') }}
+    </button>
+    <div class="text-center">
       {{ $t('auth.register.text_registered') }}
-      <NuxtLink to="/users/signin">{{
+      <NuxtLink to="/user/signin">{{
         $t('auth.register.link_registered')
       }}</NuxtLink>
     </div>

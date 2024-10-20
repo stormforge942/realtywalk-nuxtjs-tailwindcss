@@ -1,12 +1,10 @@
 <script setup lang="ts">
+import Swal from 'sweetalert2';
 import type { FormSubmitEvent } from '#ui/types'
-import { AuthOnlyEmailSchema } from '@/utils/schemas'
-import { RecaptchaV2, useRecaptcha } from "vue3-recaptcha-v2";
 import type { InferType } from 'yup'
 
 const authStore = useAuthStore();
-const homeStore = useHomeStore();
-console.log(homeStore.fetchFloodZoneLegends)
+const recaptchaError = ref(false)
 
 type Schema = InferType<typeof AuthOnlyEmailSchema>
 
@@ -14,20 +12,27 @@ const state = reactive({
   email: '',
 })
 
-const { handleGetResponse } = useRecaptcha();
-
-const handleWidgetId = (widgetId: number) => {
-  console.log("Widget ID: ", widgetId);
-  handleGetResponse(widgetId);
-};
-
-onMounted(() => {
-
-})
-
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
-
+  recaptchaError.value = !authStore.isValid
+  if(authStore.isValid) {
+    authStore.sendMagicLoginLink(event.data.email).then(() => {
+      Swal.mixin({
+        icon: 'success',
+        title: 'Magic Link Sent!',
+        text: 'Your magic link to sign in to RealtyWalk site has been sent to your email!',
+        confirmButtonColor: '#012e55'
+      }).fire()
+    }).catch(() => {
+      Swal.mixin({
+        icon: 'error',
+        title: 'There was an error',
+        text: 'Invalid email',
+        confirmButtonColor: '#012e55'
+      }).fire()
+    })
+  }
+  eventBus.emit(RESET_RECAPTCHA)
 }
 </script>
 
@@ -41,13 +46,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UFormGroup :label="$t('auth.login.form.labels.email')" name="email">
       <input type="text" v-model="state.email" />
     </UFormGroup>
-    <RecaptchaV2 @widget-id="handleWidgetId" />
-    <button type="submit">
+    <span
+    v-if="recaptchaError"
+    class="text-red-500">{{ $t('general.captcha_help') }}</span>
+    <BaseRecaptcha />
+    <button
+    :disabled="authStore.isLoading" 
+    type="submit">
+      <BaseCircleProgress 
+      v-if="authStore.isLoading"
+      class="text-white mb-1" size="md"/>
       {{ $t('auth.login.btn_submit_magic_link') }}
     </button>
     <div>
       {{ $t('auth.login.text_login_with_password') }}
-      <NuxtLink to="/users/signin-with-password">
+      <NuxtLink to="/user/signin-with-password">
         {{ $t('auth.login.link_login_with_password') }}
       </NuxtLink>
     </div>

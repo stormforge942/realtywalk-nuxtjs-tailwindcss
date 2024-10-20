@@ -146,6 +146,8 @@ const MAX_STORIES: SelectOption<number>[] = [
 ]
 
 const onClickSearch = () => {
+    homeStore.showResult = true
+    homeStore.showSearch = window.innerWidth >= 1024
     eventBus.emit(SEARCH_CRITERIA)
 }
 
@@ -158,7 +160,7 @@ const onClickClear = () => {
 <template>
     <div
     :class="homeStore.showSearch ? ` h-[calc(100vh-100px)] lg:h-[calc(100vh-120px)]` : 'h-0'" 
-    class="bg-white shadow-md left-0 top-[100px] lg:top-[120px] w-screen md:w-80 fixed duration-300 overflow-hidden z-20">
+    class="bg-white shadow-md left-0 top-[100px] lg:top-[120px] w-screen lg:w-80 fixed duration-300 overflow-hidden z-20">
         <div class="flex flex-col gap-4 mt-20 mx-4 max-h-[calc(100vh-320px)] overflow-y-scroll no-scrollbar">
             <HomeNeighborSearch />
             <BaseSelect 

@@ -1,4 +1,4 @@
-interface PropertyStore {
+export interface PropertyStore {
     API_ENDPOINT: string,
 
     minPrice: number,
@@ -116,7 +116,7 @@ export const usePropertyStore = defineStore('property', {
             }
         },
 
-        async fetchProperty(nextPage: boolean = false, infiniteState: any) {
+        async fetchProperty(nextPage: boolean = false, infiniteState: any, aborter: AbortController) {
             let page = nextPage ? this.page + 1 : 1;
             if (nextPage) {
                 this.isPreLoading = true;
@@ -129,6 +129,7 @@ export const usePropertyStore = defineStore('property', {
                 const result = await $fetch(`${this.API_ENDPOINT}/api/properties/filter?page=${page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
                     method: 'POST',
                     body: this.convertStateToFilterPayload(),
+                    signal: aborter.signal
                 })
 
 
@@ -165,6 +166,62 @@ export const usePropertyStore = defineStore('property', {
 
             if (!nextPage) {
                 this.page = 1;
+            }
+        },
+
+        async fetchMapProperties(init = false) {
+            // if (this.mapProperties.loading && init) return;
+            // if (!this.mapProperties.componentLoaded) return;
+            // if (this.mapProperties.reloading) return;
+
+            this.mapProperties.data = [];
+            const map = usePropertyMap().value;
+
+            if (init) {
+                this.mapProperties.loading = true;
+            } else {
+                this.mapProperties.reloading = true;
+            }
+            const bounds = map?.getBounds()
+
+            if (!bounds) {
+                return;
+            }
+
+            const ne = bounds.getNorthEast();
+            const sw = bounds.getSouthWest();
+
+            const minLat = sw.lat();
+            const maxLat = ne.lat();
+            const minLng = ne.lng();
+            const maxLng = sw.lng();
+
+            const map_info = {
+                zoom: map.getZoom(),
+                bounds: {
+                    max_lat: maxLat,
+                    max_lng: minLng,
+                    min_lat: minLat,
+                    min_lng: maxLng,
+                },
+                init
+            }
+
+            try {
+                // console.time("Properties fetch time")
+                const filters = { ...this.convertStateToFilterPayload(), map_info };
+                const data = await $fetch<any>(`${this.API_ENDPOINT}/api/properties/filter?formap=1`, {
+                    method: 'POST',
+                    body: filters
+                })
+                if (data?.length) {
+                    this.mapProperties.data = data;
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                this.mapProperties.loading = false;
+                this.mapProperties.reloading = false;
             }
         },
 
