@@ -2,6 +2,8 @@
 
 const error = useError();
 
+console.log(error.value)
+
 </script>
 
 <template>

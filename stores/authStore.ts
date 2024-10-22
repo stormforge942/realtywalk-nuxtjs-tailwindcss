@@ -289,6 +289,21 @@ export const useAuthStore = defineStore('auth', {
                     .finally(() => this.isLoading = false)
             })
         },
+        async confirmResetToken(token: string) {
+            this.isLoading = true
+            return new Promise<{
+                token: string,
+                email: string
+            } | null>((resolve) => {
+                $fetch<{
+                    token: string,
+                    email: string
+                }>(`${this.API_ENDPOINT}/api/user/password/confirm-token/${token}`)
+                    .then(data => resolve(data))
+                    .catch(() => resolve(null))
+                    .finally(() => this.isLoading = false)
+            })
+        },
         logout() {
             const homeStore = useHomeStore()
 

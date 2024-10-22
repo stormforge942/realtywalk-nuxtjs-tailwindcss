@@ -10,6 +10,7 @@ useHead({
 
 <template>
   <NuxtLayout name="main">
-    <template #header>{{ $t('auth.login.title') }}</template>
+    <template #header>{{ $t('pages.address_lookup.title') }}</template>
+    <LookupHome />
   </NuxtLayout>
 </template>

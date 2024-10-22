@@ -26,12 +26,14 @@ export interface PropertyStore {
     page: number
 
     // Properties
-    properties: any[],
+    properties: PropertyItem[],
     isPreLoading: boolean,
     isLoading: boolean,
     lastPropertyPage: number,
     totalProperties: number,
     errorMsg: string,
+
+    selectedProperty: PropertyItem | null,
 
     // Map Properties
 
@@ -71,6 +73,8 @@ export const usePropertyStore = defineStore('property', {
         polygons: [],
         proType: '',
         status: '',
+
+        selectedProperty: null,
 
         // Properties
         properties: [],
@@ -117,6 +121,7 @@ export const usePropertyStore = defineStore('property', {
         },
 
         async fetchProperty(nextPage: boolean = false, infiniteState: any, aborter: AbortController) {
+            console.log("FETCH PROPERTY")
             let page = nextPage ? this.page + 1 : 1;
             if (nextPage) {
                 this.isPreLoading = true;
@@ -173,7 +178,6 @@ export const usePropertyStore = defineStore('property', {
             // if (this.mapProperties.loading && init) return;
             // if (!this.mapProperties.componentLoaded) return;
             // if (this.mapProperties.reloading) return;
-
             this.mapProperties.data = [];
             const map = usePropertyMap().value;
 
@@ -240,6 +244,27 @@ export const usePropertyStore = defineStore('property', {
             this.maxStory = MAX_VALUE;
             this.hasPool = false;
             this.hasElevator = false;
+        },
+
+        async fetchAddressLookUp(search: string) {
+            this.isLoading = true
+            $fetch<any>(`${this.API_ENDPOINT}/api/properties/address-lookup?page=${this.page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
+                method: 'POST',
+                body: {
+                    addressQuery: search,
+                    showAll: true,
+                    sortBy: this.sortBy,
+                    sortOrder: this.sortOrder
+                }
+            })
+                .then((result) => this.properties = result?.data as PropertyItem[])
+                .finally(() => this.isLoading = false)
+        },
+        async fetchPropertyItem(id: string) {
+            this.isLoading = true
+            $fetch<PropertyItem>(`${this.API_ENDPOINT}/api/property/${id}`)
+                .then(data => this.selectedProperty = data)
+                .finally(() => this.isLoading = false)
         }
     }
 })

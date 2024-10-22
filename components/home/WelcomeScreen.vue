@@ -9,7 +9,7 @@ const onClose = () => {
 </script>
 
 <template>
-    <div class="fixed w-screen h-screen top-0 left-0 flex items-center justify-center">
+    <div class="fixed z-30 w-screen h-screen top-0 left-0 flex items-center justify-center">
         <div class="bg-primary p-12 shadow-lg text-white max-w-[800px] text-xl relative">
             {{ $t('home.map.instructions') }}
             <span

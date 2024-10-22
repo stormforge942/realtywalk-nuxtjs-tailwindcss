@@ -22,24 +22,6 @@ interface PropertyFilter {
     storiesMin: string | number
 }
 
-interface PropertyItem {
-    bn: string
-    bp: any
-    dsc: string
-    ecd: any
-    fa: string,
-    pf: number
-    pfi: number
-    pi: string
-    pn: string
-    pp: string
-    pri: number
-    pt: any
-    pu: string
-    s: string
-    t: number
-}
-
 interface User {
     id: number | string
     name: string
@@ -118,4 +100,154 @@ interface SearchCriteria {
         },
         zoom: number
     },
+}
+
+interface Polygon {
+    area: string,
+    code: string,
+    color: any,
+    description: string | null,
+    display_as_background: any,
+    extId: any,
+    featured_image_url: string | null,
+    id: number,
+    link_list: string[],
+    links: any,
+    max_lat: string,
+    max_lng: string,
+    media: any[],
+    min_lat: string,
+    min_lng: string,
+    page_url: string,
+    parent_id: number,
+    path_url: string,
+    slug: string,
+    title: string,
+    updated_at: Date,
+    zone_id: number,
+    zoom: number,
+    _lft: number,
+    _rgt: number,
+    seourl: {
+        entity_id: number,
+        entity_type: string,
+        id: number,
+        path: string,
+        created_at: Date,
+        updated_at: Date
+    },
+    ancestors: any[]
+}
+
+interface PropertyItem {
+    acres: number
+    address_number: number | string
+    address_street: string
+    address_street_dir_prefix: string
+    address_street_dir_suffix: string
+    address_street_suffix: string
+    agent: string
+    agent_id: string
+    agent_website: any
+    alt_path_url: string
+    batch_id: string | null
+    bathrooms_full: number
+    bathrooms_half: number
+    bedrooms: number
+    broker: any
+    broker_id: string | null
+    builder: any
+    builderPrimaryLogo: string | null
+    builder_id: string | null
+    builder_name: string
+    category: {
+        created_at: Date,
+        id: number
+        name: string
+        updated_at: Date
+    },
+    category_id: number,
+    created_at: Date,
+    created_day: number,
+    created_month: number,
+    created_year: number,
+    descr: string
+    elevator_type: string
+    finance_type: string
+    full_address: string
+    full_address_with_zip: string
+    garage_capacity: number
+    has_pool: boolean
+    hoa_annual_fee: any,
+    id: number,
+    image_urls: any
+    lat: number,
+    levels: number,
+    lng: number,
+    lot_back_dimension: any,
+    lot_front_dimension: any,
+    lot_left_dimension: any,
+    lot_right_dimension: any,
+    lot_size: number,
+    map_data: {
+        fa: string,
+        lat: number,
+        lng: number,
+        pf: number,
+        pfi: number,
+        pt: any,
+        pu: any
+    },
+    matrix_modified_dt: Date,
+    media: any[],
+    mls_number: number,
+    new_construction: boolean,
+    not_for_sale: boolean,
+    office_id: number | null,
+    office_name: string | null,
+    office_website: any,
+    page_url: string,
+    path_url: string | null,
+    polygon: Polygon,
+    polygon_id: number,
+    price_format_id: number,
+    price_from: number | null,
+    price_to: number | null,
+    property_type: string,
+    request_status: string,
+    school_zone_id: string | null,
+    sqft: number,
+    status: string,
+    stories: number,
+    title: string,
+    type: number,
+    unit_number: string,
+    updated_at: Date,
+    updated_day: number,
+    updated_month: number,
+    updated_year: number,
+    video_embed: string,
+    year_built: number,
+    zipcode: string,
+    neighborhood: string,
+    neighborhood_slug: string
+    neighborhood_path: string
+    subdivision: string
+    subdivision_slug: string
+    subdivision_path: string
+    bn: string
+    bp: any
+    dsc: string
+    ecd: any
+    fa: string,
+    pf: number
+    pfi: number
+    pi: string
+    pn: string
+    pp: string
+    pri: number
+    pt: any
+    pu: string
+    s: string
+    t: number
 }

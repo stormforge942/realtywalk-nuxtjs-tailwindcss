@@ -86,24 +86,24 @@ onUnmounted(() => {
                 </div>
                 <div v-else >
                     <div class="leading-[30px] text-xl px-4">{{ $t('home.result.total_found', { total: propertyStore.totalProperties }) }}</div>
-                    <HomePropertySortMenu />
+                    <LookupSortMenu/>
                     <div class="max-h-[calc(100vh-270px)] overflow-y-scroll no-scrollbar flex flex-col">
-                        <HomePropertyListItem 
+                        <LookupItem 
                         :key="item.pri || item.id" 
-                        :property="item"
+                        :item="item"
                         v-for="item in propertyStore.properties"/>
+                        <InfiniteLoading :distance="10" @infinite="infiniteHandler">
+                            <div slot="spinner">
+                                {{ $t("home.result.infinite.loading") }}
+                            </div>
+                            <div slot="no-more">
+                                {{ $t("home.result.infinite.no_more") }}
+                            </div>
+                            <div slot="no-results">
+                                {{ $t("home.result.infinite.no_more") }}
+                            </div>
+                        </InfiniteLoading>
                     </div>
-                    <InfiniteLoading class="hidden" :distance="10" @infinite="infiniteHandler">
-                        <div slot="spinner">
-                            {{ $t("home.result.infinite.loading") }}
-                        </div>
-                        <div slot="no-more">
-                            {{ $t("home.result.infinite.no_more") }}
-                        </div>
-                        <div slot="no-results">
-                            {{ $t("home.result.infinite.no_more") }}
-                        </div>
-                    </InfiniteLoading>
                 </div>
             </template>
         </div>

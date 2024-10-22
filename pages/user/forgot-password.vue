@@ -11,6 +11,6 @@ useHead({
 <template>
   <NuxtLayout name="main">
     <template #header>{{ $t('auth.forgot_password.title') }}</template>
-    <AuthForgotPasswordForm />
+    <AuthResetPassword />
   </NuxtLayout>
 </template>

@@ -9,7 +9,7 @@
       <NuxtLink to="/">{{ $t('menu.home') }}</NuxtLink>
       <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>
       <NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink>
-      <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
+      <!-- <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink> -->
       <NuxtLink to="/user/register">{{ $t('menu.register') }}</NuxtLink>
       <NuxtLink to="/user/signin">{{ $t('menu.sign_in') }}</NuxtLink>
       <NuxtLink to="/report-bug">{{ $t('menu.report_bug') }}</NuxtLink>

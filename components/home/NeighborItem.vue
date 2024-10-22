@@ -19,6 +19,7 @@ interface Props {
     }
 }
 
+const timer = ref();
 const props = defineProps<Props>()
 const emits = defineEmits(['click'])
 
@@ -33,6 +34,20 @@ const onError = () => {
     isError.value = true
     isLoading.value = false
 }
+
+onMounted(() => {
+    timer.value = setTimeout(() => {
+        if(isLoading.value) {
+            onError()
+        }
+    }, 10000)
+})
+
+onUnmounted(() => {
+    if(timer.value) {
+        clearInterval(timer.value)
+    }
+})
 </script>
 
 <template>
@@ -50,6 +65,7 @@ const onError = () => {
         @error="onError()"
         v-if="!isError && props.item?.featured_image_url"
         class="w-full aspect-square group-hover:scale-110" :alt="props.item.title" :src="props.item?.featured_image_url"/>
+        <NuxtImg v-else src="/images/property_no_img_thumb.png" class="w-full aspect-square"/>
         <div v-if="!isLoading" :class="[
             'absolute z-10 top-0 left-0', 
             'px-[15%] bg-[#00000040] hover:bg-transparent w-full h-full flex items-center justify-center text-center text-white text-2xl font-semibold']">{{ props.item.title }}</div>

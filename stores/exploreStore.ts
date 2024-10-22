@@ -75,12 +75,13 @@ export const useExploreStore = defineStore('explore', {
                 IDs = data.ids.filter((value: string, index: number, self: any) => self.indexOf(value) === index);
             }
 
-            localStorage.setItem('selectedPolygons', JSON.stringify(IDs));
+            //localStorage.setItem('selectedPolygons', JSON.stringify(IDs));
             propertyStore.polygons = IDs;
 
             if (map) {
                 homeStore.isMapView = true
                 homeStore.showResult = !!polygonId
+                homeStore.showSearch = !!polygonId
                 homeStore.showInstruction = !!polygonId
                 homeStore.map = map
                 homeStore.activeNeighborhood = title

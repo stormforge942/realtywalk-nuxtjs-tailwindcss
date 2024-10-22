@@ -18,35 +18,16 @@ export const scrollTop = () => {
     });
 };
 
-export const storeUserSession = (token: string, user: any) => {
-    Cookies.set("access-token", token);
 
-    localStorage.setItem("user", JSON.stringify(user));
-};
-
-export const deleteUserSession = () => {
-    Cookies.remove("access-token");
-};
-
-export const updateStorageValue = (key: string, value: any) => {
-    const record = localStorage.getItem("user");
-
-    if (record) {
-        const existing = JSON.parse(record);
-        existing[key] = value;
-        localStorage.setItem("user", JSON.stringify(existing));
-    }
-};
-
-export const propertyStatusColor = (status: any) => {
+export const propertyStatusClass = (status: any) => {
     const actives = ['active', 'completed'];
     const pendings = ['pending', 'pending continue to show', 'option pending'];
     const invalids = ['sold', 'withdrawn', 'terminated', 'expired'];
 
     return {
-        'badge-success': actives.includes(status ? status.toLowerCase() : null),
-        'badge-warning': pendings.includes(status ? status.toLowerCase() : null),
-        'badge-danger': invalids.includes(status ? status.toLowerCase() : null),
-        'badge-info': ![...actives, ...pendings, ...invalids].includes(status ? status.toLowerCase() : null),
+        'bg-green-500': actives.includes(status ? status.toLowerCase() : null),
+        'bg-orange-500': pendings.includes(status ? status.toLowerCase() : null),
+        'bg-red-500': invalids.includes(status ? status.toLowerCase() : null),
+        'bg-blue-500': ![...actives, ...pendings, ...invalids].includes(status ? status.toLowerCase() : null),
     }
 }

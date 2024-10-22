@@ -11,7 +11,7 @@
                 {{ item.search_name }}
                 <FontAwesome 
                 :icon="faClose"
-                @click="e => {
+                @click="(e: MouseEvent) => {
                     e.stopPropagation()
                     authStore.deleteSearchItem(item.id)
                 }" 

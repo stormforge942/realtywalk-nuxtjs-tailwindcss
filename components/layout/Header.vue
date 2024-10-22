@@ -96,9 +96,9 @@ const authStore = useAuthStore();
             $t('menu.neighborhoods')
           }}</NuxtLink>
         </li>
-        <li>
+        <!-- <li>
           <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
-        </li>
+        </li> -->
         <li @click="eventBus.emit(REPORT_MODAL, true)">
           <NuxtLink class="cursor-pointer">{{
             $t('menu.report_bug')
