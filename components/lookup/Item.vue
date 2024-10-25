@@ -7,8 +7,15 @@ interface Props {
 
 const props = defineProps<Props>()
 const img = useImage()
+const authStore = useAuthStore()
+const propertyStore = usePropertyStore()
 
 const {t} = useI18n()
+
+const onClickSchedule = () => {
+    eventBus.emit(OPEN_SCHEDULE_VIEWING, true)
+    propertyStore.selectedProperty = props.item
+}
 
 const formatedPrice = computed(() => {
     if(props.item) {
@@ -30,6 +37,18 @@ const formatedPrice = computed(() => {
 
     return t('property.list_details.to_be_determined_abbr'); //price_format_id === 3 or bad data
 })
+
+const isFavoriteItem = computed(() => {
+  return authStore.favItems.findIndex(item => props.item.id == item.id) != -1
+})
+
+const isForSale = computed(() => {
+    return !['Expired', 'Withdrawn', 'Terminated', 'Sold'].includes(props.item.s || props.item.status);
+})
+
+const onClickFavorite = () => {
+  authStore.toggleFavorite(props.item.id, isFavoriteItem.value)
+}
 </script>
 
 <template>
@@ -50,14 +69,14 @@ const formatedPrice = computed(() => {
                     <NuxtLink 
                     :to="props.item.pu || props.item.alt_path_url"
                     class="underline hover:text-primary capitalize">
-                        {{ props.item.fa || props.item.full_address }}
+                        {{ props.item.fa || props.item.full_address || `${props.item.address_number} ${props.item.address_street}` }}
                     </NuxtLink>
                 </span>
                 <span class="w-full text-black font-semibold">
                     {{ $t('property.list_details.status') }}
                     <span
                     :class="propertyStatusClass(props.item.s || props.item.status)"
-                    class=" rounded-md text-white p-1">
+                    class="inline-block rounded-md text-white p-1">
                         {{ props.item.s || props.item.status || 'N/A' }}
                     </span>
                 </span>
@@ -80,25 +99,45 @@ const formatedPrice = computed(() => {
                 </template>
             </span>
         </div>
-        <div class="hidden lg:block h-1/3 max-h-[33%] overflow-y-auto">{{ props.item.dsc || props.item.descr }}</div>
-        <div class="hidden lg:flex">
-            <span class="w-1/5 cursor-pointer font-semibold">
+        <div class="hidden lg:block h-full overflow-y-auto">{{ props.item.dsc || props.item.descr }}</div>
+        <div class="hidden lg:flex gap-4">
+            <NuxtLink
+            :to="props.item.pu || props.item.alt_path_url" 
+            class="cursor-pointer font-semibold capitalize hover:underline">
                 {{ $t('property.cta.btn_view_listing') }}
-            </span>
-            <span class="w-2/5 cursor-pointer">
-                {{ $t('favorite.item.btn_add') }}
+            </NuxtLink>
+            <span
+            v-if="isForSale"
+            @click="onClickFavorite()"
+            :class="[isFavoriteItem ? 'text-red-500' : '']" 
+            class="cursor-pointer hover:underline">
+                {{ isFavoriteItem ? $t('favorite.item.btn_remove') : $t('favorite.item.btn_add') }}
                 <FontAwesome :icon="faStar"/>
             </span>
-            <span class="w-2/5 cursor-pointer">
+            <span
+            v-if="isForSale"
+            @click="onClickSchedule()"
+            class="cursor-pointer hover:underline">
                 {{ $t('schedule.listing.btn_view') }}
                 <FontAwesome :icon="faCalendarDays"/>
             </span>
+            <span v-else
+            :class="propertyStatusClass(props.item.s || props.item.status)"
+            class="inline-block rounded-md text-white p-1 font-semibold">
+                {{ props.item.s || props.item.status || 'N/A' }}
+            </span>
         </div>
-        <div class="flex lg:hidden flex-col min-w-[120px] border-l border-white">
-            <div class="h-full border-white border-b cursor-pointer flex items-center justify-center text-2xl">
+        <div
+        v-if="isForSale"
+        class="flex lg:hidden flex-col min-w-[120px] border-l border-white">
+            <div
+            @click="onClickFavorite()" 
+            class="h-full border-white border-b cursor-pointer flex items-center justify-center text-2xl">
                 <FontAwesome :icon="faStar"/>
             </div>
-            <div class="h-full border-white border-t cursor-pointer flex items-center justify-center text-2xl">
+            <div
+            @click="onClickSchedule()" 
+            class="h-full border-white border-t cursor-pointer flex items-center justify-center text-2xl">
                 <FontAwesome :icon="faCalendarDays"/>
             </div>
         </div>

@@ -18,4 +18,9 @@ export const initPropertyMap = async (map_html: HTMLElement): Promise<void> => {
     });
     console.log(map)
     usePropertyMap().value = map;
+
+    google.maps.event.addListener(map, 'idle', () => {
+        const propertyStore = usePropertyStore()
+        propertyStore.fetchMapProperties(false)
+    })
 }

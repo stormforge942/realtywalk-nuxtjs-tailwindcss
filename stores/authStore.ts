@@ -9,7 +9,8 @@ interface AuthStore {
 
     user: User | null,
     token: string | null,
-    searchList: SearchItem[]
+    searchList: SearchItem[],
+    favItems: PropertyItem[]
 }
 
 
@@ -25,7 +26,8 @@ export const useAuthStore = defineStore('auth', {
 
         user: null,
         token: null,
-        searchList: []
+        searchList: [],
+        favItems: []
     }),
     actions: {
         async sendMagicLoginLink(email: string) {
@@ -311,6 +313,38 @@ export const useAuthStore = defineStore('auth', {
             this.user = null
             this.token = null
             homeStore.saveSearch = false
+        },
+        async fetchFavoriteData() {
+            this.isLoading = true
+            $fetch<PropertyItem[]>(`${this.API_ENDPOINT}/api/user/favorites`, {
+                headers: {
+                    'authorization': `Bearer ${this.token}`
+                }
+            })
+                .then(data => this.favItems = data)
+                .finally(() => this.isLoading = false)
+        },
+        async toggleFavorite(id: number, isExist: boolean) {
+            if (!this.authenticated) {
+                eventBus.emit(OPEN_LOGIN_NOTIFY)
+                return
+            }
+
+            return new Promise((resolve) => {
+                $fetch<{
+                    favorites: number[]
+                }>(`${this.API_ENDPOINT}/api/user/${isExist ? 'unfavorite' : 'favorite'}/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'authorization': `Bearer ${this.token}`
+                    }
+                })
+                    .then(data => {
+                        this.fetchFavoriteData()
+                        resolve(true)
+                    })
+                    .catch(() => resolve(false))
+            })
         }
     }
 })

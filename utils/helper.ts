@@ -31,3 +31,20 @@ export const propertyStatusClass = (status: any) => {
         'bg-blue-500': ![...actives, ...pendings, ...invalids].includes(status ? status.toLowerCase() : null),
     }
 }
+
+export const getDomain = (url: string) => {
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.hostname;
+    } catch (e) {
+        return url;
+    }
+}
+
+export const trimText = (text: string, length: number) => {
+    return text.length > length ? text.substring(0, length) + "..." : text;
+}
+
+export const formatIndicator = (field: any) => {
+    return field ? 'Y' : 'N'
+}

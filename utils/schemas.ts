@@ -1,4 +1,4 @@
-import { object, string, type InferType, ref, mixed } from 'yup'
+import { object, string, type InferType, ref, mixed, number } from 'yup'
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
 const FILE_SIZE = 5 * 1024 * 1024;
@@ -63,3 +63,23 @@ export const ResetPasswordSchema = object({
     .required('Please confirm your new password')
     .oneOf([ref('password')], 'Passwords do not match'),
 })
+
+const today = new Date();
+const minDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+export const ScheduleViewSchema = object({
+  email: string().required('Email is required').email('Invalid email'),
+  message: string().required('Message is required'),
+  name: string().required('Name is required').min(2, 'Name must be at least 2 characters'),
+  phone_number: string().required('Phone number is required').matches(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/, 'Invalid phone number'),
+  property_id: number().required('Property ID is required').positive('Property ID must be positive'),
+  scheduleDate: string().required('Schedule date is required')
+    .matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)')
+    .test('future-date', 'Schedule date must be greater than current date', (value) => {
+      const selectedDate = new Date(value);
+      return selectedDate >= today;
+    }),
+  scheduleDateTime: string().optional(),
+  scheduleTime: string().required('Schedule time is required').matches(/^([1-9]|1\d|2[0-3]):[0-5][0-9]$/, 'Invalid time format (HH:MM)'),
+});
+

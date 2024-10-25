@@ -251,3 +251,189 @@ interface PropertyItem {
     s: string
     t: number
 }
+
+interface MapProperty {
+    fa: string
+    lat: number
+    lng: number
+    pf: number
+    pfi: number
+    pt: number
+    pu: string
+}
+
+interface Statistics {
+    created_at: Date,
+    descr: string
+    format: string
+    id: number
+    name: string
+    value: any
+}
+
+interface Neighborhood {
+    _rgt: number
+    _lft: number
+    zoom: number
+    zone_id: number
+    zone: {
+        code: string
+        id: number
+        lat: number
+        lng: number
+        name: string
+        parent_id: number
+        type: string
+        _lft: number
+        _rgt: number
+    }
+    updated_at: Date
+    title: string
+    statistics: any[]
+    statisticTypes: {
+        created_at: Date,
+        descr: string
+        format: string
+        id: number
+        name: string
+        updated_at: Date,
+        statistics: Statistics[]
+    }[]
+    slug: string
+    seourl: string
+    path_url: string
+    parent_id: number
+    page_url: string
+    min_lng: number
+    min_lat: number
+    max_lng: number
+    max_lat: number
+    media: any[]
+    links: boolean
+    link_list: {
+        description: string
+        image: string
+        label: string
+        status: string
+        title: string
+        url: boolean
+    }[]
+    id: number
+    geometry: string
+    featured_image_url: string
+    extId: string
+    display_as_background: number
+    description: string
+    color: string
+    code: string
+    area: string
+    all_links: {
+        description: string
+        image: string
+        label: string
+        status: string
+        title: string
+        url: string
+    }[]
+    ancestors: any[]
+}
+
+interface School {
+    address: string
+    ap_ind: number
+    before_and_after_school_prog_ind: number
+    bilingual_education_ind: number
+    bilingual_schools_assoc_ind: number
+    catholic_school_type: string
+    charter_ind: number
+    created_at: null | Date
+    district_name: string
+    ee_ind: number
+    elementary_school_ind: number
+    enroll_am: number
+    enroll_am_pct: number
+    enroll_asian: number
+    enroll_black: number
+    enroll_female: number
+    enroll_hisp: number
+    enroll_male: number
+    enroll_multiple_races: number
+    enroll_pacific: number
+    enroll_white: number
+    enrollment: number
+    enrollment_change_cnt: number
+    extId: string
+    gifted_and_talented_prog_ind: number
+    grade_high: number
+    grade_low: string
+    high_school_ind: number
+    id: number
+    instructional_level: string
+    kg_full_day_ind: number
+    kg_half_day_ind: number
+    kg_ind: number
+    latitude: number
+    longitude: number
+    magnet_ind: number
+    middle_school_ind: number
+    name: string
+    phone_number: string
+    pk_ind: number
+    polygon_id: number
+    private_school_orientation: string
+    school_district_id: string
+    school_rating: string
+    school_type: string
+    school_url: string
+    school_zone_id: string
+    state_school_id: number
+    student_teacher_ratio: number
+    title_i_schoolwide_program_eligible_ind: string
+    updated_at: null | Date
+    virtual_school_ind: number
+}
+
+interface SchoolDistrict {
+    charter_school_cnt: number
+    district_name: string
+    enrollment: number
+    ext_id: string
+    grade_high: number
+    grade_low: string
+    magnet_school_cnt: number
+    per_pupil_exp_instr_pct: number
+    pop_age_5_17_below_poverty_level_pct: number
+    school_cnt: number
+    school_district_rating: string
+    school_url: string
+    total_expenditure_amt: number
+    total_per_pupil_expenditure_amt: number
+    urban_centric_community_type: string
+    urban_centric_locale_type: string
+}
+
+interface NeighborHoodItem {
+    descendants: any[]
+    featured_image_url: string | null
+    id: number
+    link_list: any[]
+    media: any[]
+    page_url: string
+    path_url: string
+    properties_pagination: {
+        total: number
+        page: 1
+    }
+    properties: PropertyItem[]
+    zoom: number
+    title: string
+    slug: string
+    seourl: {
+        created_at: Date
+        updated_at: Date
+        path: string
+        id: number
+        entity_id: number
+        entity_type: string
+    }
+}

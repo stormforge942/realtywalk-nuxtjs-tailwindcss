@@ -44,18 +44,16 @@ watch(() => [
     propertyStore.minSquareFeetCount,
     propertyStore.maxSquareFeetCount,
     propertyStore.propertyType,
-    homeStore.isListView,
     homeStore.showResult,
-], debounce(() => {
-    fetchProperty(false)
-    propertyStore.fetchMapProperties(false)
-}))
+], () => {
+    eventBus.emit(SEARCH_CRITERIA)
+})
 
 onMounted(() => {
-    eventBus.on(SEARCH_CRITERIA, () => {
+    eventBus.on(SEARCH_CRITERIA,debounce(() => {
         fetchProperty(false)
         propertyStore.fetchMapProperties(false)
-    })
+    }, 300))
 })
 
 onUnmounted(() => {
@@ -78,7 +76,8 @@ onUnmounted(() => {
                     </button>
                 </div>
                 <div v-else class="leading-[30px] text-xl px-4">{{ $t('home.result.total_found', { total: propertyStore.totalProperties }) }}</div>
-                <HomePropertyMap />
+                <ClientOnly><HomePropertyMap /></ClientOnly>
+                
             </template>
             <template v-else>
                 <div v-if="propertyStore.isLoading" class="w-full h-full flex items-center justify-center">

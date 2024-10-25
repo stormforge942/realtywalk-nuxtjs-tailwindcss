@@ -4,10 +4,22 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  isBig: {
+    type: Boolean,
+    required: true
+  },
   modelValue: {
     type: Number,
     default: 1,
   },
+})
+
+const sizeClass = computed(() => {
+  if(!props.isBig) {
+    return 'px-3 py-1'
+  } else {
+    return 'px-4 py-2'
+  }
 })
 
 const currentPage = ref(props.modelValue)
@@ -54,19 +66,19 @@ const showEndEllipsis = computed(
 </script>
 
 <template>
-  <div class="pagination flex gap-2">
+  <div class="pagination flex flex-wrap">
     <!-- Previous Button -->
     <button
       @click="goToPage(currentPage - 1)"
       :disabled="currentPage === 1"
-      class="pagination-btn"
-      :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }"
+      class="pagination-btn font-semibold"
+      :class="[currentPage === 1 ?'opacity-50 cursor-not-allowed' : '', sizeClass]"
     >
-      Prev
+      <
     </button>
 
     <!-- First Page Button -->
-    <button v-if="showFirstPage" @click="goToPage(1)" class="pagination-btn">
+    <button v-if="showFirstPage" @click="goToPage(1)" :class="sizeClass" class="pagination-btn">
       1
     </button>
     <span v-if="showStartEllipsis" class="ellipsis">...</span>
@@ -77,6 +89,7 @@ const showEndEllipsis = computed(
       :key="page"
       :class="[
         'pagination-btn',
+        sizeClass,
         { 'pagination-btn-active': currentPage === page },
       ]"
       @click="goToPage(page)"
@@ -91,6 +104,7 @@ const showEndEllipsis = computed(
     <button
       v-if="showLastPage"
       @click="goToPage(totalPages)"
+      :class="sizeClass"
       class="pagination-btn"
     >
       {{ totalPages }}
@@ -100,23 +114,21 @@ const showEndEllipsis = computed(
     <button
       @click="goToPage(currentPage + 1)"
       :disabled="currentPage === totalPages"
-      class="pagination-btn"
-      :class="{ 'opacity-50 cursor-not-allowed': currentPage === totalPages }"
+      class="pagination-btn font-semibold"
+      :class="[currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : '', sizeClass]"
     >
-      Next
+      >
     </button>
   </div>
 </template>
 
 <style lang="css" scoped>
-@apply flex gap-2;
-
 .pagination-btn {
-  @apply px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-100 cursor-pointer;
+  @apply border border-gray-300 bg-white text-primary hover:bg-primary hover:text-white cursor-pointer;
 }
 
 .pagination-btn-active {
-  @apply bg-blue-500 text-white;
+  @apply bg-primary1 text-white;
 }
 
 .pagination-btn[disabled] {

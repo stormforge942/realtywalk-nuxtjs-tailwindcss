@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Swal from 'sweetalert2'
 import "v3-infinite-loading/lib/style.css";
 
 const config = useRuntimeConfig()
@@ -6,6 +7,7 @@ const authStore = useAuthStore()
 const homeStore = useHomeStore()
 const propertyStore = usePropertyStore()
 const exploreStore = useExploreStore()
+const neighborStore = useNeighborStore()
 
 useHead({
   link: [
@@ -39,17 +41,40 @@ authStore.API_ENDPOINT = config.public.API_ENDPOINT
 homeStore.API_ENDPOINT = config.public.API_ENDPOINT
 propertyStore.API_ENDPOINT = config.public.API_ENDPOINT
 exploreStore.API_ENDPOINT = config.public.API_ENDPOINT
+neighborStore.API_ENDPOINT = config.public.API_ENDPOINT
 
-onMounted(() => {
+onBeforeMount(() => {
   authStore.user = JSON.parse(localStorage.getItem('user') || 'null') as User
   authStore.token = localStorage.getItem('token') || ''
   authStore.authenticated = authStore.user && !!authStore.token
 
   if(authStore.authenticated) {
     authStore.fetchSearchList()
+    authStore.fetchFavoriteData()
   } else {
-    authStore.logout()
+    eventBus.emit(LOG_OUT)
   }
+})
+
+onMounted(() => {
+  eventBus.on(OPEN_LOGIN_NOTIFY, () => {
+    if(authStore.authenticated) return
+    Swal.mixin({
+      text: 'Please login to continue!',
+      confirmButtonColor: '#012e55'
+    }).fire()
+  })
+
+  eventBus.on(LOG_OUT, () => {
+    authStore.logout()
+    localStorage.setItem('user', 'null')
+    localStorage.setItem('token', '')
+  })
+})
+
+onUnmounted(() => {
+  eventBus.off(OPEN_LOGIN_NOTIFY)
+  eventBus.off(LOG_OUT)
 })
 
 </script>
@@ -60,4 +85,5 @@ onMounted(() => {
   </NuxtLayout>
   <BaseReportBugModal />
   <BaseWatchDemoModal />
+  <LookupScheduleViewModal />
 </template>

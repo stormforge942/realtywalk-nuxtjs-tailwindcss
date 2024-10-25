@@ -29,16 +29,20 @@ export interface PropertyStore {
     properties: PropertyItem[],
     isPreLoading: boolean,
     isLoading: boolean,
+    isSubmit: boolean,
     lastPropertyPage: number,
     totalProperties: number,
     errorMsg: string,
 
     selectedProperty: PropertyItem | null,
+    selectedNeighbor: Neighborhood | null,
+    schools: School[],
+    schoolDistricts: SchoolDistrict[],
 
     // Map Properties
 
     mapProperties: {
-        data: any[],
+        data: MapProperty[],
         loading: boolean,
         reloading: boolean,
         componentLoaded: boolean,
@@ -75,11 +79,15 @@ export const usePropertyStore = defineStore('property', {
         status: '',
 
         selectedProperty: null,
+        selectedNeighbor: null,
+        schools: [],
+        schoolDistricts: [],
 
         // Properties
         properties: [],
         isPreLoading: false,
         isLoading: false,
+        isSubmit: false,
         lastPropertyPage: 0,
         totalProperties: 0,
         errorMsg: '',
@@ -121,7 +129,6 @@ export const usePropertyStore = defineStore('property', {
         },
 
         async fetchProperty(nextPage: boolean = false, infiniteState: any, aborter: AbortController) {
-            console.log("FETCH PROPERTY")
             let page = nextPage ? this.page + 1 : 1;
             if (nextPage) {
                 this.isPreLoading = true;
@@ -175,51 +182,26 @@ export const usePropertyStore = defineStore('property', {
         },
 
         async fetchMapProperties(init = false) {
-            // if (this.mapProperties.loading && init) return;
-            // if (!this.mapProperties.componentLoaded) return;
-            // if (this.mapProperties.reloading) return;
-            this.mapProperties.data = [];
-            const map = usePropertyMap().value;
+            if (this.mapProperties.loading && init) return;
+            if (!this.mapProperties.componentLoaded) return;
+            if (this.mapProperties.reloading) return;
 
             if (init) {
                 this.mapProperties.loading = true;
             } else {
                 this.mapProperties.reloading = true;
             }
-            const bounds = map?.getBounds()
-
-            if (!bounds) {
-                return;
-            }
-
-            const ne = bounds.getNorthEast();
-            const sw = bounds.getSouthWest();
-
-            const minLat = sw.lat();
-            const maxLat = ne.lat();
-            const minLng = ne.lng();
-            const maxLng = sw.lng();
-
-            const map_info = {
-                zoom: map.getZoom(),
-                bounds: {
-                    max_lat: maxLat,
-                    max_lng: minLng,
-                    min_lat: minLat,
-                    min_lng: maxLng,
-                },
-                init
-            }
 
             try {
                 // console.time("Properties fetch time")
+                const map_info = { ...this.mapProperties.mapInfo, init }
                 const filters = { ...this.convertStateToFilterPayload(), map_info };
                 const data = await $fetch<any>(`${this.API_ENDPOINT}/api/properties/filter?formap=1`, {
                     method: 'POST',
                     body: filters
                 })
                 if (data?.length) {
-                    this.mapProperties.data = data;
+                    this.mapProperties.data = JSON.parse(data);
                 }
             } catch (err) {
                 console.error(err);
@@ -265,6 +247,36 @@ export const usePropertyStore = defineStore('property', {
             $fetch<PropertyItem>(`${this.API_ENDPOINT}/api/property/${id}`)
                 .then(data => this.selectedProperty = data)
                 .finally(() => this.isLoading = false)
-        }
+        },
+        async fetchNeighborItem(id: string) {
+            this.isLoading = true
+            $fetch<Neighborhood>(`${this.API_ENDPOINT}/api/polygon/${id}`)
+                .then(async data => {
+                    this.selectedNeighbor = data
+                    const result = await $fetch<{
+                        schools: any[],
+                        districts: any[]
+                    }>(`${this.API_ENDPOINT}/api/polygon/schools/${data.id}`)
+                    this.schoolDistricts = result?.districts || []
+                    this.schools = result?.schools || []
+                })
+                .finally(() => this.isLoading = false)
+        },
+        async scheduleViewing(body: any) {
+            this.isSubmit = true
+            return new Promise((resolve) => {
+                $fetch(`${this.API_ENDPOINT}/api/property/schedule-listing`, {
+                    method: 'POST',
+                    body
+                })
+                    .then((data) => {
+                        resolve(data === 'success')
+                    })
+                    .catch(() => {
+                        resolve(false)
+                    })
+                    .finally(() => this.isSubmit = false)
+            })
+        },
     }
 })

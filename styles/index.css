@@ -41,7 +41,8 @@ a {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+textarea {
   @apply text-base w-full px-3 py-[6px] outline-none border-2 border-gray-300 focus:border-primary disabled:bg-gray-200;
 }
 

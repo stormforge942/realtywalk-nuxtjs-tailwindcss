@@ -35,7 +35,7 @@ onUnmounted(() => {
 <template>
   <div
     ref="button"
-    :class="['flex items-center h-[100px] lg:hidden z-50 top-0 right-8', isActive ? 'fixed' : 'absolute']"
+    :class="['flex items-center h-[100px] lg:hidden z-[1000] top-0 right-8', isActive ? 'fixed' : 'absolute']"
   >
     <BaseMenuButton :is-active="isActive" @toggle-menu="toggleMenu" />
   </div>

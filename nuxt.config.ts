@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@vesp/nuxt-fontawesome',
     '@nuxt/ui',
     '@pinia/nuxt',
+    '@nuxtjs/leaflet'
   ],
   i18n: {
     locales: [
@@ -40,5 +41,6 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: { name: 'page', mode: 'default' }
-  }
+  },
+  debug: true,
 })

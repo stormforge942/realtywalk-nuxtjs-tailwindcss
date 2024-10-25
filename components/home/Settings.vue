@@ -25,14 +25,10 @@
 <script setup lang="ts">
 import { faSortDown } from '@fortawesome/free-solid-svg-icons';
 
-const authStore = useAuthStore()
-
 const open = ref(false)
 
 const onClickLogOut = () => {
-    authStore.logout()
-    localStorage.setItem('user', 'null')
-    localStorage.setItem('token', '')
+    eventBus.emit(LOG_OUT)
 }
 
 </script>

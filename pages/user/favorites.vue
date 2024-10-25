@@ -1,3 +1,12 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: false,
+})
+</script>
+
 <template>
-  <div>Sign In</div>
+  <NuxtLayout name="main">
+    <template #header>{{ $t('favorite.list.title') }}</template>
+    <FavoriteHome />
+  </NuxtLayout>
 </template>

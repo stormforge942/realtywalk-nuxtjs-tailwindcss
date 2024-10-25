@@ -4,10 +4,11 @@ const route = useRoute()
 const propertyStore = usePropertyStore()
 const searchQuery = computed(() => route.query.q as string)
 
+propertyStore.fetchAddressLookUp(searchQuery.value)
 watch(() => [
     searchQuery.value
-], () => {
-    propertyStore.fetchAddressLookUp(searchQuery.value)
+], ([newSearch]) => {
+    propertyStore.fetchAddressLookUp(newSearch)
 })
 </script>
 
