@@ -5,7 +5,7 @@ const img = useImage()
 <template>
   <div class="w-screen h-screen">
     <LayoutHeader />
-    <div class="flex gap-x-6 max-w-screen-lg mx-auto mt-6">
+    <div class="flex gap-x-6 max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg mx-auto mt-6">
       <div class="hidden lg:flex flex-col gap-y-[100px]">
         <div class="p-5 bg-primary">
           <NuxtImg

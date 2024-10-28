@@ -49,11 +49,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <ul class="bg-primary lg:bg-white flex p-2 text-white lg:text-primary my-4">
+    <ul class="bg-primary lg:bg-white flex p-2 text-white lg:text-primary mt-4">
         <li class="w-1/4 lg:w-[230px]"><span class="lg:hidden">{{ $t('home.filter.columns.sort_by') }}</span></li>
         <li 
         @click="onSortPrice()"
-        class="w-1/4 lg:w-[calc((100%-230px)/5)]"
+        class="w-1/4 lg:w-[calc((100%-230px)/5)] lg:underline"
         :class="propertyStore.sortBy === 'price' && 'selected'">
             <span class="hidden lg:inline-block">
                 <FontAwesome
@@ -64,7 +64,7 @@ onMounted(() => {
             {{ $t('home.filter.columns.price') }}
         </li>
         <li
-        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)]"
+        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)] lg:underline"
         @click="onSortAddress()" 
         :class="propertyStore.sortBy === 'address' && 'selected'">
             <span class="hidden lg:inline-block">
@@ -76,7 +76,7 @@ onMounted(() => {
             {{ $t('home.filter.columns.address') }}
         </li>
         <li 
-        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)]"
+        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)] lg:underline"
         @click="onSortNeighbor()" 
         :class="propertyStore.sortBy === 'neighborhood' && 'selected'">
             <span class="hidden lg:inline-block">

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full relative">
+    <div class="w-full h-full relative z-0">
         <div id="poly-map" class="g-map w-full h-[50vh]"></div>
         <input name="geoJson" type="hidden" v-model="geoJson" />
     </div>
@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 
+import "leaflet"
 import L, { FeatureGroup, Map, type MapOptions } from 'leaflet'
 import "leaflet.markercluster";
 import "leaflet.fullscreen";
@@ -28,14 +29,11 @@ const initialGeoJson = computed(() => propertyStore.selectedNeighbor?.geometry)
 const polygonId = computed(() => propertyStore.selectedNeighbor?.id)
 const initialZoom = computed(() => propertyStore.selectedNeighbor?.zoom)
 
-const points = ref([])
 const map = ref<Map>()
 const drawLayer = ref<FeatureGroup>()
-const drawControl = ref()
-const zoom = ref()
+const zoom = ref<number>(0)
 const loadedPolygonIds = ref<any[]>([])
 const loadedPolygons = ref<any[]>([])
-const neighboringGeoJson = ref('')
 const geoJson = ref('')
 const config = useRuntimeConfig().public
 
@@ -67,10 +65,10 @@ function initLoadNeighboringPolygons() {
     zoomSelect.addEventListener('change', onZoomChange);
   }
 
-  zoom.value = initialZoom || map.value?.getZoom();
+  zoom.value = initialZoom.value || map.value?.getZoom() || 0;
 
   if (polygonId) {
-    loadedPolygonIds.value.push(polygonId);
+    loadedPolygonIds.value.push(polygonId.value);
   }
 
   if (zoom.value) {
@@ -81,20 +79,22 @@ function initLoadNeighboringPolygons() {
   map.value?.addEventListener('moveend', debounce(loadPolygonsInViewport, 300));
 }
 
-function loadPolygonsInViewport() {
+const loadPolygonsInViewport = async () => {
     if(!map.value) return
   const bounds = map.value.getBounds();
 
   if (props.showNeighbors) {
-    $fetch<any[]>(`${config.API_ENDPOINT}/api/polygons/list-points`, {
+    $fetch<string>(`${config.API_ENDPOINT}/api/polygons/list-points`, {
         method: 'POST',
         body: {
             bounds: [bounds.getSouthWest().lat, bounds.getNorthEast().lng, bounds.getNorthEast().lat, bounds.getSouthWest().lng],
             excludeList: loadedPolygonIds.value,
             zoom: zoom.value,
         }
-    }).then(data => {
-        data.forEach(geoData => {
+    })
+    .then(result => {
+      const data = JSON.parse(result)
+        data.forEach((geoData: any) => {
             if(!map.value) return
             const geometry = JSON.parse(geoData.geometry);
             const feature = L.geoJSON(geometry, {
@@ -142,7 +142,9 @@ onMounted(() => {
   }).addTo(map.value);
 
   drawLayer.value = L.featureGroup().addTo(map.value);
-  if (props.disableTools === undefined) {
+
+  console.log("Draw Control",props.disableTools)
+  if (!props.disableTools) {
     const drawControl = new L.Control.Draw({
       draw: {
         polygon: {
@@ -166,6 +168,8 @@ onMounted(() => {
       },
     });
 
+    console.log("Draw Control",  drawControl)
+
     map.value.addControl(drawControl);
 
     map.value.on("draw:created", (e) => {
@@ -183,7 +187,7 @@ onMounted(() => {
   }
 
   let geoJsonData: any = { 'type': 'FeatureCollection', 'features': [] };
-  let geoJsonRaw: any = initialGeoJson;
+  let geoJsonRaw: any = initialGeoJson.value;
 
   console.log(initialGeoJson)
   
@@ -191,7 +195,7 @@ onMounted(() => {
     if (typeof geoJsonRaw !== 'object') {
       geoJsonRaw = JSON.parse(geoJsonRaw);
     }
-    geoJsonRaw.coordinates.forEach((coords: any) => geoJsonData.features.push({
+    (geoJsonRaw?.coordinates || []).forEach((coords: any) => geoJsonData.features.push({
       type: 'Feature', geometry: { 'type': 'Polygon', coordinates: coords }
     }));
     
@@ -202,7 +206,9 @@ onMounted(() => {
       },
     });
 
-    map.value.fitBounds(drawLayer.value.getBounds());
+    const bounds = drawLayer.value.getBounds()
+
+    map.value.fitBounds(bounds);
     updateGeoJson();
   }
 

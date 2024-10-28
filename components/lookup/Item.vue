@@ -58,7 +58,7 @@ const onClickFavorite = () => {
     class="relative w-full md:min-w-[240px] md:max-w-[240px] lg:min-w-[220px] lg:max-w-[220px] aspect-square overflow-hidden">
         <NuxtImg class="w-full h-full md:h-[240px] lg:h-[220px] aspect-square " 
         :placeholder="img(props.item.builderPrimaryLogo || props.item.pi || '/images/property_no_img_thumb.png', { f: 'png', blur: 2, q: 50 })"
-        :src="props.item.builderPrimaryLogo || props.item.pi || '/images/property_no_img_thumb.png'"/>
+        :src="props.item.builderPrimaryLogo || props.item.pi || (props.item.image_urls?.length && props.item.image_urls[0]) || '/images/property_no_img_thumb.png'"/>
     </NuxtLink>
     <div 
     class="w-full lg:w-[calc(100%-220px)] flex flex-row lg:flex-col text-primary1 bg-[#D7E4EA] lg:bg-white gap-y-2 m-0 md:ml-4">
@@ -81,7 +81,9 @@ const onClickFavorite = () => {
                     </span>
                 </span>
             </span>
-            <span class="lg:w-2/5 flex gap-1">
+            <span
+            v-if="item.pp || item.polygon" 
+            class="lg:w-2/5 flex gap-1">
                 <span class="hidden lg:inline-block">{{ $t('property.list_details.sub') }}</span>
                 <span class="inline-block lg:hidden">{{ $t('property.show.features.subdivision') }}</span>
                 <template v-if="item.pp">
@@ -99,7 +101,7 @@ const onClickFavorite = () => {
                 </template>
             </span>
         </div>
-        <div class="hidden lg:block h-full overflow-y-auto">{{ props.item.dsc || props.item.descr }}</div>
+        <div class="hidden lg:block h-full overflow-y-auto">{{ trimText(props.item.dsc || props.item.descr, 200) }}</div>
         <div class="hidden lg:flex gap-4">
             <NuxtLink
             :to="props.item.pu || props.item.alt_path_url" 

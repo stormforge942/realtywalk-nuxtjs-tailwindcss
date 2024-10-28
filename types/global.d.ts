@@ -324,6 +324,7 @@ interface Neighborhood {
     extId: string
     display_as_background: number
     description: string
+    descendants: NeighborhoodTreeItem[]
     color: string
     code: string
     area: string
@@ -412,8 +413,31 @@ interface SchoolDistrict {
     urban_centric_locale_type: string
 }
 
+interface NeighborhoodTreeItem {
+    children: NeighborhoodTreeItem[]
+    featured_image_url: string | null
+    id: number
+    link_list: string[]
+    media: any[]
+    page_url: string
+    parent_id: number
+    path_url: string
+    slug: string
+    text: string
+    _lft: number
+    _rgt: number
+    seourl: {
+        created_at: Date
+        updated_at: Date
+        entity_id: number
+        entity_type: string
+        id: number
+        path: string
+    }
+}
+
 interface NeighborHoodItem {
-    descendants: any[]
+    descendants: NeighborhoodTreeItem[]
     featured_image_url: string | null
     id: number
     link_list: any[]

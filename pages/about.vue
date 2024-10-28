@@ -26,7 +26,7 @@ const config = useRuntimeConfig()
         Texas Association of Realtors Political Action Committee (TREPAC) in
         2006 through 2009.
       </p>
-      <div class="flex">
+      <div class="flex flex-col xl:flex-row">
         <div class="w-full text-[28px] text-black italic bg-gray-200 p-10">
           <div>
             "I am very proud that Houston is my hometown. Compare our city to

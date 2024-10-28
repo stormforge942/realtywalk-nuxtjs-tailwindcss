@@ -33,6 +33,11 @@ const isFavoriteItem = computed(() => {
   console.log(authStore.favItems)
   return authStore.favItems.findIndex(item => propertyStore.selectedProperty?.id == item.id) != -1
 })
+
+const isForSale = computed(() => {
+  if(!propertyStore.selectedProperty) return false
+  return !['Expired', 'Withdrawn', 'Terminated', 'Sold'].includes(propertyStore.selectedProperty.s || propertyStore.selectedProperty.status);
+})
 </script>
 
 <template>
@@ -43,7 +48,9 @@ const isFavoriteItem = computed(() => {
                 <li class="lg:border-x-2 border-black lg:px-6 font-semibold">{{ formattedPrice }}</li>
                 <li class="lg:pl-6 font-semibold">{{ propertyStore.selectedProperty?.full_address }}</li>
             </ul>
-            <div class="flex text-primary text-lg gap-8 flex-col sm:flex-row">
+            <div
+            v-if="isForSale" 
+            class="flex text-primary text-lg gap-8 flex-col sm:flex-row">
               <span
               :class="[isFavoriteItem ? 'text-red-500' : '']"
               @click="onClickFavorite()" 

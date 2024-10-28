@@ -12,7 +12,7 @@ const neighborhood = propertyStore.selectedNeighbor
 
 <template>
     <div
-    class="flex justify-center my-20" 
+    class="flex justify-center items-center h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)]" 
     v-if="propertyStore.isLoading">
         <BaseRippleProgress />
     </div>
@@ -28,8 +28,8 @@ const neighborhood = propertyStore.selectedNeighbor
                     </div>
                     <div class="w-full flex flex-col md:flex-row gap-8">
                         <div class="w-full md:w-3/5">
-                            <NeighborTree v-if="neighborhood?.zoom === 1"/>
-                            <NeighborSchools v-else />
+                            <ClientOnly><NeighborTree /></ClientOnly>
+                            <NeighborSchools/>
                         </div>
                         <div class="w-full md:w-2/5">
                             <NeighborLinks />

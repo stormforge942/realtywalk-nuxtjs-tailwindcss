@@ -10,7 +10,7 @@ propertyStore.fetchPropertyItem(slug.value)
 
 <template>
     <div
-    class="flex justify-center my-20" 
+    class="flex justify-center items-center h-[calc(100vh-100px)] sm:h-[calc(100vh-170px)]" 
     v-if="propertyStore.isLoading">
         <BaseRippleProgress />
     </div>

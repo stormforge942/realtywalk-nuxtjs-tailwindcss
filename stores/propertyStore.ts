@@ -48,6 +48,8 @@ export interface PropertyStore {
         componentLoaded: boolean,
         mapInfo: any
     }
+
+    totalPages: number,
 }
 
 export const usePropertyStore = defineStore('property', {
@@ -98,7 +100,8 @@ export const usePropertyStore = defineStore('property', {
             reloading: false,
             componentLoaded: false,
             mapInfo: undefined
-        }
+        },
+        totalPages: 1
     }),
     actions: {
         convertStateToFilterPayload(): PropertyFilter {
@@ -230,7 +233,10 @@ export const usePropertyStore = defineStore('property', {
 
         async fetchAddressLookUp(search: string) {
             this.isLoading = true
-            $fetch<any>(`${this.API_ENDPOINT}/api/properties/address-lookup?page=${this.page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
+            $fetch<{
+                data: PropertyItem[],
+                total: number
+            }>(`${this.API_ENDPOINT}/api/properties/address-lookup?page=${this.page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
                 method: 'POST',
                 body: {
                     addressQuery: search,
@@ -239,7 +245,10 @@ export const usePropertyStore = defineStore('property', {
                     sortOrder: this.sortOrder
                 }
             })
-                .then((result) => this.properties = result?.data as PropertyItem[])
+                .then((result) => {
+                    this.properties = result?.data as PropertyItem[]
+                    this.totalPages = Math.ceil(result.total / 12)
+                })
                 .finally(() => this.isLoading = false)
         },
         async fetchPropertyItem(id: string) {
@@ -253,6 +262,7 @@ export const usePropertyStore = defineStore('property', {
             $fetch<Neighborhood>(`${this.API_ENDPOINT}/api/polygon/${id}`)
                 .then(async data => {
                     this.selectedNeighbor = data
+                    console.log(data)
                     const result = await $fetch<{
                         schools: any[],
                         districts: any[]

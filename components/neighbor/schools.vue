@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>{{ neighborhood?.description }}</div>
+        <div v-html="neighborhood?.description"></div>
         <div v-if="schools.length">
             <div class="text-3xl my-4">Schools</div>
             <div class="overflow-y-auto">
@@ -44,7 +44,9 @@
                         <tr v-for="school in schools" :key="`district-${school.id}`">
                           <td>{{school.name}}</td>
                           <td>{{school.address}}</td>
-                          <td><a :href="school.school_url" target="_blank" rel="noopener noreferrer">View Website</a></td>
+                          <td>
+                            <NuxtLink target="_blank" :to="school.school_url">View Website</NuxtLink>
+                          </td>
                           <td>{{school.district_name}}</td>
                           <td>{{school.instructional_level}}</td>
                           <td>{{school.grade_low}}</td>
@@ -103,7 +105,7 @@
 
                     <tr v-for="school in schoolDistricts" :key="`school-${school.ext_id}`">
                         <td>{{school.district_name}}</td>
-                        <td><NuxtLink :to="school.school_url" target="_blank" rel="noopener noreferrer">View Website</NuxtLink></td>
+                        <td><NuxtLink :to="school.school_url" target="_blank">View Website</NuxtLink></td>
                         <td>{{school.grade_low}}</td>
                         <td>{{school.grade_high}}</td>
                         <td>{{school.school_cnt}}</td>
@@ -149,12 +151,16 @@ const schoolDistricts = computed(() => propertyStore.schoolDistricts)
 const stats = computed(() => propertyStore.selectedNeighbor?.statisticTypes) 
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 thead tr {
     @apply border-y border-primary1
 }
 
 td, th {
     @apply p-3
+}
+
+a {
+  @apply inline-block px-2 mx-2 w-max text-primary hover:text-primary1 hover:underline;
 }
 </style>

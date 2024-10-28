@@ -22,6 +22,10 @@ watch(() => [
         <div v-if="propertyStore.properties.length > 0">
             <LookupSortMenu />
             <LookupItem :key="item.id" :item="item" v-for="item in propertyStore.properties"/>
+            <BasePagination 
+            v-if="propertyStore.totalPages > 1" is-big 
+            :total-pages="propertyStore.totalPages" 
+            v-model="propertyStore.page"/>
         </div>
         <div class="text-center p-12" v-else>
             {{ $t('neighborhood.list.not_found') }}
