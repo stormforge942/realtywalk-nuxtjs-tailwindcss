@@ -29,9 +29,9 @@ const failedImgs = ref<string[]>([])
 const onClickPrev = () => {
     if(curIndex.value > 0) curIndex.value = curIndex.value - 1
     if(imgContainerRef.value) {
-        imgContainerRef.value.scrollLeft = curIndex.value * 533.3
+        imgContainerRef.value.scrollLeft = curIndex.value * 540
 
-        showPrevButton.value = imgContainerRef.value.scrollLeft > 533
+        showPrevButton.value = imgContainerRef.value.scrollLeft > 540
         showNextButton.value = true
     }
 }
@@ -39,10 +39,10 @@ const onClickPrev = () => {
 const onClickNext = () => {
     if(curIndex.value < imageUrls.value.length - 1) curIndex.value = curIndex.value + 1
     if(imgContainerRef.value) {
-        imgContainerRef.value.scrollLeft = curIndex.value * 533.3
+        imgContainerRef.value.scrollLeft = curIndex.value * 540
 
         showPrevButton.value = true
-        showNextButton.value = imgContainerRef.value.scrollLeft + imgContainerRef.value.clientWidth + 534 <= imgContainerRef.value.scrollWidth
+        showNextButton.value = imgContainerRef.value.scrollLeft + imgContainerRef.value.clientWidth + 540 <= imgContainerRef.value.scrollWidth
     }
 }
 
@@ -56,9 +56,9 @@ const onClickNext = () => {
        ref="imgContainerRef"
        class="flex overflow-x-auto no-scrollbar scroll-smooth">
             <NuxtImg 
-            class="h-[400px] aspect-video border border-primary1"
+            class="h-[400px] min-w-[540px] max-w-[540px] border border-primary1"
             @error="failedImgs.push(url)"
-            :key="url" v-for="url in imageUrls" :src="failedImgs.includes(url) ? url : '/images/property_no_img_thumb.png'"/>
+            :key="url" v-for="url in imageUrls" :src="failedImgs.includes(url) ? '/images/property_no_img_thumb.png' : url"/>
        </div>
         <button
         @click="onClickPrev()" 

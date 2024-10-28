@@ -7,7 +7,7 @@ const slug = computed(() => (route.params.slug as string[]).join('/'))
 
 propertyStore.fetchNeighborItem(slug.value)
 
-const neighborhood = propertyStore.selectedNeighbor
+const neighborhood = computed(() => propertyStore.selectedNeighbor)
 </script>
 
 <template>
@@ -28,8 +28,8 @@ const neighborhood = propertyStore.selectedNeighbor
                     </div>
                     <div class="w-full flex flex-col md:flex-row gap-8">
                         <div class="w-full md:w-3/5">
-                            <ClientOnly><NeighborTree /></ClientOnly>
-                            <NeighborSchools/>
+                            <NeighborTree v-if="neighborhood?.zoom"/>
+                            <NeighborSchools v-else/>
                         </div>
                         <div class="w-full md:w-2/5">
                             <NeighborLinks />

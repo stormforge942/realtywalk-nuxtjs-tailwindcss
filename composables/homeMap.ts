@@ -149,7 +149,7 @@ export const getPolygonList = async (isV2: boolean) => {
     // this.$refs.tree?.remove({}, true);
     homeStore.polygonTrunks = [[], [], []];
 
-    console.log("Not Expanded: ", notExpanded);
+    console.log("Selected Polygons: ", homeStore.selectedPolygons);
 
     buildTrunk(data).forEach((list, index) => {
       list.forEach((data) => {
@@ -177,12 +177,10 @@ export const getPolygonList = async (isV2: boolean) => {
 export const isPolygonVisible = (zoom: number, displayAsBg: number) => {
   const homeStore = useHomeStore();
   if (homeStore.showFloodZones || homeStore.showSchoolZones || homeStore.showBikeTrails) return false;
-  return (homeStore.level + 1 === zoom) || (homeStore.level === 2 && zoom === 2 && displayAsBg)
+  return (homeStore.level + 1 === zoom) || (homeStore.level === 2 && zoom === 2 && displayAsBg === 1)
 }
 
 export const setPolygonDataStyling = async () => {
-  console.log("Polygon Data Styling Called: ")
-
   const map = useGoogleMap().value;
   const homeStore = useHomeStore();
 
@@ -752,9 +750,9 @@ export const prepareNodeData = (node: PolygonNode) => {
 
   node.data = { id: node.id, page_url: node.path };
   node.state = {
-    checked: true,
-    selected: true,
-    expanded: false,
+    checked: false,
+    selected: false,
+    expanded: true,
     indeterminate: false
   };
 
@@ -770,6 +768,8 @@ export const prepareNodeData = (node: PolygonNode) => {
       ...node.state,
       indeterminate: indeterminate,
       expanded: match > 0,
+      checked: true,
+      selected: true
     };
   }
 
