@@ -769,7 +769,7 @@ export const prepareNodeData = (node: PolygonNode) => {
       indeterminate: indeterminate,
       expanded: match > 0,
       checked: true,
-      selected: true
+      selected: false
     };
   }
 

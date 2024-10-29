@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Report Bug',
+  title: 'Report Bug - Realty WALK',
 })
 </script>
 

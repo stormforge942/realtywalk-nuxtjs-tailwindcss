@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'User Sign in - Realty Walk',
+  title: 'Neigborhoods List - Realty WALK',
 })
 
 const neighborStore = useNeighborStore()

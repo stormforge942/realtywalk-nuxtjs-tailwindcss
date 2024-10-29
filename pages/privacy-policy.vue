@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Privacy Policy',
+  title: 'Privacy Policy - Realty WALK',
 })
 </script>
 

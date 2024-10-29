@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Address Lookup',
+  title: 'Address Lookup - Realty WALK',
 })
 </script>
 

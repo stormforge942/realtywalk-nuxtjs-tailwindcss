@@ -6,7 +6,7 @@ const props = defineProps<{
   item: NeighborHoodItem
 }>()
 
-const isExpand = ref(false)
+const isExpand = ref(true)
 
 const curPage = ref(1)
 const total = Math.ceil(props.item.properties_pagination.total/10)
@@ -33,8 +33,8 @@ const items = computed(() =>  props.item.properties.slice((curPage.value - 1) * 
     </div>
   </div>
   <div
-  :class="[isExpand ? 'h-0 opacity-0' : 'h-max opacity-100']" 
-  class="flex flex-col ml-[66px] gap-2 mb-4 overflow-y-hidden">
+  :class="[isExpand ? 'h-0 opacity-0 mb-0' : 'mb-4 h-max opacity-100']" 
+  class="flex flex-col ml-[66px] gap-2 overflow-y-hidden">
     <NuxtLink 
     class="text-orange-700 hover:underline capitalize"
     :to="property.alt_path_url" 

@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'User Sign in - Realty Walk',
+  title: 'User Sign in - Realty WALK',
 })
 </script>
 

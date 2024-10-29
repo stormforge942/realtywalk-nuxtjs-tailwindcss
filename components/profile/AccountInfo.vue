@@ -63,7 +63,7 @@ onMounted(() => {
     :schema="ProfileSchema"
     :state="state"
     @submit="onSubmit"
-    class="max-w-[50%] mx-auto flex flex-col gap-6 my-12">
+    class="max-w-[80%] sm:max-w-[60%] mx-auto flex flex-col gap-6 my-12">
         <UFormGroup :label="$t('profile.user.form.labels.name')" name="name">
             <input type="text" v-model="state.name"/>
         </UFormGroup>

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const store = useHomeStore();
+
+useHead({
+  title: 'Home - Realty WALK'
+})
 </script>
 
 <template>

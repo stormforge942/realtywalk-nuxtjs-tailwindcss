@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Account Activate - Realty Walk',
+  title: 'Activate Account - Realty WALK',
 })
 
 const route = useRoute();

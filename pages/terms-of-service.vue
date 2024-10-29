@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Terms of Service',
+  title: 'Terms of Service - Realty WALK',
 })
 </script>
 

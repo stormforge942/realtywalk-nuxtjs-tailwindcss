@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'About Us',
+  title: 'About Us - Realty WALK',
 })
 
 const img = useImage()

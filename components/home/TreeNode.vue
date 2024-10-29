@@ -17,7 +17,7 @@ const isFolder = computed(() => {
 const toggle = (e: MouseEvent) => {
     props.model.state.indeterminate = true;
     props.model.state.expanded = !props.model.state.expanded;
-    onNeighborhoodClicked(e, props.model)
+    //onNeighborhoodClicked(e, props.model)
 }
 
 const isCheckBoxVisible = computed(() => {

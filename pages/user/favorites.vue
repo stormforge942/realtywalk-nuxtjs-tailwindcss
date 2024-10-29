@@ -3,6 +3,10 @@ definePageMeta({
   layout: false,
   middleware: 'auth'
 })
+
+useHead({
+  title: 'Favorites - Realty WALK'
+})
 </script>
 
 <template>

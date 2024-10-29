@@ -25,7 +25,6 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: 'locales/',
     strategy: 'prefix_except_default',
-    vueI18n: './i18n.config.ts',
   },
   runtimeConfig: {
     public: {
@@ -42,5 +41,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'default' }
   },
-  debug: true,
+  build: {
+    transpile: ['vue-3-mask']
+  }
 })

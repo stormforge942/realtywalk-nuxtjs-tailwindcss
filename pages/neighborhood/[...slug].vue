@@ -8,6 +8,10 @@ const slug = computed(() => (route.params.slug as string[]).join('/'))
 propertyStore.fetchNeighborItem(slug.value)
 
 const neighborhood = computed(() => propertyStore.selectedNeighbor)
+
+useHead({
+    title: 'Realty WALK'
+})
 </script>
 
 <template>

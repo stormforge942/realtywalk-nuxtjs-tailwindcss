@@ -27,12 +27,16 @@ watch(
       </div>
     </template>
     <template v-else>
-      <div class="flex flex-col gap-4 my-4">
+      <div
+      v-if="neighborStore.items.length" 
+      class="flex flex-col gap-4 my-4">
         <BasePagination is-big v-model="neighborStore.curPage" :total-pages="neighborStore.totalPage"/>
-        <div>
-          <NeighborhoodItem :key="item.id" :item="item" v-for="item of neighborStore.items" />
-        </div>
+        <NeighborhoodItem :key="item.id" :item="item" v-for="item of neighborStore.items" />
         <BasePagination is-big v-model="neighborStore.curPage" :total-pages="neighborStore.totalPage"/>
+      </div>
+      <div v-else 
+      class="text-xl p-10 flex justify-center items-center">
+        {{ $t('neighborhood.list.not_found') }}
       </div>
     </template>
   </div>

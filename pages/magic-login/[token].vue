@@ -21,6 +21,10 @@ onMounted(async () => {
     }
 })
 
+useHead({
+    title: 'Magic Login Attempt - Realty WALK'
+})
+
 </script>
 
 <template>

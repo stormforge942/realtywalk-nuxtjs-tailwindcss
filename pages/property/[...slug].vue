@@ -6,6 +6,10 @@ const propertyStore = usePropertyStore()
 const slug = computed(() => (route.params.slug as string[]).join('/'))
 
 propertyStore.fetchPropertyItem(slug.value)
+
+useHead({
+    title: 'Realty WALK'
+})
 </script>
 
 <template>
