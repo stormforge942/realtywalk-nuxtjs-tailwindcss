@@ -51,7 +51,6 @@ const onClickSearchItem = (item: SearchItem) => {
             homeStore.isMapView = criteria.isMapView
             homeStore.level = criteria.level
             homeStore.map = criteria.map
-            homeStore.saveSearch = criteria.saveSearch
             homeStore.show100Year = criteria.show100Year
             homeStore.show100YearBFE = criteria.show100YearBFE
             homeStore.show100YearShallow = criteria.show100YearShallow

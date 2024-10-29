@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full relative">
+    <div class="w-full h-full relative z-0">
         <div class="w-full h-[calc(100%-30px)] g-map" id="results-map"></div>
         <div
         :class="[reloading ? 'bottom-20' : '-bottom-20']"

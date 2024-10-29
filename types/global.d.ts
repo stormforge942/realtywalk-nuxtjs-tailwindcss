@@ -92,7 +92,6 @@ interface SearchCriteria {
     isListView: boolean,
 
     showInstruction: boolean,
-    saveSearch: boolean,
     map: {
         center: {
             lat: number,

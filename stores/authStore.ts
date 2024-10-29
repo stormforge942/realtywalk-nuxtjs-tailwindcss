@@ -220,7 +220,6 @@ export const useAuthStore = defineStore('auth', {
                 minSquareFeetCount: propertyStore.minSquareFeetCount,
                 minStory: propertyStore.minPrice,
                 propertyType: propertyStore.propertyType,
-                saveSearch: homeStore.saveSearch,
                 show100Year: homeStore.show100Year,
                 show100YearBFE: homeStore.show100YearBFE,
                 show100YearShallow: homeStore.show100YearShallow,
