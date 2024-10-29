@@ -11,7 +11,7 @@ const infiniteHandler = ($state: any) => {
     exploreStore.loadPolygons(true, $state);
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     exploreStore.loadPolygons().then(() => {
         exploreStore.isLoading = false
     })
@@ -26,22 +26,29 @@ onMounted(() => {
         <h1 class="self-center pt-6 pb-4 text-4xl">{{ $t('home.start_screen.title') }}</h1>
     </div>
     <div class="w-full max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4 gap-8">
-        <HomeNeighborItem 
-        :key="item.id" 
-        :item="item"
-        @click="exploreStore.goToMap(item.id, item.title)" 
-        v-for="item in exploreStore.polygons"/>
-        <InfiniteLoading
-        @distance="10" @infinite="infiniteHandler">
-            <div slot="spinner">
-                <BaseCircleProgress size="xs"/>
+        <template v-if="exploreStore.polygons.length === 0 && exploreStore.isLoading">
+            <div class="w-full justify-center p-20">
+                <BaseRippleProgress/>
             </div>
-            <div slot="no-more">
-            {{ $t("home.result.infinite.no_more") }}
-            </div>
-            <div slot="no-results">
-            {{ $t("home.result.infinite.no_results") }}
-            </div>
-      </InfiniteLoading>
+        </template>
+        <template v-else>
+            <HomeNeighborItem 
+                :key="item.id" 
+                :item="item"
+                @click="exploreStore.goToMap(item.id, item.title)" 
+                v-for="item in exploreStore.polygons"/>
+            <InfiniteLoading
+            @distance="10" @infinite="infiniteHandler">
+                <div slot="spinner">
+                    <BaseCircleProgress size="xs"/>
+                </div>
+                <div slot="no-more">
+                {{ $t("home.result.infinite.no_more") }}
+                </div>
+                <div slot="no-results">
+                {{ $t("home.result.infinite.no_results") }}
+                </div>
+            </InfiniteLoading>
+        </template>
     </div>
 </template>

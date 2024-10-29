@@ -49,6 +49,12 @@ const isForSale = computed(() => {
 const onClickFavorite = () => {
   authStore.toggleFavorite(props.item.id, isFavoriteItem.value)
 }
+
+const validateNeighborhoodUrl = (val: string) => {
+    const title = props.item.pn || props.item.polygon?.title || props.item.id || props.item.polygon?.ancestors[props.item.polygon?.ancestors?.length - 1]?.title
+    if(val === '/neighborhood/') return `/neighborhood/${title}`
+    else return val
+} 
 </script>
 
 <template>
@@ -87,16 +93,16 @@ const onClickFavorite = () => {
                 <span class="hidden lg:inline-block">{{ $t('property.list_details.sub') }}</span>
                 <span class="inline-block lg:hidden">{{ $t('property.show.features.subdivision') }}</span>
                 <template v-if="item.pp">
-                    <NuxtLink :to="props.item.pp" class="underline hover:text-primary capitalize">{{ props.item.pn }}</NuxtLink>
+                    <NuxtLink :to="validateNeighborhoodUrl(props.item.pp)" class="underline hover:text-primary capitalize">{{ props.item.pn }}</NuxtLink>
                 </template>
                 <template v-else-if="item.polygon">
                     <NuxtLink v-if="item.polygon.ancestors?.length > 0" 
-                        :to="item.polygon.ancestors[item.polygon.ancestors.length - 1].path_url" 
+                        :to="validateNeighborhoodUrl(item.polygon.ancestors[item.polygon.ancestors.length - 1].path_url)" 
                         class="underline hover:text-primary capitalize">
                         {{ item.polygon.ancestors[item.polygon.ancestors.length - 1].title }}
                     </NuxtLink>
                     <NuxtLink v-else
-                    :to="props.item.polygon.path_url" 
+                    :to="validateNeighborhoodUrl(props.item.polygon.path_url)" 
                     class="underline hover:text-primary capitalize">{{ props.item.polygon.title }}</NuxtLink>
                 </template>
             </span>

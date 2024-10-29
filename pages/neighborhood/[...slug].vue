@@ -3,7 +3,7 @@
 const route = useRoute()
 const propertyStore = usePropertyStore()
 
-const slug = computed(() => (route.params.slug as string[]).join('/'))
+const slug = computed(() => (route.params.slug as string[] || []).join('/'))
 
 propertyStore.fetchNeighborItem(slug.value)
 

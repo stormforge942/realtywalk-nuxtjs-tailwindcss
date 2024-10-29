@@ -42,7 +42,7 @@ export const getDomain = (url: string) => {
 }
 
 export const trimText = (text: string, length: number) => {
-    return text.length > length ? text.substring(0, length) + "..." : text;
+    return text?.length > length ? text?.substring(0, length) + "..." : text;
 }
 
 export const formatIndicator = (field: any) => {

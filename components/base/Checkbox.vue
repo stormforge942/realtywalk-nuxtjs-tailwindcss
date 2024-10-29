@@ -2,6 +2,7 @@
 
 interface CheckBoxProp {
   modelValue: boolean;
+  intermediate?: boolean
   color: string;
 }
 
@@ -12,6 +13,7 @@ const emit = defineEmits(['update:modelValue']);
 const toggleCheckbox = () => {
   emit('update:modelValue', !props.modelValue);
 };
+
 </script>
 
 <template>
@@ -27,9 +29,13 @@ const toggleCheckbox = () => {
     >
     <span
     :style="props.color.includes('#') && {backgroundColor: props.color}"
-    :class="[modelValue? 'opacity-100' : 'opacity-0', !props.color.includes('#') && `bg-${props.color}`]"
-    class="w-[10px] h-[10px]"/>
+    :class="[
+      modelValue || intermediate? 'opacity-100' : 'opacity-0', 
+      !props.color.includes('#') && `bg-${props.color}`,
+      !modelValue && intermediate ? 'h-[2px]' : 'h-[10px]'
+    ]"
+    class="w-[10px]" ></span>
     </div>
-    <slot />
+    <slot></slot>
   </label>
 </template>

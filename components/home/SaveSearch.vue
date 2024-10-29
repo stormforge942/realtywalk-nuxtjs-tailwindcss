@@ -25,7 +25,7 @@ const onClickSave = async () => {
 <template>
     <div 
     :class="[homeStore.saveSearch ? 'max-h-full lg:opacity-100' : 'max-h-0 opacity-0']"
-    class="bg-white lg:max-w-[300px] h-[calc(100vh-150px)] lg:h-max w-full fixed top-[120px] left-0 lg:left-[320px] flex flex-col gap-y-4 px-4 pb-4 pt-20 overflow-y-hidden z-20">
+    class="bg-white lg:max-w-[300px] h-[calc(100vh-150px)] lg:h-max w-full fixed top-[150px] lg:top-[120px] lg:drop-shadow-lg left-0 lg:left-[320px] flex flex-col gap-y-4 px-4 pb-4 pt-20 overflow-y-hidden z-20">
         <span class="text-xl lg:text-base text-primary">{{ $t('home.searches.name_search') }}</span>
         <input type="text" v-model="search"/>
         <button 

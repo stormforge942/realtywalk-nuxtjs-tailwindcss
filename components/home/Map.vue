@@ -20,11 +20,9 @@ import Swal from "sweetalert2"
 
 const router = useRouter();
 const homeStore = useHomeStore();
-const config = useRuntimeConfig().public
 const {t} = useI18n();
 
 const onResizeMap = () => {
-  console.log("Resizing")
   if(homeStore.showResult && !homeStore.showSearch && window.innerWidth >= 1024) {
     homeStore.showSearch = true;
   }
@@ -68,7 +66,6 @@ watch(() => [homeStore.selectedPolygons], () => {
   localStorage.setItem('selectedParents', JSON.stringify(homeStore.selectedParents));
   setPolygonDataStyling();
   getPolygonList(false);
-  console.log(homeStore.polygonTrunks)
 })
 
 watch(() => 

@@ -8,6 +8,7 @@ const propertyStore = usePropertyStore();
 const aborter = ref(new AbortController());
 
 const infiniteHandler = ($state: any) => {
+    console.log($state)
     if (propertyStore.page > propertyStore.lastPropertyPage) {
     return;
     }
@@ -43,10 +44,11 @@ watch(() => [
     propertyStore.maxPrice,
     propertyStore.minSquareFeetCount,
     propertyStore.maxSquareFeetCount,
-    propertyStore.propertyType,
-    homeStore.showResult,
+    propertyStore.propertyType
 ], () => {
-    eventBus.emit(SEARCH_CRITERIA)
+    if(homeStore.showResult) {
+        eventBus.emit(SEARCH_CRITERIA)
+    }
 })
 
 onMounted(() => {
@@ -91,7 +93,7 @@ onUnmounted(() => {
                         :key="item.pri || item.id" 
                         :item="item"
                         v-for="item in propertyStore.properties"/>
-                        <InfiniteLoading :distance="10" @infinite="infiniteHandler">
+                        <InfiniteLoading class="min-h-10 invisible" :distance="10" @infinite="infiniteHandler">
                             <div slot="spinner">
                                 {{ $t("home.result.infinite.loading") }}
                             </div>

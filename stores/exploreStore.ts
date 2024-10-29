@@ -41,12 +41,11 @@ export const useExploreStore = defineStore('explore', {
                         }
 
                         this.lastPage = data.last_page;
-                        this.isLoading = false;
                     });
             } catch (err) {
                 console.error(err);
-                //this.errorMsg = getErrorMessage(err);
-                this.isLoading = false;
+            } finally {
+                this.isLoading = false
             }
 
             if (!nextPage) this.page = 1;
@@ -77,6 +76,7 @@ export const useExploreStore = defineStore('explore', {
 
             //localStorage.setItem('selectedPolygons', JSON.stringify(IDs));
             propertyStore.polygons = IDs;
+            homeStore.selectedPolygons = IDs
 
             if (map) {
                 homeStore.isMapView = true

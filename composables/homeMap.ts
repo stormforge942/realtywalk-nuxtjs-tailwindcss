@@ -63,17 +63,17 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
 
-  // homeStore.polygonLabel = new MarkerWithLabel({
-  //   map,
-  //   position: new google.maps.LatLng(0, 0),
-  //   draggable: false,
-  //   labelAnchor: new google.maps.Point(0, 0),
-  //   labelClass: "polygon-label",
-  //   icon: "/images/transparent.png",
-  //   visible: false,
-  //   labelContent: 'FOO',
-  //   crossOnDrag: false
-  // });
+  homeStore.polygonLabel = new MarkerWithLabel({
+    map,
+    position: new google.maps.LatLng(0, 0),
+    draggable: false,
+    labelAnchor: new google.maps.Point(0, 0),
+    labelClass: "polygon-label",
+    icon: "/images/transparent.png",
+    visible: false,
+    labelContent: 'FOO',
+    crossOnDrag: false
+  });
 
   google.maps.event.addListener(map, 'idle', () => {
     const center = map.getCenter();
@@ -141,7 +141,7 @@ export const getPolygonList = async (isV2: boolean) => {
       signal: polyListAborter.signal
     },
   ).then(data => {
-    const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: true });
+    const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: false });
     // const notExpanded = this.$refs.tree
     //   .findAll({ state: { expanded: false } })
     //   .map((node) => node.id);
@@ -159,7 +159,7 @@ export const getPolygonList = async (isV2: boolean) => {
         if (index === homeStore.level) {
           console.log(node)
           if (!notExpanded.includes(node)) {
-            node.state.expanded = false
+            node.state.expanded = true
           }
           // let trunk = this.$refs.tree.prepend(node);
 
@@ -266,9 +266,7 @@ const polyClickEvent = (poly: google.maps.Data.Feature, event: google.maps.Data.
 }
 
 export const redrawMap = () => {
-  setTimeout(() => {
-    setPolygonDataStyling();
-  }, 10);
+  setPolygonDataStyling();
 }
 
 export const updateBikeLayer = () => {
@@ -310,9 +308,7 @@ export const updatePolygonViewport = async (initiate: boolean = false) => {
   if (!authStore.authenticated && level === 2 && homeStore.level !== level && !initiate && !homeStore.popupDisplayed) {
     homeStore.popupDisplayed = true;
     eventBus.emit(SHOW_POPUP_L3ALERT)
-    // console.log('Showing alert from update viewport', z, this.polygonsActiveLevel);
   }
-  //if (!homeStore.l3Confirmed) return;
 
   if (homeStore.showBikeTrails || homeStore.showFloodZones || homeStore.showSchoolZones) return;
 
@@ -595,16 +591,9 @@ export const setPolygonsActiveLevel = async (level: 0 | 1 | 2, skipZoom: boolean
     eventBus.emit(SHOW_POPUP_L3ALERT);
   }
 
-  //if (!homeStore.l3Confirmed) return;
 
   if (level !== homeStore.level) {
     homeStore.level = level;
-    // this.$refs.tree?.remove({}, true);
-
-    // homeStore.polygonTrunks[level].forEach((trunkData) => {
-    //   let trunk = this.$refs.tree.prepend(trunkData);
-    //   trunk.expand();
-    // });
     homeStore.polygonTrunks[level].forEach((trunkData: PolygonNode) => {
       trunkData.state.expanded = true;
     })
@@ -627,33 +616,32 @@ export const onCheckPoly = (node: PolygonNode) => {
     if (!node.state.checked) return;
     if (homeStore.selectedPolygons.indexOf(node.id) !== -1) return;
     addPolygonChildrenRecursively(node.id);
-    homeStore.selectedPolygons.push(node.id);
   }, 300);
 }
 
 export const onUncheckPoly = (node: PolygonNode) => {
   const homeStore = useHomeStore();
-  setTimeout(function () {
+  setTimeout(() => {
     if (node.state.checked) return;
-    if (node.children?.length && node.state.indeterminate) return;
     if (homeStore.selectedPolygons.indexOf(node.id) === -1) return;
-    if (homeStore.selectedParents.indexOf(node.id) !== -1) {
-      homeStore.selectedParents.splice(homeStore.selectedParents.indexOf(node.id), 1);
-    }
+    homeStore.selectedParents = homeStore.selectedPolygons.filter(id => id != node.id)
+    homeStore.selectedPolygons = homeStore.selectedPolygons.filter(id => id != node.id)
     removePolygonChildrenRecursively(node.id);
-    homeStore.selectedPolygons.splice(homeStore.selectedPolygons.indexOf(node.id), 1);
   }, 300);
 }
 
 export const addPolygonChildrenRecursively = (polyId: string) => {
   const homeStore = useHomeStore();
   const data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  const items = flattenData(data);
-  const item = items.filter((x) => x.id == polyId);
 
-  if (item.length && item[0].children !== undefined) {
-    const children = item[0].children.map((x) => x.id);
-    const selectedPolygons = [...homeStore.selectedPolygons, ...children];
+  const item = findItemById(data, polyId)
+  if (item) {
+    const items = findAll(item?.children || [], {})
+
+    items.forEach(item => {
+      item.state.checked = true
+    })
+    const selectedPolygons = [...homeStore.selectedPolygons, ...items.map(item => item.id), item.id];
     homeStore.selectedPolygons = [...new Set(selectedPolygons)];
   }
 }
@@ -661,19 +649,20 @@ export const addPolygonChildrenRecursively = (polyId: string) => {
 export const removePolygonChildrenRecursively = (polyId: string) => {
   const homeStore = useHomeStore();
   const data = homeStore.polygonTrunks[homeStore.polygonTrunks.length - 1];
-  const items = flattenData(data);
-  const item = items.filter((x) => x.id == polyId);
 
-  if (item.length && item[0].children !== undefined) {
-    const children = flattenData(item[0].children).map((x) => x.id);
-    children.forEach((id) => {
-      const index = homeStore.selectedPolygons.indexOf(id);
-      if (index !== -1) {
-        homeStore.selectedPolygons.splice(index, 1);
-      }
-    });
-    homeStore.selectedPolygons = [...new Set(homeStore.selectedPolygons)];
-  }
+  const item = findItemById(data, polyId)
+  const items = findAll(item?.children || [], {})
+
+  items.forEach(item => {
+    item.state.checked = false
+    item.state.indeterminate = false
+    const selectedPolygons = homeStore.selectedPolygons
+    const index = selectedPolygons.indexOf(item.id)
+    if (index !== -1) {
+      selectedPolygons.splice(index, 1)
+    }
+    homeStore.selectedPolygons = [...new Set(selectedPolygons)];
+  })
 }
 
 const checkPolygon = (polyId: string) => {
@@ -700,10 +689,6 @@ export const uncheckPolygon = (polyId: string) => {
   const item = findItemById(homeStore.polygonTrunks[homeStore.level], polyId)
   if (item) onUncheckPoly(item)
 
-  // TODO: tree view
-  // const selection = this.$refs.tree.find({ data: { id: polyId } });
-  // selection.uncheck();
-
   removePolygonChildrenRecursively(polyId);
   homeStore.selectedPolygons.splice(homeStore.selectedPolygons.indexOf(polyId), 1);
   removeFromPolygonList(polyId);
@@ -725,7 +710,7 @@ const flattenData = (data: PolygonNode[]): PolygonNode[] => {
   return data.map(item => {
     const newItem = {
       ...item, state: {
-        checked: true,
+        checked: false,
         expanded: false,
         indeterminate: false,
         selected: false
@@ -742,7 +727,7 @@ const flattenData = (data: PolygonNode[]): PolygonNode[] => {
 
 export const removeFromPolygonList = (polyId: string) => {
   const homeStore = useHomeStore();
-  homeStore.property.map.selectedPolygons = homeStore.property.map.selectedPolygons.filter(item => item === polyId);
+  homeStore.property.map.selectedPolygons = homeStore.property.map.selectedPolygons.filter(item => item !== polyId);
 }
 
 export const prepareNodeData = (node: PolygonNode) => {
@@ -757,27 +742,28 @@ export const prepareNodeData = (node: PolygonNode) => {
   };
 
   if (node.children) {
-    const children = flattenData(node.children);
+    const children = findAll(node.children || [], {});
     const match = totalMatch(
       children.map((x) => x.id),
       homeStore.selectedPolygons
     );
     const indeterminate =
-      match === 0 ? false : match !== children.length;
+      match === 0 ? false : children.length === 0 ? false : match != children.length;
     node.state = {
       ...node.state,
       indeterminate: indeterminate,
       expanded: match > 0,
-      checked: true,
+      checked: false,
       selected: false
     };
   }
 
-  if (homeStore.selectedPolygons.some((id) => id == node.id)) {
+  if (homeStore.selectedPolygons.includes(node.id)) {
     node.state = {
       ...node.state,
       checked: true,
       selected: true,
+      expanded: true
     };
   } else if (!homeStore.ancestorPolygons.some((id) => id == node.id)) {
     homeStore.ancestorPolygons.push(node.id);
@@ -836,13 +822,9 @@ export const clearAllSelected = () => {
   eventBus.emit(CLEAR_ALL_FILTERS)
 }
 
-export const onNeighborhoodClicked = (e: MouseEvent, node: PolygonNode) => {
+export const onNeighborhoodClicked = (node: PolygonNode) => {
   console.log(node);
   const homeStore = useHomeStore();
-
-  if ((e.target as HTMLElement).nodeName === 'SPAN' || (e.target as HTMLElement).tagName === 'SPAN') {
-    window.open(location.host + node.path)
-  }
 
   if (!(node.id in homeStore.selectedPolygons)) {
     checkPolygon(node.id);

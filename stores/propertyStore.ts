@@ -105,6 +105,7 @@ export const usePropertyStore = defineStore('property', {
     }),
     actions: {
         convertStateToFilterPayload(): PropertyFilter {
+            const homeStore = useHomeStore()
             return {
                 bathrooms: this.fullBathRoomCount !== MIN_VALUE ? this.fullBathRoomCount : 'any',
                 bathroomsHalf: this.halfBathRoomCount !== MIN_VALUE ? this.halfBathRoomCount : 'any',
@@ -124,14 +125,14 @@ export const usePropertyStore = defineStore('property', {
 
                 status: this.status,
                 propertyType: this.proType,
-                polygons: this.polygons,
+                polygons: homeStore.selectedPolygons,
                 loadCount: this.loadCount,
                 sortBy: this.sortBy,
                 sortOrder: this.sortOrder,
             }
         },
 
-        async fetchProperty(nextPage: boolean = false, infiniteState: any, aborter: AbortController) {
+        async fetchProperty(nextPage: boolean = false, infiniteState: any, aborter: AbortController | null) {
             let page = nextPage ? this.page + 1 : 1;
             if (nextPage) {
                 this.isPreLoading = true;
@@ -144,7 +145,7 @@ export const usePropertyStore = defineStore('property', {
                 const result = await $fetch(`${this.API_ENDPOINT}/api/properties/filter?page=${page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
                     method: 'POST',
                     body: this.convertStateToFilterPayload(),
-                    signal: aborter.signal
+                    signal: aborter?.signal
                 })
 
 
@@ -157,9 +158,9 @@ export const usePropertyStore = defineStore('property', {
 
                         if (this.page >= data.last_page) {
                             this.page = data.last_page;
-                            infiniteState.complete();
+                            infiniteState?.complete();
                         } else {
-                            infiniteState.loaded();
+                            infiniteState?.loaded();
                         }
                     } else {
                         this.properties = data.data;
@@ -168,8 +169,6 @@ export const usePropertyStore = defineStore('property', {
                     this.totalProperties = data.total;
                     this.lastPropertyPage = data.last_page;
                 }
-
-                console.log("DATA: ", data, data['data'])
             } catch (err) {
                 this.errorMsg = getErrorMessage(err);
             } finally {
@@ -177,11 +176,25 @@ export const usePropertyStore = defineStore('property', {
                 this.isPreLoading = false;
             }
 
-            console.log("DATA: ")
-
             if (!nextPage) {
                 this.page = 1;
             }
+        },
+
+        async fetchNeighborhoodProperty(id: string) {
+            this.isLoading = true
+            $fetch<{
+                data: PropertyItem[]
+                total: number
+                per_page: number
+            }>(`${this.API_ENDPOINT}/api/polygon/properties/${id}?page=${this.page}`)
+                .then(result => {
+                    this.properties = result.data
+                    this.totalPages = Math.ceil(result.total * 1.0 / result.per_page)
+                })
+                .finally(() => {
+                    this.isLoading = false
+                })
         },
 
         async fetchMapProperties(init = false) {

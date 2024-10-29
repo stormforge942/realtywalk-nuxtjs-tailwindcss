@@ -86,4 +86,5 @@ onUnmounted(() => {
   <BaseReportBugModal />
   <BaseWatchDemoModal />
   <LookupScheduleViewModal />
+  <NeighborPropertyModal />
 </template>

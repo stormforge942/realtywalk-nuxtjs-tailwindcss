@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const propertyStore = usePropertyStore()
+
+const onClickView = () => {
+    eventBus.emit(VIEW_PROPERTY)
+}
 </script>
 
 
@@ -9,7 +13,9 @@ const propertyStore = usePropertyStore()
             <div class="text-white text-3xl w-full">  
                 {{propertyStore.selectedNeighbor?.title}}
             </div>
-            <div class="bg-secondary hover:opacity-95 cursor-pointer text-primary text-base font-semibold pt-[10px] px-2 pb-2 sm:max-w-[250px] text-center">
+            <div 
+            @click="onClickView()"
+            class="bg-secondary hover:opacity-95 cursor-pointer text-primary text-base font-semibold pt-[10px] px-2 pb-2 sm:max-w-[250px] text-center">
                 {{ $t('View Properties in this Neigbhorhood') }}
             </div>
         </div>
