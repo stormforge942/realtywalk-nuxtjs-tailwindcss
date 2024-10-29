@@ -36,14 +36,53 @@
 import { faClose, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 const authStore = useAuthStore()
+const homeStore = useHomeStore()
+const propertyStore = usePropertyStore()
 
 const open = ref(false)
 
 const onClickSearchItem = (item: SearchItem) => {
     if(item.search_string_criteria) {
-        const criteria = JSON.parse(item.search_string_criteria)
+        const criteria = JSON.parse(item.search_string_criteria) as SearchCriteria
 
-        console.log(criteria)
+        if(criteria) {
+            homeStore.activeSchoolZone = criteria.activeSchoolZone
+            homeStore.isListView = criteria.isListView
+            homeStore.isMapView = criteria.isMapView
+            homeStore.level = criteria.level
+            homeStore.map = criteria.map
+            homeStore.saveSearch = criteria.saveSearch
+            homeStore.show100Year = criteria.show100Year
+            homeStore.show100YearBFE = criteria.show100YearBFE
+            homeStore.show100YearShallow = criteria.show100YearShallow
+            homeStore.show100YearSheetFlow = criteria.show100YearSheetFlow
+            homeStore.show100YearStormWaves = criteria.show100YearStormWaves
+            homeStore.show500Year = criteria.show500Year
+            homeStore.showBikeTrails = criteria.showBikeTrails
+            homeStore.showFloodZones = criteria.showFloodZones
+            homeStore.showInstruction = criteria.showInstruction
+            homeStore.showResult = criteria.showResult
+            homeStore.showSchoolZones = criteria.showSchoolZones
+            homeStore.showSearch = criteria.showSearch
+            homeStore.showUnselected = criteria.showUnselected
+
+            propertyStore.bedroomCount = criteria.bedroomCount
+            propertyStore.fullBathRoomCount = criteria.fullBathRoomCount
+            propertyStore.garageCapacity = criteria.garageCapacity
+            propertyStore.halfBathRoomCount = criteria.halfBathRoomCount
+            propertyStore.hasElevator = criteria.hasElevator
+            propertyStore.hasPool = criteria.hasPool
+            propertyStore.listingStatus = criteria.listingStatus
+            propertyStore.maxPrice = criteria.maxPrice
+            propertyStore.maxSquareFeetCount = criteria.maxSquareFeetCount
+            propertyStore.maxStory = criteria.maxStory
+            propertyStore.minPrice = criteria.minPrice
+            propertyStore.minSquareFeetCount = criteria.minSquareFeetCount
+            propertyStore.minStory = criteria.minStory
+            propertyStore.propertyType = criteria.propertyType
+            propertyStore.sortBy = criteria.sortBy
+            propertyStore.sortOrder = criteria.sortOrder
+        }
     }
 }
 

@@ -58,7 +58,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     :schema="ReportBugFormSchema"
     :state="state"
     @submit="onSubmit"
-    class="w-full max-w-[500px] px-6 mx-auto py-4 flex flex-col gap-y-4"
+    class="w-full max-w-[500px] min-w-[400px] px-6 mx-auto py-4 flex flex-col gap-y-4"
   >
     <UFormGroup :label="$t('report_bug.name')" name="name">
       <input type="text" v-model="state.name" />

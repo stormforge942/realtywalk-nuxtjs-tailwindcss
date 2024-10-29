@@ -32,7 +32,7 @@ useHead({
   script: [
     {
       src: `https://maps.googleapis.com/maps/api/js?key=${config.public.GOOGLE_MAPS_API_KEY}&libraries=geometry,geocoding,maps,marker,streetView`,
-      async: true,
+      async: false,
       defer: true,
     },
   ],

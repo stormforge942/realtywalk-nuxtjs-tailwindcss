@@ -37,7 +37,6 @@ onMounted(() => {
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     event.data.scheduleDateTime = `${event.data.scheduleDate} ${event.data.scheduleTime}`
-    console.log(event.data)
     localStorage.setItem('schedule', JSON.stringify(state))
     recaptchaError.value = !authStore.isValid
   if(authStore.isValid) {
@@ -99,7 +98,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         class="text-red-500">{{ $t('general.captcha_help') }}</span>
         <BaseRecaptcha />
         <button
-        @click="console.log(state)"
         :disabled="propertyStore.isSubmit" 
         type="submit">
         <BaseCircleProgress 

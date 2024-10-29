@@ -30,7 +30,6 @@ const onClickFavorite = () => {
 
 const isFavoriteItem = computed(() => {
   if(!propertyStore.selectedProperty) return false
-  console.log(authStore.favItems)
   return authStore.favItems.findIndex(item => propertyStore.selectedProperty?.id == item.id) != -1
 })
 

@@ -43,5 +43,16 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['vue-3-mask']
+  },
+  ssr: true,
+  nitro: {
+    prerender: {
+      routes: [
+        '/about',
+        '/privacy-policy',
+        '/report-bug',
+        '/terms-of-service',
+      ]
+    }
   }
 })

@@ -275,7 +275,6 @@ export const usePropertyStore = defineStore('property', {
             $fetch<Neighborhood>(`${this.API_ENDPOINT}/api/polygon/${id}`)
                 .then(async data => {
                     this.selectedNeighbor = data
-                    console.log(data)
                     const result = await $fetch<{
                         schools: any[],
                         districts: any[]

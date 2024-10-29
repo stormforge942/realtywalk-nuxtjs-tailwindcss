@@ -43,7 +43,6 @@ function updateGeoJson() {
   const originalGeoJson: any = drawLayer.value.toGeoJSON();
   originalGeoJson.features.forEach((layer: any) => {
     if (!layer.geometry) {
-      console.log('Skipping as it has no geometry', layer);
       return;
     }
     if (layer.geometry.type === "Polygon") {
@@ -114,7 +113,7 @@ const loadPolygonsInViewport = async () => {
             loadedPolygons.value.push(feature);
             loadedPolygonIds.value.push(geoData.id);
         });
-    }).catch(err => console.log(err))
+    })
   }
 }
 
@@ -143,7 +142,6 @@ onMounted(() => {
 
   drawLayer.value = L.featureGroup().addTo(map.value);
 
-  console.log("Draw Control",props.disableTools)
   if (!props.disableTools) {
     const drawControl = new L.Control.Draw({
       draw: {
@@ -168,8 +166,6 @@ onMounted(() => {
       },
     });
 
-    console.log("Draw Control",  drawControl)
-
     map.value.addControl(drawControl);
 
     map.value.on("draw:created", (e) => {
@@ -188,8 +184,6 @@ onMounted(() => {
 
   let geoJsonData: any = { 'type': 'FeatureCollection', 'features': [] };
   let geoJsonRaw: any = initialGeoJson.value;
-
-  console.log(initialGeoJson)
   
   if (geoJsonRaw) {
     if (typeof geoJsonRaw !== 'object') {

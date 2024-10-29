@@ -8,7 +8,6 @@ const propertyStore = usePropertyStore();
 const aborter = ref(new AbortController());
 
 const infiniteHandler = ($state: any) => {
-    console.log($state)
     if (propertyStore.page > propertyStore.lastPropertyPage) {
     return;
     }

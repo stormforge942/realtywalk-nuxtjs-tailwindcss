@@ -2,8 +2,6 @@
 
 const error = useError();
 
-console.log(error.value)
-
 useHead({
   title: `${error.value?.statusCode.toString() || 'Error'} - Realty WALK`
 })

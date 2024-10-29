@@ -181,7 +181,6 @@ export const useHomeStore = defineStore('home', {
         },
         setLevel(level: 0 | 1 | 2) {
             this.level = level
-            console.log(level)
         },
         toggleShowUnselected() {
             this.showUnselected = !this.showUnselected

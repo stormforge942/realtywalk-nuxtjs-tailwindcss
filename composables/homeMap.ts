@@ -142,14 +142,8 @@ export const getPolygonList = async (isV2: boolean) => {
     },
   ).then(data => {
     const notExpanded = findAll(homeStore.polygonTrunks[homeStore.level], { expanded: false });
-    // const notExpanded = this.$refs.tree
-    //   .findAll({ state: { expanded: false } })
-    //   .map((node) => node.id);
-
-    // this.$refs.tree?.remove({}, true);
     homeStore.polygonTrunks = [[], [], []];
 
-    console.log("Selected Polygons: ", homeStore.selectedPolygons);
 
     buildTrunk(data).forEach((list, index) => {
       list.forEach((data) => {
@@ -157,15 +151,9 @@ export const getPolygonList = async (isV2: boolean) => {
         homeStore.polygonTrunks[index].push(node);
 
         if (index === homeStore.level) {
-          console.log(node)
           if (!notExpanded.includes(node)) {
             node.state.expanded = true
           }
-          // let trunk = this.$refs.tree.prepend(node);
-
-          // if (!notExpanded.includes(trunk.id)) {
-          //   trunk.expand();
-          // }
         }
       });
     });
@@ -433,7 +421,6 @@ export const updateSchoolZones = async () => {
     )
 
     const features = data.map(item => mapSchools(item)).filter(filterSchools)
-    console.log(features)
     map.data.addGeoJson({
       type: 'FeatureCollection',
       features: features
@@ -823,7 +810,6 @@ export const clearAllSelected = () => {
 }
 
 export const onNeighborhoodClicked = (node: PolygonNode) => {
-  console.log(node);
   const homeStore = useHomeStore();
 
   if (!(node.id in homeStore.selectedPolygons)) {

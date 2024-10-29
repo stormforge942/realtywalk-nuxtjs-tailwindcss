@@ -22,7 +22,11 @@ useHead({
     </div>
     <div v-else class="flex flex-col">
         <ClientOnly>
-            <NeighborMap :show-neighbors="true" :clickable-neighbors="true" :disable-label="true"/>
+            <NeighborMap 
+            show-neighbors 
+            clickable-neighbors
+            disable-label
+            disable-tools />
         </ClientOnly>
             <NeighborTitlebar />
             <div class="w-full">
@@ -32,7 +36,7 @@ useHead({
                     </div>
                     <div class="w-full flex flex-col md:flex-row gap-8">
                         <div class="w-full md:w-3/5">
-                            <NeighborTree v-if="neighborhood?.zoom"/>
+                            <NeighborTree v-if="neighborhood?.zoom === 1 && neighborhood.descendants.length"/>
                             <NeighborSchools v-else/>
                         </div>
                         <div class="w-full md:w-2/5">

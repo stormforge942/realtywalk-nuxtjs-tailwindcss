@@ -252,7 +252,7 @@ export const useAuthStore = defineStore('auth', {
                 }
             })
                 .finally(() => {
-                    this.isLoading = false;
+                    this.fetchSearchList()
                 })
         },
         async fetchSearchList() {
