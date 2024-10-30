@@ -63,17 +63,17 @@ export const initializeGoogleMap = async (map_html: HTMLElement): Promise<void> 
 
   homeStore.bikeLayer = new google.maps.BicyclingLayer();
 
-  homeStore.polygonLabel = new MarkerWithLabel({
-    map,
-    position: new google.maps.LatLng(0, 0),
-    draggable: false,
-    labelAnchor: new google.maps.Point(0, 0),
-    labelClass: "polygon-label",
-    icon: "/images/transparent.png",
-    visible: false,
-    labelContent: 'FOO',
-    crossOnDrag: false
-  });
+  // homeStore.polygonLabel = new MarkerWithLabel({
+  //   map,
+  //   position: new google.maps.LatLng(0, 0),
+  //   draggable: false,
+  //   labelAnchor: new google.maps.Point(0, 0),
+  //   labelClass: "polygon-label",
+  //   icon: "/images/transparent.png",
+  //   visible: false,
+  //   labelContent: 'FOO',
+  //   crossOnDrag: false
+  // });
 
   google.maps.event.addListener(map, 'idle', () => {
     const center = map.getCenter();

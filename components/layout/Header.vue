@@ -13,26 +13,38 @@ const authStore = useAuthStore();
     class="flex z-40 justify-between px-8 lg:p-4 items-center bg-primary text-white h-[100px] lg:h-[120px] relative"
   >
     <NuxtLink id="logo" to="/" class="min-w-max">
-      <NuxtImg
-        class="hidden lg:block"
-        alt="Realty Walk"
-        src="/images/logo-rw.png"
-        width="60px"
-        height="90px"
-        :placeholder="img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })"
-      />
-      <NuxtImg
-        class="block lg:hidden"
-        alt="Realty Walk"
-        src="/images/logo-rw-horizontal.png"
-        height="45px"
-        :placeholder="
-          img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })
-        "
-      />
+      <template v-if="homeStore.isBuilderSite">
+        <NuxtImg
+          alt="Builder Posting Service"
+          class="h-[56px]"
+          src="/images/logo-bps-horizontal.png"
+          :placeholder="img('/images/logo-bps-horizontal.png', { f: 'png', blur: 2, q: 50 })"
+        />
+      </template>
+      <template v-else> 
+        <NuxtImg
+          class="hidden lg:block"
+          alt="Realty Walk"
+          src="/images/logo-rw.png"
+          width="60px"
+          height="90px"
+          :placeholder="img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })"
+        />
+        <NuxtImg
+          class="block lg:hidden"
+          alt="Realty Walk"
+          src="/images/logo-rw-horizontal.png"
+          height="45px"
+          :placeholder="
+            img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })
+          "
+        />
+      </template>
     </NuxtLink>
-    <div v-if="isHome" class="hidden lg:block w-full max-w-[460px] px-4">
-      {{ $t('home.header.caption') }}
+    <div v-if="isHome"
+    :class="[homeStore.isBuilderSite && 'lg:absolute lg:top-3 lg:left-[250px] xl:relative xl:top-auto xl:left-auto']" 
+    class="hidden lg:block w-full max-w-[460px] px-4">
+      {{ homeStore.isBuilderSite ? $t('home.header.caption_bps') : $t('home.header.caption') }}
     </div>
     <BaseMobileDrawer />
 
@@ -96,9 +108,9 @@ const authStore = useAuthStore();
             $t('menu.neighborhoods')
           }}</NuxtLink>
         </li>
-        <!-- <li>
+        <li v-if="homeStore.isBuilderSite">
           <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
-        </li> -->
+        </li>
         <li @click="eventBus.emit(REPORT_MODAL, true)">
           <NuxtLink class="cursor-pointer">{{
             $t('menu.report_bug')

@@ -6,11 +6,13 @@ definePageMeta({
   layout: false,
 })
 
-useHead({
-  title: 'Neigborhoods List - Realty WALK',
-})
 
 const neighborStore = useNeighborStore()
+const homeStore = useHomeStore()
+
+useHead({
+  title: `Neigborhoods List - ${homeStore.appName}`,
+})
 
 onBeforeMount(() => {
   neighborStore.fetchNeigbhorItems()

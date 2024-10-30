@@ -3,8 +3,10 @@ definePageMeta({
   layout: false,
 })
 
+const homeStore = useHomeStore()
+
 useHead({
-  title: 'User Sign in with Password - Realty WALK',
+  title: `User Sign in with Password - ${homeStore.appName}`,
 })
 </script>
 

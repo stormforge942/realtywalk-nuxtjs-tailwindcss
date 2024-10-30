@@ -2,6 +2,7 @@
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore()
+const homeStore = useHomeStore()
 
 const token = route.params.token as string;
 
@@ -22,7 +23,7 @@ onMounted(async () => {
 })
 
 useHead({
-    title: 'Magic Login Attempt - Realty WALK'
+  title: `Magic Login Attempt - ${homeStore.appName}`,
 })
 
 </script>

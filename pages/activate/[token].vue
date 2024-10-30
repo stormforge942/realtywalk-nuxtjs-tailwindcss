@@ -5,13 +5,14 @@ definePageMeta({
   layout: false,
 })
 
-useHead({
-  title: 'Activate Account - Realty WALK',
-})
-
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore()
+const homeStore = useHomeStore()
+
+useHead({
+  title: `Activate Account - ${homeStore.appName}`,
+})
 
 const token = route.params.token as string;
 

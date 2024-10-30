@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const route = useRoute()
+const homeStore = useHomeStore()
 const propertyStore = usePropertyStore()
 
 const slug = computed(() => (route.params.slug as string[] || []).join('/'))
@@ -10,7 +11,7 @@ propertyStore.fetchNeighborItem(slug.value)
 const neighborhood = computed(() => propertyStore.selectedNeighbor)
 
 useHead({
-    title: 'Realty WALK'
+  title: homeStore.appName,
 })
 </script>
 

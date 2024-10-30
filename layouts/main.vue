@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const img = useImage()
+
+const homeStore = useHomeStore()
 </script>
 
 <template>
@@ -9,7 +11,17 @@ const img = useImage()
       <div class="hidden lg:flex flex-col gap-y-[100px]">
         <div class="p-5 bg-primary">
           <NuxtImg
-            width="70"
+            v-if="homeStore.isBuilderSite"
+            class="min-w-[100px] max-w-[100px]"
+            alt="Builder Posting Service"
+            src="/images/bps-logo.png"
+            :placeholder="
+              img('/images/logo-rw.png', { f: 'png', blur: 2, q: 50 })
+            "
+          />
+          <NuxtImg
+            v-else
+            class="min-w-[70px] max-w-[70px]"
             alt="Realty Walk"
             src="/images/logo-rw.png"
             :placeholder="

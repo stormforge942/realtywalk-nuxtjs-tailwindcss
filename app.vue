@@ -2,12 +2,14 @@
 import Swal from 'sweetalert2'
 import "v3-infinite-loading/lib/style.css";
 
+const {t} = useI18n()
 const config = useRuntimeConfig()
 const authStore = useAuthStore()
 const homeStore = useHomeStore()
 const propertyStore = usePropertyStore()
 const exploreStore = useExploreStore()
 const neighborStore = useNeighborStore()
+const builderStore = useBuilderStore()
 
 useHead({
   link: [
@@ -37,11 +39,17 @@ useHead({
     },
   ],
 })
-authStore.API_ENDPOINT = config.public.API_ENDPOINT
-homeStore.API_ENDPOINT = config.public.API_ENDPOINT
-propertyStore.API_ENDPOINT = config.public.API_ENDPOINT
-exploreStore.API_ENDPOINT = config.public.API_ENDPOINT
-neighborStore.API_ENDPOINT = config.public.API_ENDPOINT
+
+const API_ENDPOINT = Boolean(config.public.IS_BUILDER) ? config.public.API_ENDPOINT_BUILDER : config.public.API_ENDPOINT
+authStore.API_ENDPOINT = API_ENDPOINT
+homeStore.API_ENDPOINT = API_ENDPOINT
+propertyStore.API_ENDPOINT = API_ENDPOINT
+exploreStore.API_ENDPOINT = API_ENDPOINT
+neighborStore.API_ENDPOINT = API_ENDPOINT
+builderStore.API_ENDPOINT = API_ENDPOINT
+
+homeStore.isBuilderSite = Boolean(config.public.IS_BUILDER)
+homeStore.appName = Boolean(config.public.IS_BUILDER) ? t('home.builder_posting') : t('home.realty_walk')
 
 onBeforeMount(() => {
   authStore.user = JSON.parse(localStorage.getItem('user') || 'null') as User

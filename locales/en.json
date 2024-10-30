@@ -115,7 +115,8 @@
     "list": {
       "searchBy": {
         "help": "Properties By Neighborhood",
-        "placeholder": "Search Neighborhood"
+        "placeholder": "Search Neighborhood",
+        "placeholder_bps": "Search Builder"
       },
       "not_found": "No results found\nTry entering a more specific search keyword.",
       "level": "Level",
@@ -195,8 +196,11 @@
     "text_tbd": "To be determined"
   },
   "home": {
+    "realty_walk": "Realty WALK",
+    "builder_posting": "Builder Posting Service",
     "header": {
       "caption": "Welcome to Realty Walk. Click areas of interest on the map and choose criteria on the left to begin searching",
+      "caption_bps": "Welcome to Builder Posting Service. Click areas of interest on the map and choose criteria on the left to begin searching",
       "btn_register": "Become A Member",
       "btn_profile": "Go To Profile",
       "btn_saved_searches": "Saved Searches",

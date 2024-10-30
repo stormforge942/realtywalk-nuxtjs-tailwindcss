@@ -2,13 +2,15 @@
 
 const route = useRoute()
 const propertyStore = usePropertyStore()
+const homeStore = useHomeStore()
 
 const slug = computed(() => (route.params.slug as string[]).join('/'))
 
 propertyStore.fetchPropertyItem(slug.value)
 
+
 useHead({
-    title: 'Realty WALK'
+  title: homeStore.appName,
 })
 </script>
 

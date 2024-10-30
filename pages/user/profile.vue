@@ -4,8 +4,11 @@ definePageMeta({
   middleware: 'auth'
 })
 
+
+const homeStore = useHomeStore()
+
 useHead({
-  title: 'User Profile - Realty WALK'
+  title: `User Profile - ${homeStore.appName}`,
 })
 </script>
 

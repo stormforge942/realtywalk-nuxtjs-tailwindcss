@@ -37,7 +37,7 @@ const props = defineProps({
     required: false
   }
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'click'])
 
 const onClick = (item: string) => {
   selected.value = item
@@ -46,6 +46,7 @@ const onClick = (item: string) => {
   } else {
     emit('update:modelValue', item)
   }
+  emit('click')
 }
 
 onBeforeMount(() => {

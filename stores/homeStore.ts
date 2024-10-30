@@ -66,6 +66,9 @@ export interface HomeStore {
     isLoading: boolean,
     activeNeighborhood: string,
 
+    isBuilderSite: boolean,
+    appName: string,
+
     property: {
         displaying: "map",
         map: {
@@ -90,6 +93,8 @@ export const useHomeStore = defineStore('home', {
     state: (): HomeStore => ({
         API_ENDPOINT: '',
 
+        isBuilderSite: false,
+
         isMapView: true,
         level: 1,
         showUnselected: false,
@@ -113,6 +118,7 @@ export const useHomeStore = defineStore('home', {
 
         showInstruction: false,
         saveSearch: false,
+        appName: '',
 
 
         map: DEFAULT_MAP,

@@ -460,3 +460,20 @@ interface NeighborHoodItem {
         entity_type: string
     }
 }
+
+interface BuilderItem {
+    id: number
+    name: string
+    page_url: string
+    path_url: string
+    properties_count: number
+    slug: string
+    seourl: {
+        created_at: Date
+        entity_id: number
+        entity_type: string
+        id: number
+        path: string
+        updated_at: Date
+    }
+}

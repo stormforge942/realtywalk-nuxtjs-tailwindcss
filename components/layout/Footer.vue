@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const authStore = useAuthStore()
+const homeStore = useHomeStore()
 
 </script>
 
@@ -8,13 +9,19 @@ const authStore = useAuthStore()
   <div
     class="hidden sm:flex px-16 justify-center items-center text-white h-[70px] lg:h-[50px] bg-primary"
   >
-    <div class="text-sm w-[200px] lg:w-[280px] text-center">
-      &copy; Realty Walk &#124; {{ $t('footer.copyright') }}
+    <div
+    v-if="homeStore.isBuilderSite" 
+    class="text-sm w-[200px] lg:w-[280px] text-center">
+      &copy; {{ new Date().getFullYear() }} Builder Posting Service &#124; {{ $t('footer.copyright') }}
+    </div>
+    <div v-else class="text-sm w-[200px] lg:w-[280px] text-center">
+      &copy; {{ new Date().getFullYear() }} Realty Walk &#124; {{ $t('footer.copyright') }}
     </div>
     <div>
       <NuxtLink to="/">{{ $t('menu.home') }}</NuxtLink>
       <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>
       <NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink>
+      <NuxtLink v-if="homeStore.isBuilderSite" to="/builders">{{ $t('menu.builder') }}</NuxtLink>
 
       <template v-if="authStore.authenticated">
         <NuxtLink to="/user/favorites">{{ $t('menu.favorite') }}</NuxtLink>

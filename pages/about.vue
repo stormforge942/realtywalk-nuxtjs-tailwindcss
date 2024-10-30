@@ -2,14 +2,14 @@
 definePageMeta({
   layout: false,
 })
-
-useHead({
-  title: 'About Us - Realty WALK',
-})
-
 const img = useImage()
 
 const config = useRuntimeConfig()
+const homeStore = useHomeStore()
+
+useHead({
+  title: `About Us - ${homeStore.appName}`,
+})
 </script>
 
 <template>
