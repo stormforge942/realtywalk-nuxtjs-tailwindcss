@@ -3,6 +3,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const router = useRouter()
 const authStore = useAuthStore()
+const homeStore = useHomeStore()
 
 const isActive = ref(false)
 
@@ -104,9 +105,9 @@ watch(() => [isActive], () => {
       <li @click="onClose()">
         <NuxtLink to="/neighborhoods">{{ $t('menu.neighborhoods') }}</NuxtLink>
       </li>
-      <!-- <li @click="onClose()">
+      <li @click="onClose()" v-if="homeStore.isBuilderSite">
         <NuxtLink to="/builders">{{ $t('menu.builder') }}</NuxtLink>
-      </li> -->
+      </li>
 
       <template v-if="authStore.authenticated">
         <li @click="onClose()">

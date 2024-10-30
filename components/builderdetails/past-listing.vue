@@ -21,10 +21,16 @@ watch(
     <template v-else>
         <template v-if="builder.pastListings.length">
             <BasePagination is-big 
+            v-if="builder.totalPastPage > 1"
             v-model="builder.curPastPage" 
             :total-pages="builder.totalPastPage"/>
-            <div class="flex flex-col w-full">
-                <LookupItem :key="item.id" v-for="item in builder.pastListings" :item="item" />
+            <BuilderdetailsSortMenu :is-active="false"/>
+
+            <div v-if="builderStore.isPastGrid" class="flex flex-col w-full">
+                <LookupItem :key="item.id" v-for="item in builder.pastListings" :item="item" hide-status/>
+            </div>
+            <div v-else class="w-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 xl:grid-cols-3">
+                <LookupGridItem :key="item.id" v-for="item in builder.pastListings" :item="item"/>
             </div>
         </template>
         <template v-else>

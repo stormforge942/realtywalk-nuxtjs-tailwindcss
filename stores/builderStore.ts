@@ -9,8 +9,12 @@ interface BuilderState {
     isLoading: boolean
     totalPage: number
     isInputing: boolean
-    sortOrder: 'price' | 'address' | 'neighborhood' | ''
-    sortBy: '' | 'asc' | 'desc'
+    sortOrderActive: 'price_from' | 'address' | 'neighborhood' | ''
+    sortByActive: '' | 'asc' | 'desc'
+    sortOrderPast: 'price_from' | 'address' | 'neighborhood' | ''
+    sortByPast: '' | 'asc' | 'desc'
+    isActiveGrid: boolean
+    isPastGrid: boolean
     curBuilder: {
         item: Builder | null
         activeListings: PropertyItem[]
@@ -32,10 +36,14 @@ export const useBuilderStore = defineStore('builder', {
         curPage: 1,
         totalPage: 1,
         search: '',
-        sortBy: '',
-        sortOrder: '',
+        sortOrderActive: '',
+        sortByActive: '',
+        sortOrderPast: '',
+        sortByPast: '',
         isLoading: false,
         isInputing: false,
+        isActiveGrid: true,
+        isPastGrid: true,
         curBuilder: {
             item: null,
             activeListings: [],
@@ -96,7 +104,7 @@ export const useBuilderStore = defineStore('builder', {
                         } | null>((resolve) => $fetch<{
                             last_page: number
                             data: PropertyItem[]
-                        }>(`${this.API_ENDPOINT}/api/properties/active-filter/${data.id}?page=${this.curBuilder.curActivePage}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`)
+                        }>(`${this.API_ENDPOINT}/api/properties/active-filter/${data.id}?page=${this.curBuilder.curActivePage}&sortBy=${this.sortOrderActive}&orderBy=${this.sortByActive}`)
                             .then(data => resolve(data))
                             .catch(() => resolve(null))),
                         new Promise<{
@@ -105,7 +113,7 @@ export const useBuilderStore = defineStore('builder', {
                         } | null>((resolve) => $fetch<{
                             last_page: number
                             data: PropertyItem[]
-                        }>(`${this.API_ENDPOINT}/api/properties/past-filter/${data.id}?page=${this.curBuilder.curPastPage}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`)
+                        }>(`${this.API_ENDPOINT}/api/properties/past-filter/${data.id}?page=${this.curBuilder.curPastPage}&sortBy=${this.sortOrderPast}&orderBy=${this.sortByPast}`)
                             .then(data => resolve(data))
                             .catch(() => resolve(null))),
                         new Promise<Community[]>((resolve) =>
@@ -145,7 +153,7 @@ export const useBuilderStore = defineStore('builder', {
             $fetch<{
                 last_page: number
                 data: PropertyItem[]
-            }>(`${this.API_ENDPOINT}/api/properties/active-filter/${this.curBuilder.item?.id}?page=${this.curBuilder.curActivePage}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`)
+            }>(`${this.API_ENDPOINT}/api/properties/active-filter/${this.curBuilder.item?.id}?page=${this.curBuilder.curActivePage}&sortBy=${this.sortOrderActive}&orderBy=${this.sortByActive}`)
                 .then(result => {
                     this.curBuilder.activeListings = result.data
                     this.curBuilder.totalActivePage = result.last_page
@@ -158,7 +166,7 @@ export const useBuilderStore = defineStore('builder', {
             $fetch<{
                 last_page: number
                 data: PropertyItem[]
-            }>(`${this.API_ENDPOINT}/api/properties/past-filter/${this.curBuilder.item?.id}?page=${this.curBuilder.curPastPage}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`)
+            }>(`${this.API_ENDPOINT}/api/properties/past-filter/${this.curBuilder.item?.id}?page=${this.curBuilder.curPastPage}&sortBy=${this.sortOrderPast}&orderBy=${this.sortByPast}`)
                 .then(result => {
                     this.curBuilder.pastListings = result.data
                     this.curBuilder.totalPastPage = result.last_page

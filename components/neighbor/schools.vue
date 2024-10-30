@@ -127,15 +127,15 @@
             <div class="text-3xl my-4">Statistics</div>
             <div v-for="stat in stats" :key="stat.id">
                 <div v-for="value in stat.statistics.filter(v => v.value)" :key="value.id">
-                <tr class="ml-5">
-                    <td> {{value.name}}:</td>
-                    <td v-if="value.value == '0.00'" class="ml-4">
-                    <span class="p-2">N/A</span>
-                    </td>
-                    <td v-else class="ml-4">
-                    <span class="p-2">{{value.value}}</span>
-                    </td>
-                </tr>
+                <div class="grid grid-cols-3">
+                    <div> {{value.name}}:</div>
+                    <div v-if="value.value == '0.00'" class="ml-4">
+                        <span class="p-2">N/A</span>
+                    </div>
+                    <div v-else class="ml-4">
+                        <span class="p-2">{{value.value}}</span>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

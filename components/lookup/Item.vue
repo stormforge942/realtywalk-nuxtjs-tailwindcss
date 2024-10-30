@@ -4,6 +4,7 @@ import { faCalendarDays, faStar } from '@fortawesome/free-solid-svg-icons';
 interface Props {
     item: PropertyItem
     showBuilder?: boolean
+    hideStatus?: boolean
 }
 
 const props = defineProps<Props>()
@@ -81,7 +82,7 @@ const validateNeighborhoodUrl = (val: string) => {
                         {{ props.item.fa || props.item.full_address || `${props.item.address_number} ${props.item.address_street}` }}
                     </NuxtLink>
                 </span>
-                <span class="w-full text-black font-semibold">
+                <span v-if="!hideStatus" class="w-full text-black font-semibold">
                     {{ $t('property.list_details.status') }}
                     <span
                     :class="propertyStatusClass(props.item.s || props.item.status)"

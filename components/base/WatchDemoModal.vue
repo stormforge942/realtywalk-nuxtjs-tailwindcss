@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import YouTube from 'vue3-youtube';
 
+const config = useRuntimeConfig().public
 const isOpen = ref(false)
 const youtube = ref()
 
@@ -33,9 +34,10 @@ onUnmounted(() => {
   :isOpen="isOpen" @toggle="toggle">
     <template #title>{{ $t('menu.watch_the_demo') }}</template>
     <template #body>
-        <YouTube
+      <YouTube
       ref="youtube"
       class="w-full h-full aspect-video" 
-      src="https://www.youtube.com/watch?v=z98-EokDUW4"/>    </template>
+      :src="`https://www.youtube.com/watch?v=${config.YOUTUBE_DEMO_VIDEO}`"/>    
+    </template>
   </BaseModal>
 </template>

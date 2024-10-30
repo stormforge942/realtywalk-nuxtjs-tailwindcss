@@ -3,20 +3,44 @@
 const authStore = useAuthStore()
 const homeStore = useHomeStore()
 
+const route = useRoute()
+const img = useImage()
+
+
+const isHomePath = computed(() => route.path === '/')
+
 </script>
 
 <template>
   <div
-    class="hidden sm:flex px-16 justify-center items-center text-white h-[70px] lg:h-[50px] bg-primary"
+  :class="[isHomePath ? 'h-[70px] lg:h-[50px] hidden sm:flex' : 'h-max py-6 flex flex-col md:flex-row gap-4']"
+    class="px-16 justify-center items-center text-white bg-primary"
   >
+  <div class="text-sm text-center lg:text-start flex flex-col gap-4">
+    <div v-if="!isHomePath">
+        <NuxtImg
+        v-if="homeStore.isBuilderSite"
+          alt="Builder Posting Service"
+          src="/images/logo-bps-horizontal.png"
+          class="w-[200px] lg:w-[240px]"
+          :placeholder="img('/images/logo-bps-horizontal.png', { f: 'png', blur: 2, q: 50 })"
+        />
+        <NuxtImg
+        v-else
+          class="w-[200px] lg:w-[240px]"
+          alt="Realty Walk"
+          src="/images/logo-rw-horizontal.png"
+          :placeholder="img('/images/logo-rw-horizontal.png', { f: 'png', blur: 2, q: 50 })"
+        />
+    </div>
     <div
-    v-if="homeStore.isBuilderSite" 
-    class="text-sm w-[200px] lg:w-[280px] text-center">
+    v-if="homeStore.isBuilderSite">
       &copy; {{ new Date().getFullYear() }} Builder Posting Service &#124; {{ $t('footer.copyright') }}
     </div>
-    <div v-else class="text-sm w-[200px] lg:w-[280px] text-center">
+    <div v-else>
       &copy; {{ new Date().getFullYear() }} Realty Walk &#124; {{ $t('footer.copyright') }}
     </div>
+  </div>  
     <div>
       <NuxtLink to="/">{{ $t('menu.home') }}</NuxtLink>
       <NuxtLink to="/about">{{ $t('menu.about') }}</NuxtLink>
