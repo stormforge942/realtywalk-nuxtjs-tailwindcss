@@ -53,14 +53,14 @@ const onClickShowResult = (val: boolean) => {
             <button 
             @click="homeStore.activeSchoolZone = 'middleschool'"
             class="school-button"
-            :class="homeStore.activeSchoolZone === 'middleschool' ? 'bg-orange-400 selected' : 'bg-primary1'"
+            :class="homeStore.activeSchoolZone === 'middleschool' ? 'bg-green-400 selected' : 'bg-primary1'"
             >
                 {{ $t('home.toggles.middleschool')}}
             </button>
             <button
             @click="homeStore.activeSchoolZone = 'highschool'" 
             class="school-button"
-            :class="homeStore.activeSchoolZone === 'highschool' ? 'bg-green-400 selected' : 'bg-primary1'"
+            :class="homeStore.activeSchoolZone === 'highschool' ? 'bg-orange-400 selected' : 'bg-primary1'"
             >
                 {{ $t('home.toggles.highschool') }}
             </button>
