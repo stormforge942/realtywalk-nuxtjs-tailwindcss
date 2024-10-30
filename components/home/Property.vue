@@ -25,6 +25,8 @@ const fetchProperty = (nextPage: boolean) => {
     propertyStore.fetchProperty(nextPage, infiniteHandler, aborter.value);
 }
 
+const showBuilderFilter = ref<boolean>(true)
+
 
 watch(() => [
     propertyStore.sortBy,
@@ -81,29 +83,41 @@ onUnmounted(() => {
                 
             </template>
             <template v-else>
-                <div v-if="propertyStore.isLoading" class="w-full h-full flex items-center justify-center">
-                    <BaseRippleProgress/>
-                </div>
-                <div v-else >
-                    <div class="leading-[30px] text-xl px-4">{{ $t('home.result.total_found', { total: propertyStore.totalProperties }) }}</div>
-                    <LookupSortMenu/>
-                    <div class="max-h-[calc(100vh-270px)] overflow-y-scroll no-scrollbar flex flex-col">
-                        <LookupItem 
-                        :key="item.pri || item.id" 
-                        :item="item"
-                        v-for="item in propertyStore.properties"/>
-                        <InfiniteLoading class="min-h-10 invisible" :distance="10" @infinite="infiniteHandler">
-                            <div slot="spinner">
-                                {{ $t("home.result.infinite.loading") }}
-                            </div>
-                            <div slot="no-more">
-                                {{ $t("home.result.infinite.no_more") }}
-                            </div>
-                            <div slot="no-results">
-                                {{ $t("home.result.infinite.no_more") }}
-                            </div>
-                        </InfiniteLoading>
+                <div class="w-full h-full relative flex">
+                    <div v-if="propertyStore.isLoading" class="w-full h-full flex items-center justify-center">
+                        <BaseRippleProgress/>
                     </div>
+                    <div class="w-full" v-else>
+                        <div class="leading-[30px] text-xl px-4">{{ $t('home.result.total_found', { total: propertyStore.totalProperties }) }}</div>
+                        <LookupSortMenu/>
+                        <div class="max-h-[calc(100vh-270px)] overflow-y-scroll no-scrollbar flex flex-col">
+                            <LookupItem 
+                            :key="item.pri || item.id" 
+                            :item="item"
+                            :show-builder="homeStore.isBuilderSite"
+                            v-for="item in propertyStore.properties"/>
+                            <InfiniteLoading class="min-h-10 invisible" :distance="10" @infinite="infiniteHandler">
+                                <div slot="spinner">
+                                    {{ $t("home.result.infinite.loading") }}
+                                </div>
+                                <div slot="no-more">
+                                    {{ $t("home.result.infinite.no_more") }}
+                                </div>
+                                <div slot="no-results">
+                                    {{ $t("home.result.infinite.no_more") }}
+                                </div>
+                            </InfiniteLoading>
+                        </div>
+                    </div>
+                    <div v-if="homeStore.isBuilderSite" 
+                    :class="[showBuilderFilter ? 'right-0' : '-right-[320px]']"
+                    class="min-w-[300px] xl:relative absolute bg-white top-0 xl:-right-[20px]">
+                        <HomeBuilderFilter />
+                    </div>
+                    <button 
+                    v-if="homeStore.isBuilderSite"
+                    @click="showBuilderFilter = !showBuilderFilter"
+                    class="inline-block xl:hidden absolute -right-4 lg:-right-9 top-[50%] bg-primary hover:bg-primary1 text-white font-semibold -rotate-90 px-4 py-2 rounded-t-lg">Filter</button>
                 </div>
             </template>
         </div>

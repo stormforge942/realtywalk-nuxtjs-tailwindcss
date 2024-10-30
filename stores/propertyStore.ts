@@ -17,7 +17,7 @@ export interface PropertyStore {
     hasElevator: boolean,
 
     // Filters
-    sortBy: 'price' | 'address' | 'neighborhood' | '',
+    sortBy: 'price' | 'address' | 'neighborhood' | 'builder' | '',
     sortOrder: 'asc' | 'desc' | '',
     loadCount: number,
     status: string,
@@ -50,6 +50,15 @@ export interface PropertyStore {
     }
 
     totalPages: number,
+
+    associatedBuilders: {
+        key: string,
+        n: string,
+        s: string,
+        checked: boolean
+    }[]
+    loadingBuilders: boolean
+    selectAllBuilders: boolean
 }
 
 export const usePropertyStore = defineStore('property', {
@@ -101,7 +110,10 @@ export const usePropertyStore = defineStore('property', {
             componentLoaded: false,
             mapInfo: undefined
         },
-        totalPages: 1
+        totalPages: 1,
+        associatedBuilders: [],
+        loadingBuilders: false,
+        selectAllBuilders: true
     }),
     actions: {
         convertStateToFilterPayload(): PropertyFilter {
@@ -141,10 +153,23 @@ export const usePropertyStore = defineStore('property', {
                 this.properties = [];
             }
 
+            const homeStore = useHomeStore()
+
+            let filters: any = this.convertStateToFilterPayload()
+
+            if (homeStore.isBuilderSite) {
+                filters = {
+                    ...filters,
+                    dontUpdateBuilderList: true,
+                    notAllBuilders: !this.selectAllBuilders,
+                    buildersId: this.associatedBuilders.filter(item => item.checked).map(item => item.key)
+                }
+            }
+
             try {
                 const result = await $fetch(`${this.API_ENDPOINT}/api/properties/filter?page=${page}&sortBy=${this.sortBy}&orderBy=${this.sortOrder}`, {
                     method: 'POST',
-                    body: this.convertStateToFilterPayload(),
+                    body: filters,
                     signal: aborter?.signal
                 })
 
@@ -208,10 +233,20 @@ export const usePropertyStore = defineStore('property', {
                 this.mapProperties.reloading = true;
             }
 
+            const homeStore = useHomeStore()
+
             try {
                 // console.time("Properties fetch time")
                 const map_info = { ...this.mapProperties.mapInfo, init }
-                const filters = { ...this.convertStateToFilterPayload(), map_info };
+                let filters: any = { ...this.convertStateToFilterPayload(), map_info };
+                if (homeStore.isBuilderSite) {
+                    filters = {
+                        ...filters,
+                        dontUpdateBuilderList: true,
+                        notAllBuilders: !this.selectAllBuilders,
+                        buildersId: this.associatedBuilders.filter(item => item.checked).map(item => item.key)
+                    }
+                }
                 const data = await $fetch<any>(`${this.API_ENDPOINT}/api/properties/filter?formap=1`, {
                     method: 'POST',
                     body: filters
@@ -300,5 +335,28 @@ export const usePropertyStore = defineStore('property', {
                     .finally(() => this.isSubmit = false)
             })
         },
+
+        async fetchAssociatedBuilders() {
+            const homeStore = useHomeStore()
+            try {
+                this.loadingBuilders = true
+                const data = await $fetch<string>(`${this.API_ENDPOINT}/api/properties/filters/associated-builders`, {
+                    method: 'POST',
+                    body: {
+                        ancestorPolygons: homeStore.ancestorPolygons,
+                        selectedPolygons: homeStore.selectedPolygons,
+                        polygons: homeStore.selectedPolygons
+                    }
+                })
+
+                if (data) {
+                    this.associatedBuilders = Object.entries(JSON.parse(data) as Record<number, { n: string, s: string }>).map(([key, value]) => ({ key, ...value, checked: true }))
+                }
+            } catch {
+
+            } finally {
+                this.loadingBuilders = false
+            }
+        }
     }
 })

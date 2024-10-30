@@ -43,15 +43,22 @@ watch(
           <BaseRippleProgress/>
         </div>
         <template v-else>
-          <LookupItem 
-            :key="item.pri || item.id" 
-            :item="item"
-            v-for="item in propertyStore.properties"/>
-          <div 
-          v-if="propertyStore.totalPages > 1"
-          class="w-full flex justify-center">
-            <BasePagination is-big :totalPages="propertyStore.totalPages" v-model="propertyStore.page"/>
-          </div>
+          <template v-if="propertyStore.properties.length">
+            <LookupItem 
+              :key="item.pri || item.id" 
+              :item="item"
+              v-for="item in propertyStore.properties"/>
+            <div 
+            v-if="propertyStore.totalPages > 1"
+            class="w-full flex justify-center">
+              <BasePagination is-big :totalPages="propertyStore.totalPages" v-model="propertyStore.page"/>
+            </div>
+          </template>
+          <template v-else>
+            <div class="text-lg">
+              {{ $t('neighborhood.singleProperty.not_found', {n: neighborhood?.title}) }}
+            </div>
+          </template>
         </template>
       </div>
     </template>

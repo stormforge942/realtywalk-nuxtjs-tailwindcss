@@ -5,6 +5,7 @@ import { useBuilderStore } from '~/stores/builderStore';
 
 definePageMeta({
   layout: false,
+  middleware: ['builder']
 })
 
 const builderStore = useBuilderStore()

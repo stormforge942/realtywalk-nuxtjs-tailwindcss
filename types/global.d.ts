@@ -149,6 +149,7 @@ interface PropertyItem {
     agent_id: string
     agent_website: any
     alt_path_url: string
+    builder_path: string
     batch_id: string | null
     bathrooms_full: number
     bathrooms_half: number
@@ -468,6 +469,64 @@ interface BuilderItem {
     path_url: string
     properties_count: number
     slug: string
+    seourl: {
+        created_at: Date
+        entity_id: number
+        entity_type: string
+        id: number
+        path: string
+        updated_at: Date
+    }
+}
+
+interface Builder {
+    additional_phones?: any[]
+    address?: string
+    address1?: string
+    address2?: string
+    address3?: string
+    alias_of_builder_id?: string
+    builderPrimaryLogo?: string
+    city?: string
+    created_at: Date
+    descr?: string
+    email?: string
+    email_info?: string
+    filter_data: {
+        n: string
+        s: string
+    }
+    hidden: boolean
+    id: number
+    media: any[]
+    name: string
+    page_url: string
+    path_url: string
+    phone?: string
+    phone_info?: string
+    profile_headline?: string
+    services: any
+    seourl: {
+        created_at: Date
+        entity_id: number
+        entity_type: string
+        id: number
+        path: string
+        updated_at: Date
+    }
+    slug: string
+    soundex_c: string
+    updated_at: Date
+    video_gallery: any[]
+    website?: string
+    website_label?: string
+}
+
+interface Community {
+    id: number
+    page_url: string
+    path_url: string
+    title: string
     seourl: {
         created_at: Date
         entity_id: number

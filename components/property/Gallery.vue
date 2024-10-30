@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
+const homeStore = useHomeStore()
 const propertyStore = usePropertyStore()
 const curIndex = ref(0)
 const imgContainerRef = ref<HTMLDivElement>()
@@ -13,11 +14,11 @@ const imageUrls = computed(() => {
         } else if(propertyStore.selectedProperty.type === 0 && propertyStore.selectedProperty.image_urls) {
             images = [...propertyStore.selectedProperty.image_urls]
         } else {
-            images = ['/images/property_no_img_thumb.png']
+            images = homeStore.isBuilderSite ? ['/images/property_no_img_bps.png'] : ['/images/property_no_img.png']
         }
         return images
     } else {
-        return ['/images/property_no_img_thumb.png']
+        return homeStore.isBuilderSite ? ['/images/property_no_img_bps.png'] : ['/images/property_no_img.png']
     }
 })
 
@@ -58,7 +59,12 @@ const onClickNext = () => {
             <NuxtImg 
             class="h-[400px] min-w-[540px] max-w-[540px] border border-primary1"
             @error="failedImgs.push(url)"
-            :key="url" v-for="url in imageUrls" :src="failedImgs.includes(url) ? '/images/property_no_img_thumb.png' : url"/>
+            :key="url" v-for="url in imageUrls" 
+            :src="failedImgs.includes(url) ? 
+            homeStore.isBuilderSite ? 
+            '/images/property_no_img_bps.png' : 
+            '/images/property_no_img.png' : 
+            url"/>
        </div>
         <button
         @click="onClickPrev()" 

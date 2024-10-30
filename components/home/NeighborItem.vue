@@ -23,6 +23,8 @@ const timer = ref();
 const props = defineProps<Props>()
 const emits = defineEmits(['click'])
 
+const homeStore = useHomeStore()
+
 const isLoading = ref(true);
 const isError = ref(false);
 
@@ -65,7 +67,7 @@ onUnmounted(() => {
         @error="onError()"
         v-if="!isError && props.item?.featured_image_url"
         class="w-full aspect-square group-hover:scale-110" :alt="props.item.title" :src="props.item?.featured_image_url"/>
-        <NuxtImg v-else src="/images/property_no_img_thumb.png" class="w-full aspect-square"/>
+        <NuxtImg v-else :src="homeStore.isBuilderSite ? '/images/property_no_img_thumb_bps.png' : '/images/property_no_img_thumb.png'" class="w-full aspect-square"/>
         <div v-if="!isLoading" :class="[
             'absolute z-10 top-0 left-0', 
             'px-[15%] bg-[#00000040] hover:bg-transparent w-full h-full flex items-center justify-center text-center text-white text-2xl font-semibold']">{{ props.item.title }}</div>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { faSortDown } from '@fortawesome/free-solid-svg-icons';
 
+const props = defineProps<{
+    showBuilder?: boolean
+}>()
+
 const route = useRoute()
 const propertyStore = usePropertyStore()
 const searchQuery = route.query.q as string
@@ -10,6 +14,7 @@ type SortOrder = 'asc' | 'desc'
 const sortOrderPrice = ref<SortOrder>('desc')
 const sortOrderAddress = ref<SortOrder>('desc')
 const sortOrderNeighbor = ref<SortOrder>('desc')
+const sortOrderBuilder = ref<SortOrder>('desc')
 
 const onSortPrice = () => {
     propertyStore.sortBy = 'price'
@@ -41,20 +46,35 @@ const onSortNeighbor = () => {
     localStorage.setItem('sortOrderNeighbor', sortOrderNeighbor.value)
 }
 
+const onSortBuilder = () => {
+    propertyStore.sortBy = 'builder'
+    sortOrderBuilder.value = sortOrderBuilder.value === 'asc' ? 'desc' : 'asc'
+    propertyStore.sortOrder = sortOrderBuilder.value
+    setTimeout(() => {
+        propertyStore.fetchAddressLookUp(searchQuery)
+    }, 300)
+    localStorage.setItem('sortOrderBuilder', sortOrderBuilder.value)
+}
+
 onMounted(() => {
     sortOrderPrice.value = localStorage.getItem('sortOrderPrice')as SortOrder
     sortOrderAddress.value = localStorage.getItem('sortOrderAddress')as SortOrder
     sortOrderNeighbor.value = localStorage.getItem('sortOrderNeighbor')as SortOrder
+    sortOrderBuilder.value = localStorage.getItem('sortOrderBuilder')as SortOrder
 })
 </script>
 
 <template>
     <ul class="bg-primary lg:bg-white flex p-2 text-white lg:text-primary mt-4">
-        <li class="w-1/4 lg:w-[230px]"><span class="lg:hidden">{{ $t('home.filter.columns.sort_by') }}</span></li>
+        <li
+        :class="[showBuilder ? 'w-1/5' : 'w-1/4 ']" 
+        class="lg:w-[230px]">
+            <span class="lg:hidden">{{ $t('home.filter.columns.sort_by') }}</span>
+        </li>
         <li 
         @click="onSortPrice()"
-        class="w-1/4 lg:w-[calc((100%-230px)/5)] lg:underline"
-        :class="propertyStore.sortBy === 'price' && 'selected'">
+        class="lg:w-[calc((100%-230px)/5)] lg:underline"
+        :class="[propertyStore.sortBy === 'price' && 'selected', showBuilder ? 'w-1/5' : 'w-1/4']">
             <span class="hidden lg:inline-block">
                 <FontAwesome
                 class="pb-[7px]"
@@ -64,9 +84,9 @@ onMounted(() => {
             {{ $t('home.filter.columns.price') }}
         </li>
         <li
-        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)] lg:underline"
+        class="lg:w-[calc(2*(100%-230px)/5)] lg:underline"
         @click="onSortAddress()" 
-        :class="propertyStore.sortBy === 'address' && 'selected'">
+        :class="[propertyStore.sortBy === 'address' && 'selected', showBuilder ? 'w-1/5' : 'w-1/4']">
             <span class="hidden lg:inline-block">
                 <FontAwesome
                 class="pb-[7px]"
@@ -76,9 +96,9 @@ onMounted(() => {
             {{ $t('home.filter.columns.address') }}
         </li>
         <li 
-        class="w-1/4 lg:w-[calc(2*(100%-230px)/5)] lg:underline"
+        class="lg:underline"
         @click="onSortNeighbor()" 
-        :class="propertyStore.sortBy === 'neighborhood' && 'selected'">
+        :class="[propertyStore.sortBy === 'neighborhood' && 'selected', showBuilder ? 'w-1/5 lg:w-[calc((100%-230px)/5)]' : 'w-1/4 lg:w-[calc(2*(100%-230px)/5)]']">
             <span class="hidden lg:inline-block">
                 <FontAwesome
                 class="pb-[7px]"
@@ -87,6 +107,18 @@ onMounted(() => {
             </span>
             <span class="hidden lg:inline-flex">{{ $t('home.filter.columns.sub_neighborhood') }}</span>
             <span class="lg:hidden">{{ $t('home.filter.columns.neighborhood') }}</span>
+        </li>
+        <li 
+        class="w-1/5 lg:w-[calc((100%-230px)/5)] lg:underline"
+        @click="onSortBuilder()" 
+        :class="propertyStore.sortBy === 'builder' && 'selected'">
+            <span class="hidden lg:inline-block">
+                <FontAwesome
+                class="pb-[7px]"
+                :class="[sortOrderBuilder === 'asc' && 'rotate-180']" 
+                :icon="faSortDown"/>
+            </span>
+            <span>{{ $t('home.filter.columns.builder') }}</span>
         </li>
     </ul>
 </template>

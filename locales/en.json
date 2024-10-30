@@ -121,6 +121,45 @@
       "not_found": "No results found\nTry entering a more specific search keyword.",
       "level": "Level",
       "n_properties": "no properties | {n} property | {n} properties"
+    },
+    "singleProperty": {
+      "sectionTitles": {
+        "title_1": "LET'S BUILD YOUR FUTURE",
+        "title_2": "SOCIAL MEDIA & MORE",
+        "title_3": "ACTIVE LISTING/POSTINGS",
+        "title_4": "PAST LISTING/POSTINGS",
+        "title_5": "COMMUNITIES BUILT IN"
+      },
+      "viewList": "GRID VIEW / LIST VIEW",
+      "service_list": "Our Services:"
+    },
+    "profile": {
+      "documents": "Documents",
+      "name": "Name",
+      "slug": "Slug",
+      "headline": "Profile Headline",
+      "alias_of": "Alias of",
+      "description": "Description",
+      "email": "Email",
+      "email_info": "Email Information",
+      "phone": "Phone",
+      "phone_info": "Phone Information",
+      "website": "Website",
+      "website_label": "Website Label",
+      "builder_areas": "Builder Areas",
+      "address": "Address",
+      "address_1": "Address 1",
+      "address_2": "Address 2",
+      "address_3": "Address 3",
+      "logo": "Logo",
+      "gallery": "Image Gallery",
+      "video_gallery": "Video Gallery",
+      "services": "Service List",
+      "polygons": "Additional Communities Built In"
+    },
+    "filterBy": {
+      "title": "Filter by Builder",
+      "select_all": "Select All"
     }
   },
   "component": {
@@ -431,7 +470,8 @@
         "title_4": "PAST LISTING/POSTINGS",
         "title_5": "COMMUNITIES BUILT IN"
       },
-      "viewList": "GRID VIEW / LIST VIEW"
+      "viewList": "GRID VIEW / LIST VIEW",
+      "not_found": "There is no property found which is associated with {n}"
     },
     "profile": {
       "documents": "Documents",
