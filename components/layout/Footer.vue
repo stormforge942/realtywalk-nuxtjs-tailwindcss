@@ -17,7 +17,7 @@ const isHomePath = computed(() => route.path === '/')
     class="px-16 justify-center items-center text-white bg-primary"
   >
   <div class="text-sm text-center lg:text-start flex flex-col gap-4">
-    <div v-if="!isHomePath">
+    <div v-if="!isHomePath" class="flex j">
         <NuxtImg
         v-if="homeStore.isBuilderSite"
           alt="Builder Posting Service"
